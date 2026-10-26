@@ -1,0 +1,66 @@
+# Ручная база заметок по играм. Ключ — Steam appid.
+#
+# Правила:
+#   - пишем только то, что подтверждено источником (sources);
+#   - notes — по языкам, чтобы потом добавить английский;
+#   - native = true — у игры есть Linux-версия (по API Steam);
+#   - min_max_map_count — игре нужен vm.max_map_count не меньше этого;
+#   - online_broken = true — онлайн не работает на Linux из-за античита.
+# Статусы античитов для остальных игр берутся из anticheat.json (AreWeAntiCheatYet).
+
+[games.271590]
+name = "Grand Theft Auto V Legacy"
+online_broken = true
+notes.ru = "GTA Online не работает на Linux: с сентября 2024 BattlEye не пускает Proton. Сюжетный режим работает."
+sources = [
+  "https://www.gamingonlinux.com/2024/09/grand-theft-auto-v-gets-battleye-anti-cheat-breaks-online-play-on-steam-deck-linux/",
+  "https://areweanticheatyet.com/game/grand-theft-auto-v",
+]
+
+[games.3240220]
+name = "Grand Theft Auto V Enhanced"
+online_broken = true
+notes.ru = "GTA Online не работает на Linux: BattlEye не пускает Proton. Сюжетный режим работает."
+sources = [
+  "https://www.gamingonlinux.com/2024/09/grand-theft-auto-v-gets-battleye-anti-cheat-breaks-online-play-on-steam-deck-linux/",
+]
+
+[games.227300]
+name = "Euro Truck Simulator 2"
+native = true
+sources = ["https://store.steampowered.com/api/appdetails?appids=227300&filters=platforms"]
+
+[games.236390]
+name = "War Thunder"
+native = true
+sources = ["https://store.steampowered.com/api/appdetails?appids=236390&filters=platforms"]
+
+[games.701160]
+name = "Kingdom Two Crowns"
+native = true
+sources = ["https://store.steampowered.com/api/appdetails?appids=701160&filters=platforms"]
+
+[games.730]
+name = "Counter-Strike 2"
+native = true
+min_max_map_count = 1048576
+notes.ru = "Матчмейкинг Valve работает. Сторонние платформы (FACEIT, ESEA и др.) Linux не пускают."
+sources = [
+  "https://lists.archlinux.org/archives/list/arch-dev-public@lists.archlinux.org/thread/5GU7ZUFI25T2IRXIQ62YYERQKIPE3U6E/",
+  "https://areweanticheatyet.com/",
+]
+
+[games.570]
+name = "Dota 2"
+native = true
+sources = ["https://store.steampowered.com/api/appdetails?appids=570&filters=platforms"]
+
+[games.221100]
+name = "DayZ"
+min_max_map_count = 1048576
+sources = ["https://lists.archlinux.org/archives/list/arch-dev-public@lists.archlinux.org/thread/5GU7ZUFI25T2IRXIQ62YYERQKIPE3U6E/"]
+
+[games.990080]
+name = "Hogwarts Legacy"
+min_max_map_count = 1048576
+sources = ["https://lists.archlinux.org/archives/list/arch-dev-public@lists.archlinux.org/thread/5GU7ZUFI25T2IRXIQ62YYERQKIPE3U6E/"]

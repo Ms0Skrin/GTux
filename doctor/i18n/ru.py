@@ -42,6 +42,7 @@ TEXTS = {
     "group.proton": "Proton",
     "group.tools": "Игровые утилиты",
     "group.tuning": "Настройки системы",
+    "group.games": "Игры",
 
     # --- система ---
     "distro.os.title": "Дистрибутив",
@@ -270,4 +271,29 @@ TEXTS = {
     "fix.cancelled": "Отменено, ничего не менялось.",
     "fix.done": "Готово. Запустите проверку ещё раз: python main.py",
     "fix.failed": "Команда «{command}» завершилась с кодом {code}. Остальные шаги не выполнялись.",
+
+    # --- игры ---
+    "games.list.title": "Игры",
+    "games.none": "установленных игр нет",
+    "games.runs.forced": "Запуск: {tool} (выбран в свойствах игры)",
+    "games.runs.native": "Запуск: Linux-версия",
+    "games.runs.default": "Запуск: Proton по умолчанию ({tool})",
+    "games.runs.default_steam": "Запуск: Proton по умолчанию",
+    "games.runs.tool_missing": "Выбранная сборка «{tool}» не установлена: игра не запустится. Выберите другую в Свойства → Совместимость.",
+    "games.launch.value": "Параметры: {opts}",
+    "games.launch.quotes": "В параметрах запуска не закрыты кавычки.",
+    "games.launch.no_command": "В параметрах нет %command%: Steam передаст их игре как аргументы, переменные и обёртки не сработают. Формат: ПЕРЕМЕННАЯ=1 gamemoderun %command%",
+    "games.launch.missing_tool": "В параметрах есть {tool}, но он не установлен: игра не запустится.",
+    "games.launch.topology_format": "WINE_CPU_TOPOLOGY={value} записан неверно. Формат: N:список ядер, и N равно их количеству, например 4:0,1,2,3.",
+    "games.launch.topology_cpus": "WINE_CPU_TOPOLOGY={value}: указаны ядра, которых нет (в системе {cpus}).",
+    "games.launch.wined3d": "PROTON_USE_WINED3D=1 включает OpenGL вместо DXVK: обычно намного медленнее. Нужен только для старых видеокарт.",
+    "games.launch.proton_vars_native": "Игра запускается в Linux-версии, поэтому переменные PROTON_/DXVK_/WINE в параметрах ни на что не влияют.",
+    "games.ac.supported": "Античит ({anticheats}) работает на Linux",
+    "games.ac.running": "Античит ({anticheats}): по отзывам работает, официально не подтверждено",
+    "games.ac.planned": "Античит ({anticheats}): поддержку Linux обещали, но пока онлайн может не работать.",
+    "games.ac.broken": "Античит ({anticheats}): онлайн на Linux сейчас сломан.",
+    "games.ac.denied": "Античит ({anticheats}): разработчики не пускают Linux, онлайн не работает. Исправить на нашей стороне нельзя.",
+    "games.ac.online_broken": "Онлайн-режим не работает на Linux из-за античита.",
+    "games.need_max_map_count": "Игре нужен vm.max_map_count ≥ {need}, сейчас {have}: возможны вылеты при загрузке (см. «Настройки системы»).",
+    "games.protondb": "Отзывы игроков: https://www.protondb.com/app/{appid}",
 }

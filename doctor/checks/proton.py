@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass
 from pathlib import Path
 
 from doctor import vdf
@@ -30,8 +31,15 @@ def official_protons(libraries: list[Path]) -> tuple[list[str], list[str]]:
     return sorted(installed), sorted(leftovers - installed)
 
 
-def custom_tools(dirs: list[Path]) -> list[tuple[str, Path]]:
-    """[(отображаемое имя, папка)] из compatibilitytools.d. Имя берём из compatibilitytool.vdf."""
+@dataclass
+class CompatTool:
+    name: str                 # отображаемое имя
+    internal: list[str]       # внутренние имена (их Steam пишет в config.vdf), в нижнем регистре
+    path: Path
+
+
+def custom_tools(dirs: list[Path]) -> list[CompatTool]:
+    """Сборки из compatibilitytools.d. Имена берём из compatibilitytool.vdf."""
     tools = []
     for d in dirs:
         if not d.is_dir():
@@ -40,18 +48,23 @@ def custom_tools(dirs: list[Path]) -> list[tuple[str, Path]]:
             manifest = tool / "compatibilitytool.vdf"
             if not manifest.is_file():
                 continue
-            name = tool.name
+            name, internal = tool.name, []
             try:
                 compat = vdf.loads(manifest.read_text(errors="replace"))
                 entries = compat.get("compatibilitytools", {}).get("compat_tools", {})
-                for entry in entries.values():
-                    if isinstance(entry, dict) and entry.get("display_name"):
+                for key, entry in entries.items():
+                    internal.append(key)
+                    if isinstance(entry, dict) and entry.get("display_name") and name == tool.name:
                         name = entry["display_name"]
-                        break
             except (OSError, vdf.VDFError):
                 pass  # имя папки — тоже нормальное название
-            tools.append((name, tool))
+            tools.append(CompatTool(name, internal, tool))
     return tools
+
+
+def installed_tool_names(ctx: Context) -> set[str]:
+    """Внутренние имена всех установленных сторонних сборок (нижний регистр)."""
+    return {n for tool in custom_tools(_compat_dirs(ctx)) for n in tool.internal}
 
 
 def _compat_dirs(ctx: Context) -> list[Path]:
@@ -77,8 +90,8 @@ def check_custom(ctx: Context):
     if not ctx.steam_roots:
         return []
     tools = custom_tools(_compat_dirs(ctx))
-    names = list(dict.fromkeys(name for name, _ in tools))
-    has_ge = any(GE_PATTERN.search(name) or GE_PATTERN.search(path.name) for name, path in tools)
+    names = list(dict.fromkeys(tool.name for tool in tools))
+    has_ge = any(GE_PATTERN.search(tool.name) or GE_PATTERN.search(tool.path.name) for tool in tools)
     value = ", ".join(names) or t("proton.custom.none")
     if not has_ge:
         return result(GROUP, "custom", Status.WARN, value=value, hint=t("proton.custom.no_ge_hint"))

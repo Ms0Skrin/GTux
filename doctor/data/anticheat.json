@@ -1,0 +1,6181 @@
+{
+ "source": "https://areweanticheatyet.com (MIT License, (c) AreWeAntiCheatYet contributors)",
+ "fetched": "2026-10-26",
+ "games": {
+  "10": {
+   "name": "Counter-Strike",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-11-10T23:20:07.490699-06:00"
+  },
+  "20": {
+   "name": "Team Fortress Classic",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "30": {
+   "name": "Day of Defeat",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "40": {
+   "name": "Deathmatch Classic",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "60": {
+   "name": "Ricochet",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-08-03T02:55:33.807Z"
+  },
+  "70": {
+   "name": "Half-Life",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-07-15T21:26:03.841Z"
+  },
+  "80": {
+   "name": "Counter-Strike: Condition Zero",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-11-10T23:20:07.495701-06:00"
+  },
+  "240": {
+   "name": "Counter-Strike: Source",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "300": {
+   "name": "Day of Defeat: Source",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "320": {
+   "name": "Half-Life 2: Deathmatch",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "360": {
+   "name": "Half-Life Deathmatch: Source",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "440": {
+   "name": "Team Fortress 2",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "500": {
+   "name": "Left 4 Dead",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Valve Anti-Cheat"
+   ],
+   "updated": "2024-10-26T16:25:55.483594-05:00"
+  },
+  "550": {
+   "name": "Left 4 Dead 2",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "570": {
+   "name": "DotA 2",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-10-07T22:48:08.458Z"
+  },
+  "730": {
+   "name": "Counter-Strike: Global Offensive",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1200": {
+   "name": "Red Orchestra: Ostfront 41-45",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-07-17T20:23:43.105Z"
+  },
+  "1250": {
+   "name": "Killing Floor",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "2200": {
+   "name": "Quake III Arena",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "2210": {
+   "name": "Quake 4",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "2400": {
+   "name": "The Ship: Murder Party",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "2620": {
+   "name": "Call of Duty",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "2630": {
+   "name": "Call of Duty 2",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "4000": {
+   "name": "Garry's Mod",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "4920": {
+   "name": "Natural Selection 2",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-07-21T03:15:28.067Z"
+  },
+  "6510": {
+   "name": "Lost Planet: Extreme Condition",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "7940": {
+   "name": "Call of Duty 4: Modern Warfare",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "9010": {
+   "name": "Return to Castle Wolfenstein",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-10-25T18:05:16.945229-05:00"
+  },
+  "9460": {
+   "name": "Frontlines: Fuel of War",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-02-19T21:33:15.536Z"
+  },
+  "10090": {
+   "name": "Call of Duty: World at War",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "PunkBuster",
+    "Treyarch Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "10180": {
+   "name": "Call of Duty: Modern Warfare 2",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "11610": {
+   "name": "Dragon Nest",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-26T16:25:55.484593-05:00"
+  },
+  "13140": {
+   "name": "America's Army 3",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-10-21T16:34:58.628671-05:00"
+  },
+  "13520": {
+   "name": "Far Cry",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-10-30T17:48:27.616768-05:00"
+  },
+  "13540": {
+   "name": "Tom Clancy's Rainbow Six: Vegas",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-11-03T15:08:08.655851-06:00"
+  },
+  "15000": {
+   "name": "Tom Clancy's Rainbow Six: Lockdown",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-11-01T15:44:02.210479-05:00"
+  },
+  "17300": {
+   "name": "Crysis",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "17430": {
+   "name": "Need for Speed: Undercover",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-11-03T15:08:08.659850-06:00"
+  },
+  "17500": {
+   "name": "Zombie Panic! Source",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-02-03T02:31:35.130Z"
+  },
+  "17520": {
+   "name": "Synergy",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-09-09T19:46:10.761Z"
+  },
+  "17570": {
+   "name": "Pirates, Vikings, and Knights II",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "17700": {
+   "name": "Insurgency: Modern Infantry Combat",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-10-01T20:31:17.589Z"
+  },
+  "17710": {
+   "name": "Nuclear Dawn",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "18110": {
+   "name": "Shattered Horizon",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-11-18T16:33:32.427172-06:00"
+  },
+  "19900": {
+   "name": "Far Cry 2",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-10-31T15:26:18.103630-05:00"
+  },
+  "21090": {
+   "name": "F.E.A.R.",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-01-28T03:06:48.598Z"
+  },
+  "21979": {
+   "name": "R.U.S.E.™",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-11-10T23:20:07.491700-06:00"
+  },
+  "24840": {
+   "name": "Medal of Honor: Airborne",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-09-11T22:09:08.466Z"
+  },
+  "24860": {
+   "name": "Battlefield 2",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "24960": {
+   "name": "Battlefield: Bad Company 2",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "32770": {
+   "name": "Joint Operations: Combined Arms Gold",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Punkbuster"
+   ],
+   "updated": "2024-10-18T17:04:48.782182-05:00"
+  },
+  "33900": {
+   "name": "ArmA 2",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "34330": {
+   "name": "Total War: SHOGUN 2",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-02-25T21:39:06.741Z"
+  },
+  "39000": {
+   "name": "Moonbase Alpha",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-10-29T18:06:44.604277-05:00"
+  },
+  "42680": {
+   "name": "Call of Duty: Modern Warfare 3",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "42700": {
+   "name": "Call of Duty: Black Ops",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Treyarch Anti-Cheat",
+    "VAC",
+    "PunkBuster"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "42910": {
+   "name": "Magicka",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-08-19T22:42:58.733Z"
+  },
+  "45500": {
+   "name": "Clickr",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-11-18T16:33:32.403615-06:00"
+  },
+  "47790": {
+   "name": "Medal of Honor",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-10-07T22:48:08.630Z"
+  },
+  "48190": {
+   "name": "Assassin's Creed: Brotherhood",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-10-28T10:56:10.342046-05:00"
+  },
+  "55100": {
+   "name": "Homefront",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "55110": {
+   "name": "Red Faction®: Armageddon™",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-11-11T06:05:11.374Z"
+  },
+  "58610": {
+   "name": "Wargame: European Escalation",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-02-16T20:24:47.956Z"
+  },
+  "61700": {
+   "name": "Might & Magic: Clash of Heroes",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-11-18T16:33:32.424149-06:00"
+  },
+  "61730": {
+   "name": "Critter Crunch",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-09-02T22:03:09.735Z"
+  },
+  "63000": {
+   "name": "Hoard",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-02-13T21:32:45.617Z"
+  },
+  "63209": {
+   "name": "Monday Night Combat",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-08-23T21:30:15.403Z"
+  },
+  "63950": {
+   "name": "IL-2 Sturmovik: Cliffs of Dover",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-10-19T23:30:33.392Z"
+  },
+  "65800": {
+   "name": "Dungeon Defenders",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "70000": {
+   "name": "Dino D-Day",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-08-09T22:24:19.311Z"
+  },
+  "102700": {
+   "name": "A.V.A. Alliance of Valiant Arms",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-11-10T23:20:07.488699-06:00"
+  },
+  "104900": {
+   "name": "ORION: Prelude",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-08-23T21:30:15.404Z"
+  },
+  "107410": {
+   "name": "ArmA 3",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "113400": {
+   "name": "APB Reloaded",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "SARD"
+   ],
+   "updated": "2024-12-07T21:25:56.859Z"
+  },
+  "201070": {
+   "name": "Revelations 2012",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-09-09T19:46:10.765Z"
+  },
+  "201870": {
+   "name": "Assassin's Creed: Revelations",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-11-03T15:08:08.653851-06:00"
+  },
+  "202970": {
+   "name": "Call of Duty: Black Ops II",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC",
+    "Treyarch Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "203290": {
+   "name": "America's Army Proving Grounds",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-10-13T22:38:31.292Z"
+  },
+  "204300": {
+   "name": "Awesomenauts - the 2D moba",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "208090": {
+   "name": "Loadout",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Valve Anti-Cheat"
+   ],
+   "updated": "2024-10-26T16:25:55.479624-05:00"
+  },
+  "209160": {
+   "name": "Call of Duty: Ghosts",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "209610": {
+   "name": "Roller Coaster Rampage",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-09-23T20:36:25.029Z"
+  },
+  "209650": {
+   "name": "Call of Duty: Advanced Warfare",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-08-29T02:09:01.415Z"
+  },
+  "209870": {
+   "name": "Blacklight: Retribution",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-09-16T21:14:19.247Z"
+  },
+  "212160": {
+   "name": "Vindictus",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Nexon Game Security"
+   ],
+   "updated": "2024-09-08T21:25:56.896Z"
+  },
+  "212200": {
+   "name": "Mabinogi",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "AhnLab HackShield",
+    "Nexon Game Security"
+   ],
+   "updated": "2025-05-29T18:21:47.0000000-04:00"
+  },
+  "212390": {
+   "name": "Continent of the Ninth Seal",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-24T16:01:34.371168-05:00"
+  },
+  "212410": {
+   "name": "Inversion™",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-09-02T22:03:09.737Z"
+  },
+  "212630": {
+   "name": "Tom Clancy's Ghost Recon: Future Soldier",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-11-04T00:18:17.371Z"
+  },
+  "212740": {
+   "name": "TERA",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-11-18T16:33:32.409612-06:00"
+  },
+  "214360": {
+   "name": "Tower Wars",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "215100": {
+   "name": "Ragnarok Online",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "SARD"
+   ],
+   "updated": "2024-10-05T16:27:40.508Z"
+  },
+  "215120": {
+   "name": "ROSE Online",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-10-30T17:48:27.615769-05:00"
+  },
+  "215830": {
+   "name": "Closers",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "216150": {
+   "name": "MapleStory",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Nexon Game Security"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "218230": {
+   "name": "PlanetSide 2",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "219640": {
+   "name": "Chivalry: Medieval Warfare",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "220240": {
+   "name": "Far Cry 3",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-09-29T21:31:44.676Z"
+  },
+  "221040": {
+   "name": "Resident Evil 6",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-10-28T10:56:10.342046-05:00"
+  },
+  "221100": {
+   "name": "DayZ",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "BattlEye",
+    "VAC"
+   ],
+   "updated": "2024-08-11T23:02:07.322Z"
+  },
+  "222880": {
+   "name": "Insurgency",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC",
+    "BattlEye"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "223710": {
+   "name": "Cry of Fear",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "224260": {
+   "name": "No More Room in Hell",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "225840": {
+   "name": "Sven Co-op",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-09-18T21:36:59.210Z"
+  },
+  "227100": {
+   "name": "Sniper Elite: Nazi Zombie Army",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-08-16T04:30:45.890Z"
+  },
+  "227940": {
+   "name": "Heroes & Generals",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "230410": {
+   "name": "Warframe",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Unknown (Custom)"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "231060": {
+   "name": "Ragnarok Online 2",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "AhnLab HackShield"
+   ],
+   "updated": "2024-09-22T22:18:43.937Z"
+  },
+  "232090": {
+   "name": "Killing Floor 2",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "236390": {
+   "name": "War Thunder",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-12-27T07:56:49.0000000-06:00"
+  },
+  "239660": {
+   "name": "Soldier Front 2",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-03-02T21:07:33.912Z"
+  },
+  "242050": {
+   "name": "Assassin's Creed IV: Black Flag",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-10-23T15:17:30.185123-05:00"
+  },
+  "242720": {
+   "name": "GunZ 2: The Second Duel",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "X-Trap"
+   ],
+   "updated": "2024-10-02T22:05:44.355Z"
+  },
+  "243800": {
+   "name": "Gas Guzzlers Extreme",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-08-19T22:42:58.732Z"
+  },
+  "244630": {
+   "name": "NEOTOKYO",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-09-02T22:03:09.738Z"
+  },
+  "251570": {
+   "name": "7 Days to Die",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "252490": {
+   "name": "Rust",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "VAC"
+   ],
+   "updated": "2024-08-11T23:02:07.337Z"
+  },
+  "252950": {
+   "name": "Rocket League®",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2026-04-28T10:00:00.000Z"
+  },
+  "253490": {
+   "name": "Cabal Online",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "X-Trap",
+    "nProtect GameGuard",
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-27T21:09:55.724Z"
+  },
+  "253530": {
+   "name": "Fortress Forever",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-11-03T15:08:08.655851-06:00"
+  },
+  "255220": {
+   "name": "GRID Autosport",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-11-18T16:33:32.435148-06:00"
+  },
+  "260430": {
+   "name": "The Four Kings Casino and Slots",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-08-16T04:30:45.889Z"
+  },
+  "261550": {
+   "name": "Mount & Blade II: Bannerlord",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "266410": {
+   "name": "iRacing",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-29T21:31:44.572Z"
+  },
+  "268420": {
+   "name": "Aura Kingdom",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Unknown (Custom)"
+   ],
+   "updated": "2024-02-26T21:42:20.639Z"
+  },
+  "269210": {
+   "name": "Hero Siege",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-29T18:06:44.604277-05:00"
+  },
+  "271590": {
+   "name": "Grand Theft Auto V",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2025-08-05T06:24:56.000Z"
+  },
+  "273110": {
+   "name": "Counter-Strike Nexon",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Nexon Game Security"
+   ],
+   "updated": "2024-11-04T15:07:58.777886-06:00"
+  },
+  "273350": {
+   "name": "Evolve Stage 2",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-11-01T15:44:02.207468-05:00"
+  },
+  "274940": {
+   "name": "Depth",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "282440": {
+   "name": "Quake Live",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "PunkBuster",
+    "VAC"
+   ],
+   "updated": "2024-11-04T00:18:17.253Z"
+  },
+  "282800": {
+   "name": "100% Orange Juice",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-07-25T21:21:20.558Z"
+  },
+  "290340": {
+   "name": "Armello",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-08-04T00:40:30.646Z"
+  },
+  "290790": {
+   "name": "Grey Goo",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-08-19T22:42:58.733Z"
+  },
+  "291480": {
+   "name": "Warface",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "FairFight",
+    "Mail.ru Anti-Cheat"
+   ],
+   "updated": "2024-09-22T22:18:43.840Z"
+  },
+  "291550": {
+   "name": "Brawlhalla",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "292000": {
+   "name": "No More Room In Hell 2",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-08-10T16:52:03.0000000-04:00"
+  },
+  "292730": {
+   "name": "Call of Duty: Infinite Warfare",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "293220": {
+   "name": "H-Hour: World's Elite",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-11-18T16:33:32.431148-06:00"
+  },
+  "299360": {
+   "name": "Block N Load",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "VAC"
+   ],
+   "updated": "2024-08-18T17:22:04.083Z"
+  },
+  "299740": {
+   "name": "Miscreated",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "VAC",
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-08-16T04:30:45.891Z"
+  },
+  "301520": {
+   "name": "Robocraft",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-10T01:03:28.440Z"
+  },
+  "304030": {
+   "name": "ArcheAge",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-24T16:01:34.372167-05:00"
+  },
+  "304390": {
+   "name": "For Honor",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "304430": {
+   "name": "Dying Light",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "304930": {
+   "name": "Unturned",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC",
+    "BattlEye"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "307950": {
+   "name": "Caliber",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-03-13T21:56:13.188Z"
+  },
+  "310560": {
+   "name": "DiRT Rally",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2025-07-13T17:01:58.0000000-04:00"
+  },
+  "311210": {
+   "name": "Call of Duty®: Black Ops III",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC",
+    "Treyarch Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "312660": {
+   "name": "Sniper Elite 4",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-10-18T17:04:48.774171-05:00"
+  },
+  "314430": {
+   "name": "M.A.R.S.",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-26T20:38:09.814Z"
+  },
+  "315210": {
+   "name": "Suicide Squad: Kill the Justice League",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-02-06T22:55:43.960Z"
+  },
+  "319730": {
+   "name": "Granado Espada",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "X-Trap"
+   ],
+   "updated": "2024-09-25T21:16:49.653Z"
+  },
+  "321260": {
+   "name": "Wickland",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-10-28T10:56:10.338472-05:00"
+  },
+  "321360": {
+   "name": "Primal Carnage",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "322780": {
+   "name": "Worlds Adrift",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-24T16:01:34.372167-05:00"
+  },
+  "324810": {
+   "name": "TOXIKK",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "327090": {
+   "name": "Out of Reach",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-02-18T22:45:18.024Z"
+  },
+  "328060": {
+   "name": "Tales Runner",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "X-Trap",
+    "AhnLab HackShield",
+    "nProtect GameGuard",
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-01T20:31:17.587Z"
+  },
+  "331810": {
+   "name": "Lost Region",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-10T23:20:07.488699-06:00"
+  },
+  "333930": {
+   "name": "Dirty Bomb",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-06-23T22:30:44.0000000-04:00"
+  },
+  "337410": {
+   "name": "Karos",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-29T18:06:44.606280-05:00"
+  },
+  "338540": {
+   "name": "Navy Field 2 : Conqueror of the Ocean",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-11-10T23:20:07.485699-06:00"
+  },
+  "339610": {
+   "name": "Freestyle 2: Street Basketball",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-26T16:25:55.481593-05:00"
+  },
+  "342570": {
+   "name": "HIS (Heroes In the Sky)",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "X-Trap"
+   ],
+   "updated": "2024-10-20T20:59:10.996Z"
+  },
+  "344760": {
+   "name": "Reign of Kings",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-28T10:56:10.341050-05:00"
+  },
+  "346110": {
+   "name": "ARK: Survival Evolved",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "BattlEye",
+    "VAC"
+   ],
+   "updated": "2024-08-11T10:19:18.852Z"
+  },
+  "346330": {
+   "name": "BrainBread 2",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-10-05T16:27:40.506Z"
+  },
+  "349720": {
+   "name": "Audition Online",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-09-29T21:31:44.677Z"
+  },
+  "350280": {
+   "name": "LawBreakers",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Nexon Game Security"
+   ],
+   "updated": "2024-11-04T15:07:58.776886-06:00"
+  },
+  "350700": {
+   "name": "Red Stone Online",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-08-16T21:31:57.686Z"
+  },
+  "355840": {
+   "name": "Survarium",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-10-26T16:25:55.482594-05:00"
+  },
+  "356330": {
+   "name": "Dragomon Hunter",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-01T20:31:17.590Z"
+  },
+  "357500": {
+   "name": "Rumble Fighter: Unleashed",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-08-05T04:40:56.000Z"
+  },
+  "359550": {
+   "name": "Tom Clancy's Rainbow Six® Siege X",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "FairFight",
+    "BattlEye",
+    "R6 ShieldGuard"
+   ],
+   "updated": "2025-08-07T20:28:01.0000000-04:00"
+  },
+  "360760": {
+   "name": "Run and Fire",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-25T18:05:16.946228-05:00"
+  },
+  "360940": {
+   "name": "The Mean Greens: Plastic Warfare",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "361800": {
+   "name": "Tree of Life",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-31T15:26:18.104637-05:00"
+  },
+  "363680": {
+   "name": "Battlefleet Gothic: Armada",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-10-13T22:38:31.291Z"
+  },
+  "365590": {
+   "name": "Tom Clancy's The Division",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "FairFight"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "369200": {
+   "name": "Ghost in the Shell: Stand Alone Complex - First Assault Online",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-24T16:01:34.374167-05:00"
+  },
+  "372000": {
+   "name": "Tree of Savior",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC",
+    "Nexon Game Security"
+   ],
+   "updated": "2024-02-15T20:52:22.592Z"
+  },
+  "374280": {
+   "name": "Hired Ops",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Saberclaw"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "375230": {
+   "name": "Warhammer 40,000: Eternal Crusade",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-23T15:17:30.187123-05:00"
+  },
+  "376210": {
+   "name": "The Isle",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "377140": {
+   "name": "Hide & Hold Out - H2o",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-07-16T20:24:29.0000000-04:00"
+  },
+  "378860": {
+   "name": "Project CARS 2",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-18T16:33:32.424149-06:00"
+  },
+  "381210": {
+   "name": "Dead By Daylight",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-01T22:22:14.167Z"
+  },
+  "381990": {
+   "name": "Dragon Saga",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-18T16:33:32.431148-06:00"
+  },
+  "383120": {
+   "name": "Empyrion - Galactic Survival",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "384030": {
+   "name": "Florensia",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "AhnLab HackShield"
+   ],
+   "updated": "2024-09-27T20:50:11.626Z"
+  },
+  "386180": {
+   "name": "Crossout",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "386360": {
+   "name": "SMITE",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "389430": {
+   "name": "Knight Online",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "X-Trap",
+    "PunkBuster",
+    "XIGNCODE3"
+   ],
+   "updated": "2024-11-04T00:18:17.277Z"
+  },
+  "390090": {
+   "name": "Shot Online",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-09-10T21:16:34.803Z"
+  },
+  "390100": {
+   "name": "9Dragons",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-10-07T22:48:08.630Z"
+  },
+  "390340": {
+   "name": "Umbrella Corps",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Unknown (Custom)"
+   ],
+   "updated": "2024-09-18T21:36:59.209Z"
+  },
+  "393380": {
+   "name": "Squad",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "VAC"
+   ],
+   "updated": "2024-08-14T21:21:22.275Z"
+  },
+  "393420": {
+   "name": "Hurtworld",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "394510": {
+   "name": "Helldivers",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-08-10T23:52:25.067Z"
+  },
+  "394690": {
+   "name": "Tower Unite",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "407530": {
+   "name": "ARK: Survival of the Fittest",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "418460": {
+   "name": "Rising Storm 2: Vietnam",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-04-05T19:10:15.0000000-04:00"
+  },
+  "419520": {
+   "name": "Lifeless",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-10T23:20:07.489698-06:00"
+  },
+  "421650": {
+   "name": "Breach",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-11-18T16:33:32.420653-06:00"
+  },
+  "436520": {
+   "name": "Line of Sight",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC",
+    "BattlEye"
+   ],
+   "updated": "2024-11-11T06:05:11.400Z"
+  },
+  "437220": {
+   "name": "The Culling",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-01T20:31:17.590Z"
+  },
+  "438100": {
+   "name": "VRChat",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-20T04:40:56.000Z"
+  },
+  "438740": {
+   "name": "Friday The 13th: The Game",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "439370": {
+   "name": "Midair",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-02-21T21:01:17.761Z"
+  },
+  "440900": {
+   "name": "Conan Exiles",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-01-27T04:12:17.907Z"
+  },
+  "442080": {
+   "name": "Riders of Icarus",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-10-26T16:25:55.480594-05:00"
+  },
+  "444090": {
+   "name": "Paladins",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-04-05T19:13:42.0000000-04:00"
+  },
+  "445220": {
+   "name": "Avorion",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-08-10T23:52:25.070Z"
+  },
+  "447040": {
+   "name": "Watch_Dogs® 2",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-07-30T04:26:00.000Z"
+  },
+  "447820": {
+   "name": "Day of Infamy",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC",
+    "BattlEye"
+   ],
+   "updated": "2024-11-04T00:18:17.247Z"
+  },
+  "451130": {
+   "name": "Khan: Absolute Power",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-11-18T16:33:32.411611-06:00"
+  },
+  "454350": {
+   "name": "Days of War",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-18T17:04:48.771170-05:00"
+  },
+  "454650": {
+   "name": "DRAGON BALL XENOVERSE 2",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "454910": {
+   "name": "Twin Saga",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-09-24T20:41:16.929Z"
+  },
+  "459160": {
+   "name": "Allods Online",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Mail.ru Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "466240": {
+   "name": "Deceit",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "471710": {
+   "name": "Rec Room",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-06-20T16:16:24.0000000-04:00"
+  },
+  "473690": {
+   "name": "Absolver",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "475100": {
+   "name": "KAL Online",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "X-Trap"
+   ],
+   "updated": "2024-11-01T15:44:02.212468-05:00"
+  },
+  "476600": {
+   "name": "Call of Duty: WWII",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "480490": {
+   "name": "Prey",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-10-05T16:27:40.508Z"
+  },
+  "489940": {
+   "name": "BATTALION: Legacy",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "FACEIT"
+   ],
+   "updated": "2024-08-18T17:22:04.155Z"
+  },
+  "495910": {
+   "name": "Dungeon Fighter Online",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "AhnLab HackShield",
+    "XIGNCODE3",
+    "Nexon Game Security"
+   ],
+   "updated": "2024-11-11T06:05:11.329Z"
+  },
+  "496240": {
+   "name": "Onward",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-27T16:28:12.860702-05:00"
+  },
+  "499470": {
+   "name": "Decksplash",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-23T15:17:30.186128-05:00"
+  },
+  "505460": {
+   "name": "Foxhole",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "513710": {
+   "name": "SCUM",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "518150": {
+   "name": "Intruder",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-20T04:40:56.000Z"
+  },
+  "518660": {
+   "name": "Zone4",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-23T15:17:30.186128-05:00"
+  },
+  "519190": {
+   "name": "Next Day: Survival",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-29T21:31:44.678Z"
+  },
+  "520530": {
+   "name": "Intershelter",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-10T23:20:07.486705-06:00"
+  },
+  "528010": {
+   "name": "Eternal Return",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3",
+    "UNCHEATER"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "536950": {
+   "name": "Legend of Ares",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "X-Trap",
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-10-13T22:38:31.288Z"
+  },
+  "537180": {
+   "name": "Digimon Masters Online",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2025-04-05T19:17:55.0000000-04:00"
+  },
+  "542590": {
+   "name": "SoulSaverOnline",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-11-01T15:44:02.211480-05:00"
+  },
+  "544920": {
+   "name": "Darwin Project",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "547860": {
+   "name": "Rend",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-18T17:04:48.779171-05:00"
+  },
+  "548290": {
+   "name": "Dark Eden",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-10-26T16:25:55.483594-05:00"
+  },
+  "550470": {
+   "name": "NosTale",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "X-Trap",
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-09-29T21:31:44.604Z"
+  },
+  "550650": {
+   "name": "Black Squad",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "BattlEye",
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "550900": {
+   "name": "Metin2",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "X-Trap",
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-11-11T06:05:11.398Z"
+  },
+  "552500": {
+   "name": "Warhammer: Vermintide 2",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-04-05T19:07:27.0000000-04:00"
+  },
+  "552520": {
+   "name": "Far Cry 5",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-08-18T17:22:04.098Z"
+  },
+  "553850": {
+   "name": "Helldivers 2",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-02-11T02:53:16.080Z"
+  },
+  "555160": {
+   "name": "Pavlov VR",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-07-30T22:31:34.098Z"
+  },
+  "555440": {
+   "name": "Deathgarden: Bloodharvest",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-10-30T17:48:27.616768-05:00"
+  },
+  "555570": {
+   "name": "Infestation: The New Z",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Fredaikis Anti-Cheat"
+   ],
+   "updated": "2024-09-22T22:18:43.936Z"
+  },
+  "556440": {
+   "name": "Vicious Circle",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-10T23:20:07.490699-06:00"
+  },
+  "559650": {
+   "name": "Witch It",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-08-04T00:40:30.646Z"
+  },
+  "560380": {
+   "name": "MapleStory 2",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Nexon Game Security"
+   ],
+   "updated": "2024-10-27T16:28:12.861702-05:00"
+  },
+  "569530": {
+   "name": "Sky Noon",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-03-01T02:09:30.681Z"
+  },
+  "573100": {
+   "name": "Battlefleet Gothic: Armada 2",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "578080": {
+   "name": "PUBG: Battlegrounds",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Zakynthos",
+    "BattlEye",
+    "UNCHEATER"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "581320": {
+   "name": "Insurgency: Sandstorm",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "582660": {
+   "name": "Black Desert Online",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "591530": {
+   "name": "Hyper Universe",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-11-18T16:33:32.421148-06:00"
+  },
+  "593600": {
+   "name": "PixARK",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "594650": {
+   "name": "Hunt: Showdown 1896",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-22T22:18:43.810Z"
+  },
+  "594770": {
+   "name": "Legends of Aria",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-18T17:04:48.779171-05:00"
+  },
+  "610940": {
+   "name": "iStorm",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-10-28T10:56:10.339473-05:00"
+  },
+  "611360": {
+   "name": "Video Horror Society",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-29T21:32:44.678Z"
+  },
+  "611500": {
+   "name": "Quake Champions",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Unknown (Custom)"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "619080": {
+   "name": "SOS",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-10-26T16:25:55.485593-05:00"
+  },
+  "622170": {
+   "name": "Offensive Combat: Redux!",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-10T23:20:07.492706-06:00"
+  },
+  "624910": {
+   "name": "3on3 FreeStyle",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-09-05T22:01:18.691Z"
+  },
+  "625340": {
+   "name": "XERA: Survival",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-08-22T21:55:51.977Z"
+  },
+  "626690": {
+   "name": "Sword Art Online: Fatal Bullet",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "629540": {
+   "name": "Alien Arena: Warriors of Mars",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "629760": {
+   "name": "Mordhau",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "630700": {
+   "name": "Rocket Arena",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "633230": {
+   "name": "NARUTO TO BORUTO: SHINOBI STRIKER",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "644290": {
+   "name": "Memories of Mars",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-27T16:28:12.860702-05:00"
+  },
+  "646910": {
+   "name": "The Crew™ 2",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-10-13T20:19:23.671Z"
+  },
+  "647590": {
+   "name": "Space Junkies",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-18T17:04:48.778171-05:00"
+  },
+  "653120": {
+   "name": "RockShot",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-01T20:31:17.591Z"
+  },
+  "655740": {
+   "name": "Tallowmere 2: Curse of the Kittens",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-08-23T21:30:15.404Z"
+  },
+  "656240": {
+   "name": "Heat",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-29T18:06:44.603277-05:00"
+  },
+  "658510": {
+   "name": "Dark Eden Origin",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-10-28T10:56:10.342046-05:00"
+  },
+  "660330": {
+   "name": "Ragnarok RE:START",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-23T15:17:30.186128-05:00"
+  },
+  "662320": {
+   "name": "Metro Conflict: The Origin",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-18T17:04:48.778171-05:00"
+  },
+  "671860": {
+   "name": "BattleBit Remastered",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "FACEIT"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "672890": {
+   "name": "Sparkball",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-03T15:08:08.657851-06:00"
+  },
+  "674020": {
+   "name": "World War 3",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-02-09T15:29:00.000Z"
+  },
+  "677620": {
+   "name": "Splitgate",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "EQU8"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "678950": {
+   "name": "DRAGON BALL FighterZ",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "681660": {
+   "name": "Bless Online",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye",
+    "XIGNCODE3"
+   ],
+   "updated": "2024-09-20T19:51:25.508Z"
+  },
+  "686810": {
+   "name": "Hell Let Loose",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "689570": {
+   "name": "BattleCore Arena",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-03-02T14:19:43.0000000-05:00"
+  },
+  "696170": {
+   "name": "Senran Kagura Peach Beach Splash",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-11-10T23:20:07.488699-06:00"
+  },
+  "700030": {
+   "name": "Life is Feudal: MMO",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-05T16:27:40.510Z"
+  },
+  "700330": {
+   "name": "SCP: Secret Laboratory",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-09-29T21:31:44.618Z"
+  },
+  "707010": {
+   "name": "Will To Live Online",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "VAC"
+   ],
+   "updated": "2024-08-25T21:58:41.936Z"
+  },
+  "714010": {
+   "name": "Aimlabs",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "EQU8"
+   ],
+   "updated": "2024-11-10T23:20:07.487700-06:00"
+  },
+  "714080": {
+   "name": "Black Clover: Quartet Knights",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "715400": {
+   "name": "Frozen Flame",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-01T20:31:17.591Z"
+  },
+  "719890": {
+   "name": "Beasts of Bermuda",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-26T16:25:55.484593-05:00"
+  },
+  "728540": {
+   "name": "Islands of Nyne: Battle Royale",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-10-27T16:28:12.861702-05:00"
+  },
+  "731620": {
+   "name": "Hide or Die",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "EQU8"
+   ],
+   "updated": "2024-10-13T22:38:31.288Z"
+  },
+  "736220": {
+   "name": "Squad 44",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-04-05T19:12:01.0000000-04:00"
+  },
+  "738530": {
+   "name": "New Gundam Breaker",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-31T15:26:18.104637-05:00"
+  },
+  "739630": {
+   "name": "Phasmophobia",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "GuardingPearSoftware's Anti Cheat Pro"
+   ],
+   "updated": "2024-11-10T23:20:07.487700-06:00"
+  },
+  "747610": {
+   "name": "Zula Global",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-10-18T17:04:48.784171-05:00"
+  },
+  "747920": {
+   "name": "Hero Plus",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "X-Trap",
+    "XIGNCODE3"
+   ],
+   "updated": "2024-09-27T20:50:11.626Z"
+  },
+  "747970": {
+   "name": "Scions of Fate",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-11-10T23:20:07.486705-06:00"
+  },
+  "751240": {
+   "name": "Fractured Lands",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-03T15:08:08.654851-06:00"
+  },
+  "753650": {
+   "name": "Due Process",
+   "status": "Planned",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "755790": {
+   "name": "Ring of Elysium",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "TenProtect"
+   ],
+   "updated": "2024-09-06T20:30:07.639Z"
+  },
+  "760160": {
+   "name": "Vampire: The Masquerade - Bloodhunt",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "Anti-Cheat Expert"
+   ],
+   "updated": "2024-10-20T20:59:10.840Z"
+  },
+  "761890": {
+   "name": "Albion Online",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "BattlEye"
+   ],
+   "updated": "2024-09-29T21:31:44.584Z"
+  },
+  "763420": {
+   "name": "Panzer Arena: Coop",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-12-17T12:21:49.196311-05:00"
+  },
+  "764920": {
+   "name": "Fear the Night",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-10-10T01:03:28.441Z"
+  },
+  "767560": {
+   "name": "War Robots",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Mail.ru Anti-Cheat"
+   ],
+   "updated": "2024-10-25T18:05:16.946228-05:00"
+  },
+  "790650": {
+   "name": "MARVEL End Time Arena",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-18T17:04:48.783181-05:00"
+  },
+  "798510": {
+   "name": "Super Dragon Ball Heroes World Mission",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-10T01:03:28.440Z"
+  },
+  "804810": {
+   "name": "Robocraft Royale",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-23T15:17:30.186128-05:00"
+  },
+  "805110": {
+   "name": "P.A.S.",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-18T16:33:32.424149-06:00"
+  },
+  "813820": {
+   "name": "Realm Royale Reforged",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "815940": {
+   "name": "AVA: Dog Tag",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-10-25T18:05:16.947229-05:00"
+  },
+  "816020": {
+   "name": "JUMP FORCE",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "819500": {
+   "name": "Fear the Wolves",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-31T15:26:18.104637-05:00"
+  },
+  "820520": {
+   "name": "Deceive Inc.",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "823130": {
+   "name": "Totally Accurate Battlegrounds",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "834910": {
+   "name": "Atlas",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "VAC",
+    "BattlEye"
+   ],
+   "updated": "2024-09-29T21:31:44.589Z"
+  },
+  "835570": {
+   "name": "Conqueror's Blade",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Mail.ru Anti-Cheat",
+    "MY.GAMES Anti-Cheat"
+   ],
+   "updated": "2024-10-13T22:38:31.291Z"
+  },
+  "835860": {
+   "name": "Dreadnought",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-18T17:04:48.770170-05:00"
+  },
+  "838330": {
+   "name": "Warlords Awakening",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-09-04T04:47:09.096Z"
+  },
+  "840800": {
+   "name": "Outlaws of the Old West",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-10-18T17:04:48.780170-05:00"
+  },
+  "843380": {
+   "name": "Super Animal Royale",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Unknown (Custom)"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "844870": {
+   "name": "KurtzPel",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-02-12T20:20:01.314Z"
+  },
+  "867400": {
+   "name": "Out of Reach: Treasure Royale",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-10T23:20:07.495701-06:00"
+  },
+  "869480": {
+   "name": "Jabroni Brawl: Episode 3",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-11-04T00:18:17.444Z"
+  },
+  "871120": {
+   "name": "MilkChoco",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-22T16:28:22.252564-05:00"
+  },
+  "872200": {
+   "name": "Rogue Company",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "874240": {
+   "name": "MU Legend",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-10-24T16:01:34.373167-05:00"
+  },
+  "876460": {
+   "name": "CityBattle | Virtual_Earth",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-26T16:25:55.481593-05:00"
+  },
+  "880850": {
+   "name": "War Rock",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "AhnLab HackShield",
+    "PunkBuster",
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-11T06:05:11.391Z"
+  },
+  "883120": {
+   "name": "Stormdivers",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-18T16:33:32.424149-06:00"
+  },
+  "884660": {
+   "name": "CRSED: F.O.A.D.",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "886250": {
+   "name": "Vegas Infinite by PokerStars",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-26T16:25:55.484593-05:00"
+  },
+  "889750": {
+   "name": "Babylon's Fall",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-05T16:27:40.511Z"
+  },
+  "890400": {
+   "name": "Uncharted Waters Online",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-09-20T19:51:25.506Z"
+  },
+  "895400": {
+   "name": "Deadside",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "BattlEye"
+   ],
+   "updated": "2024-09-29T21:31:44.588Z"
+  },
+  "903950": {
+   "name": "Last Oasis",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-20T19:51:25.508Z"
+  },
+  "907630": {
+   "name": "Concord",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-08-25T21:58:42.016Z"
+  },
+  "910490": {
+   "name": "Killsquad",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "SCUE4"
+   ],
+   "updated": "2024-11-10T23:20:07.486705-06:00"
+  },
+  "912630": {
+   "name": "Dystopia",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-10-31T15:26:18.103630-05:00"
+  },
+  "915810": {
+   "name": "Midnight Ghost Hunt",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-20T04:40:56.000Z"
+  },
+  "918570": {
+   "name": "Century: Age of Ashes",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "921940": {
+   "name": "Icarus Online",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3",
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-08-10T21:30:09.867Z"
+  },
+  "922620": {
+   "name": "Kingshunt",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-01T20:31:17.591Z"
+  },
+  "924970": {
+   "name": "Back 4 Blood",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "927130": {
+   "name": "Romance of the Three Kingdoms: The Legend of CaoCao",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Nexon Game Security"
+   ],
+   "updated": "2024-11-10T23:20:07.489698-06:00"
+  },
+  "927350": {
+   "name": "Hood: Outlaws & Legends",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "939510": {
+   "name": "Pandemic Express - Zombie Escape",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "949690": {
+   "name": "Record of Lodoss War Online",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-10-10T01:03:28.438Z"
+  },
+  "950180": {
+   "name": "Lemnis Gate",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "952070": {
+   "name": "Resident Evil Resistance",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Denuvo Anti-Cheat"
+   ],
+   "updated": "2024-09-08T21:25:57.076Z"
+  },
+  "960170": {
+   "name": "DJMAX RESPECT V",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "961200": {
+   "name": "Final Fantasy XIV",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Unknown (Custom)"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "971700": {
+   "name": "ALARA Prime",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-05-07T03:28:06.795Z"
+  },
+  "973580": {
+   "name": "Sniper Ghost Warrior Contracts",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-10T01:03:28.440Z"
+  },
+  "976730": {
+   "name": "Halo: The Master Chief Collection",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "985810": {
+   "name": "GrandChase",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "X-Trap",
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-10-07T22:48:08.496Z"
+  },
+  "991560": {
+   "name": "One Punch Man: A Hero Nobody Knows",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-06T20:30:07.639Z"
+  },
+  "993870": {
+   "name": "CODE2040",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-29T18:06:44.607277-05:00"
+  },
+  "994560": {
+   "name": "Metal Revolution",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "TenProtect"
+   ],
+   "updated": "2024-10-02T22:05:44.357Z"
+  },
+  "1008580": {
+   "name": "Overstep",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-18T17:04:48.783181-05:00"
+  },
+  "1009290": {
+   "name": "SWORD ART ONLINE Alicization Lycoris",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1010270": {
+   "name": "Nether: The Untold Chapter",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Fredaikis Anti-Cheat"
+   ],
+   "updated": "2024-10-02T22:05:44.354Z"
+  },
+  "1011810": {
+   "name": "Elsword",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-02-24T04:48:48.953Z"
+  },
+  "1024890": {
+   "name": "Sector's Edge",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-12-27T08:16:57.0000000-06:00"
+  },
+  "1025560": {
+   "name": "Flea Madness",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-20T20:59:10.997Z"
+  },
+  "1029690": {
+   "name": "Sniper Elite 5",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-28T10:56:10.342046-05:00"
+  },
+  "1046930": {
+   "name": "Dota Underlords",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-05-19T21:56:41.247Z"
+  },
+  "1054690": {
+   "name": "Dreadlands",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-26T16:25:55.482594-05:00"
+  },
+  "1056640": {
+   "name": "Phantasy Star Online 2 New Genesis",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2025-12-11T00:39:07.0000000-05:00"
+  },
+  "1057240": {
+   "name": "Crucible",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-25T18:05:16.947229-05:00"
+  },
+  "1058650": {
+   "name": "Beyond the Wire",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1085660": {
+   "name": "Destiny 2",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1088090": {
+   "name": "Day of Dragons",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-07-09T23:53:29.0000000-04:00"
+  },
+  "1093170": {
+   "name": "Monstrum 2",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1094710": {
+   "name": "Royal Crown",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-08-29T23:39:08.132Z"
+  },
+  "1097150": {
+   "name": "Fall Guys: Ultimate Knockout",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1097840": {
+   "name": "Gears 5",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1106750": {
+   "name": "Fault: Elder Orb",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-26T20:38:09.812Z"
+  },
+  "1121710": {
+   "name": "Total Lockdown",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-26T16:25:55.483594-05:00"
+  },
+  "1123160": {
+   "name": "Voids Adrift",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-18T16:33:32.418633-06:00"
+  },
+  "1130700": {
+   "name": "Avabel Online",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-25T18:05:16.946228-05:00"
+  },
+  "1133060": {
+   "name": "Anarchy: Wolf's Law",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-07T22:48:08.632Z"
+  },
+  "1133430": {
+   "name": "Ashes of Creation Apocalypse",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "MY.GAMES Anti-Cheat"
+   ],
+   "updated": "2024-10-05T16:27:40.511Z"
+  },
+  "1147660": {
+   "name": "Archeage: Unchained",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1151340": {
+   "name": "Fallout 76",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Unknown (Custom)"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1153700": {
+   "name": "Eternal Magic",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-21T16:34:58.628671-05:00"
+  },
+  "1158940": {
+   "name": "Blazing Sails",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-02-07T22:43:44.034Z"
+  },
+  "1163550": {
+   "name": "Captain Tsubasa: Rise of New Champions",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1171690": {
+   "name": "Wayfinder",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-01T20:31:17.591Z"
+  },
+  "1172470": {
+   "name": "Apex Legends",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "Hyperion"
+   ],
+   "updated": "2024-10-31T18:29:00.000Z"
+  },
+  "1172620": {
+   "name": "Sea of Thieves",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-03-12T20:11:34.208Z"
+  },
+  "1172710": {
+   "name": "Dune: Awakening",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2025-06-26T19:17:36.0000000-04:00"
+  },
+  "1175210": {
+   "name": "Eternal Kingdom Battle Peak",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-07T22:48:08.631Z"
+  },
+  "1180380": {
+   "name": "Stay Out",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-25T18:05:16.946228-05:00"
+  },
+  "1183940": {
+   "name": "Scavengers",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-29T21:31:44.677Z"
+  },
+  "1184140": {
+   "name": "KartRider: Drift",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Nexon Game Security"
+   ],
+   "updated": "2024-03-05T20:12:26.756Z"
+  },
+  "1184780": {
+   "name": "Bots",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-11-03T15:08:08.659850-06:00"
+  },
+  "1185560": {
+   "name": "Astellia",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-30T17:48:27.616768-05:00"
+  },
+  "1189800": {
+   "name": "Bleeding Edge",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-07-14T02:22:06.803Z"
+  },
+  "1190340": {
+   "name": "SUPER PEOPLE",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1194810": {
+   "name": "Meet Your Maker",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-18T16:33:32.427172-06:00"
+  },
+  "1195460": {
+   "name": "Last Year",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-18T17:04:48.779171-05:00"
+  },
+  "1203220": {
+   "name": "NARAKA: BLADEPOINT",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "NEAC Protect"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1204040": {
+   "name": "Shoot on Sight",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "AnyBrain"
+   ],
+   "updated": "2024-10-27T21:09:55.705Z"
+  },
+  "1206370": {
+   "name": "Wild Card Football",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-29T21:31:44.677Z"
+  },
+  "1217060": {
+   "name": "Gunfire Reborn",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Unknown (Custom)"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1218740": {
+   "name": "Rakion Chaos Force",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard",
+    "XIGNCODE3"
+   ],
+   "updated": "2024-09-23T20:36:25.030Z"
+  },
+  "1219160": {
+   "name": "Granado Espada Japan",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "X-Trap"
+   ],
+   "updated": "2024-09-25T21:16:49.655Z"
+  },
+  "1222730": {
+   "name": "STAR WARS™: Squadrons",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1226470": {
+   "name": "Shadow Arena",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard",
+    "XIGNCODE3",
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-26T20:38:09.814Z"
+  },
+  "1227800": {
+   "name": "Quantum League",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1233410": {
+   "name": "Microworks",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-02-22T20:01:41.780Z"
+  },
+  "1237950": {
+   "name": "STAR WARS™ Battlefront™ II (2017)",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "FairFight"
+   ],
+   "updated": "2024-10-13T20:19:23.696Z"
+  },
+  "1237970": {
+   "name": "Titanfall 2",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "FairFight"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1237980": {
+   "name": "STAR WARS™ Battlefront™ (2015)",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "FairFight"
+   ],
+   "updated": "2024-10-13T20:19:23.692Z"
+  },
+  "1238810": {
+   "name": "Battlefield V",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "FairFight",
+    "EA anticheat"
+   ],
+   "updated": "2024-10-20T20:59:10.864Z"
+  },
+  "1238820": {
+   "name": "Battlefield 3",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1238840": {
+   "name": "Battlefield 1",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "FairFight",
+    "EA anticheat"
+   ],
+   "updated": "2024-08-30T00:00:00.000Z"
+  },
+  "1238860": {
+   "name": "Battlefield 4",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "PunkBuster",
+    "FairFight"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1240290": {
+   "name": "Infestation: Battle Royale",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Fredaikis Anti-Cheat"
+   ],
+   "updated": "2024-09-29T21:31:44.679Z"
+  },
+  "1240440": {
+   "name": "Halo Infinite",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Arbiter",
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-04-11T19:24:20.671Z"
+  },
+  "1241100": {
+   "name": "POLYGON",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1245480": {
+   "name": "SYNDUALITY Echo of Ada",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-12-11T00:36:27.0000000-05:00"
+  },
+  "1245620": {
+   "name": "Elden Ring",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-08T21:25:56.890Z"
+  },
+  "1249970": {
+   "name": "Test Drive Unlimited Solar Crown",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "SARD"
+   ],
+   "updated": "2025-06-29T22:14:33.0000000-04:00"
+  },
+  "1252600": {
+   "name": "ANOTHER EDEN",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Crackproof",
+    "WFSDrv"
+   ],
+   "updated": "2024-07-31T00:00:00.000Z"
+  },
+  "1254120": {
+   "name": "Bless Unleashed",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-06-29T22:13:14.0000000-04:00"
+  },
+  "1262240": {
+   "name": "Plants vs. Zombies: Battle for Neighborville",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "EA anticheat"
+   ],
+   "updated": "2024-01-20T04:40:56.000Z"
+  },
+  "1263550": {
+   "name": "Combat Arms: the Classic",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "BattlEye",
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-03-01T20:43:59.035Z"
+  },
+  "1268750": {
+   "name": "Starship Troopers: Extermination",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-07T22:48:08.632Z"
+  },
+  "1277530": {
+   "name": "Black Stigma",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Cheat Blocker"
+   ],
+   "updated": "2025-07-11T18:36:32.0000000-04:00"
+  },
+  "1280770": {
+   "name": "Redmatch 2",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Enforcer"
+   ],
+   "updated": "2025-12-11T00:52:52.0000000-05:00"
+  },
+  "1282270": {
+   "name": "Strinova",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Expert"
+   ],
+   "updated": "2026-05-01T17:45:56.000Z"
+  },
+  "1286320": {
+   "name": "Exoprimal",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-03T15:08:08.658853-06:00"
+  },
+  "1293660": {
+   "name": "Gemini: Binary Conflict",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-22T16:28:22.252564-05:00"
+  },
+  "1301210": {
+   "name": "Knockout City",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1313230": {
+   "name": "Beautiful Light",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-05-22T22:24:18.973Z"
+  },
+  "1342630": {
+   "name": "Rappelz",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-08-20T19:44:22.578Z"
+  },
+  "1352080": {
+   "name": "SMASH LEGENDS",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-02-25T21:10:26.783Z"
+  },
+  "1354980": {
+   "name": "Decimated",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-08-01T01:51:19.285Z"
+  },
+  "1359090": {
+   "name": "Zero Hour",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Denuvo Anti-Cheat"
+   ],
+   "updated": "2025-06-24T20:12:49.0000000-04:00"
+  },
+  "1361210": {
+   "name": "Warhammer 40,000: Darktide",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-12-27T08:07:53.0000000-06:00"
+  },
+  "1364020": {
+   "name": "Boundary",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Expert"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1367080": {
+   "name": "Mobile Suit Gundam Battle Operation 2",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-27T16:28:12.860702-05:00"
+  },
+  "1371580": {
+   "name": "Myth of Empires",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-08-29T02:09:01.302Z"
+  },
+  "1372110": {
+   "name": "JoJo's Bizarre Adventure: All-Star Battle R",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-24T16:01:34.373167-05:00"
+  },
+  "1377380": {
+   "name": "Night of the Dead",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-29T18:06:44.602277-05:00"
+  },
+  "1377580": {
+   "name": "SoulWorker",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-09-14T00:00:00.000Z"
+  },
+  "1379750": {
+   "name": "Ragnarok: The Lost Memories",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-23T15:17:30.185123-05:00"
+  },
+  "1383550": {
+   "name": "Soul Dossier",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-10-25T16:23:49.395560-05:00"
+  },
+  "1399780": {
+   "name": "Spellbreak",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1401240": {
+   "name": "Project Xandata",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-04T15:07:58.776886-06:00"
+  },
+  "1407200": {
+   "name": "World of Tanks",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Unknown (Custom)"
+   ],
+   "updated": "2024-02-27T21:32:37.805Z"
+  },
+  "1419640": {
+   "name": "Project F",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-19T23:30:33.394Z"
+  },
+  "1422450": {
+   "name": "Deadlock",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-08-26T20:56:24.259Z"
+  },
+  "1426440": {
+   "name": "MicroVolts: Recharged",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1433140": {
+   "name": "The Texas Chain Saw Massacre",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-07-10T21:01:42.407Z"
+  },
+  "1442910": {
+   "name": "Reign Of Dwarf",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-31T15:26:18.104637-05:00"
+  },
+  "1454890": {
+   "name": "Titanfall",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "FairFight"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1464970": {
+   "name": "Dread Hunger",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "VAC",
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-20T20:59:10.978Z"
+  },
+  "1469060": {
+   "name": "Midair 2",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-01T22:22:14.478Z"
+  },
+  "1477590": {
+   "name": "EZ2ON REBOOT : R",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1477730": {
+   "name": "Extreme Soccer",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-11-01T15:44:02.208468-05:00"
+  },
+  "1491000": {
+   "name": "War Robots: Frontiers",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "MY.GAMES Anti-Cheat"
+   ],
+   "updated": "2024-10-13T22:38:31.287Z"
+  },
+  "1504620": {
+   "name": "Nine to Five",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1517290": {
+   "name": "Battlefield™ 2042",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "EA anticheat"
+   ],
+   "updated": "2024-11-04T00:18:17.181Z"
+  },
+  "1524370": {
+   "name": "Astellia Royal",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-11-18T16:33:32.411611-06:00"
+  },
+  "1549250": {
+   "name": "Undecember",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-08-24T16:40:15.281Z"
+  },
+  "1551810": {
+   "name": "Block N Load 2",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-13T20:19:23.723Z"
+  },
+  "1556100": {
+   "name": "Killer Klowns from Outer Space: The Game",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-06-04T19:34:56.201Z"
+  },
+  "1562450": {
+   "name": "Dysterra",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-29T18:06:44.602277-05:00"
+  },
+  "1563940": {
+   "name": "Atlantica Europe",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-09-29T21:31:44.676Z"
+  },
+  "1566690": {
+   "name": "Outpost: Infinity Siege",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "SCUE4"
+   ],
+   "updated": "2024-11-04T15:07:58.777886-06:00"
+  },
+  "1566880": {
+   "name": "Sword Art Online Last Recollection",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-18T16:33:32.432148-06:00"
+  },
+  "1568590": {
+   "name": "Goose Goose Duck",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1574360": {
+   "name": "Uncharted Waters Origin",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-10-23T15:17:30.184123-05:00"
+  },
+  "1575680": {
+   "name": "BlasterBeat",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-29T18:06:44.607277-05:00"
+  },
+  "1587100": {
+   "name": "Anarchy Legends Online",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-18T17:04:48.773188-05:00"
+  },
+  "1599340": {
+   "name": "Lost Ark",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "AnyBrain"
+   ],
+   "updated": "2025-07-17T18:24:43.0000000-04:00"
+  },
+  "1600360": {
+   "name": "The Cycle: Frontier",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-10-29T18:06:44.603277-05:00"
+  },
+  "1604030": {
+   "name": "V Rising",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Valve Anti-Cheat"
+   ],
+   "updated": "2024-11-10T23:20:07.485699-06:00"
+  },
+  "1607250": {
+   "name": "MY HERO ULTRA RUMBLE",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1608220": {
+   "name": "Sentry：Obelisk Of Dawn",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-10-01T20:31:17.589Z"
+  },
+  "1618710": {
+   "name": "Project Sparrow",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-10T01:03:28.439Z"
+  },
+  "1635450": {
+   "name": "Longvinter",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-31T15:26:18.104637-05:00"
+  },
+  "1648190": {
+   "name": "Qanga",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-18T16:33:32.411611-06:00"
+  },
+  "1657090": {
+   "name": "Mini Royale",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-02-17T21:20:07.370Z"
+  },
+  "1658740": {
+   "name": "Zyconix",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-05T16:27:40.509Z"
+  },
+  "1671200": {
+   "name": "Honkai Impact 3rd",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Expert"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1687760": {
+   "name": "Exos Heroes",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-08-05T07:04:34.647Z"
+  },
+  "1688720": {
+   "name": "HypeSquad",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1691340": {
+   "name": "Steel Hunters",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-06-01T19:29:24.0000000-04:00"
+  },
+  "1692070": {
+   "name": "Crowz",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-25T18:05:16.946228-05:00"
+  },
+  "1692200": {
+   "name": "DRAGON BALL: THE BREAKERS",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1695900": {
+   "name": "Elyon",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-23T15:17:30.186128-05:00"
+  },
+  "1722080": {
+   "name": "SYNCED",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Proxima Game Anti Cheat",
+    "Anti-Cheat Expert"
+   ],
+   "updated": "2024-10-13T20:19:23.725Z"
+  },
+  "1724660": {
+   "name": "New World: Aeternum",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-04T15:07:58.776886-06:00"
+  },
+  "1725420": {
+   "name": "Mortal Online 2",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-25T18:05:16.947229-05:00"
+  },
+  "1743770": {
+   "name": "Propnight",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-10-25T18:05:16.947229-05:00"
+  },
+  "1759220": {
+   "name": "Return Alive",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-12-11T00:40:24.0000000-05:00"
+  },
+  "1760250": {
+   "name": "EA SPORTS™ Madden NFL 23",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-27T21:09:55.566Z"
+  },
+  "1765520": {
+   "name": "Flippin Misfits",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-23T20:36:25.028Z"
+  },
+  "1769930": {
+   "name": "Warcos",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-29T18:06:44.607277-05:00"
+  },
+  "1785150": {
+   "name": "Friends vs Friends",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-01T20:31:17.590Z"
+  },
+  "1789480": {
+   "name": "Marauders",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "Denuvo Anti-Cheat"
+   ],
+   "updated": "2025-06-22T15:34:27.0000000-04:00"
+  },
+  "1790600": {
+   "name": "DRAGON BALL: Sparking! ZERO",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-12-27T07:40:54.0000000-06:00"
+  },
+  "1797880": {
+   "name": "Lost Light",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "NetEase Anti-Cheat Expert"
+   ],
+   "updated": "2024-07-31T00:00:00.000Z"
+  },
+  "1799530": {
+   "name": "Smelogs Playground",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-05T16:27:40.510Z"
+  },
+  "1802710": {
+   "name": "Momentum Mod",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-06-26T20:51:47.265Z"
+  },
+  "1803110": {
+   "name": "Ascendant.com",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-26T16:25:55.485593-05:00"
+  },
+  "1808500": {
+   "name": "ARC Raiders",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-11-08T23:38:29.0000000-05:00"
+  },
+  "1811260": {
+   "name": "EA SPORTS™ FIFA 23",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "EA anticheat"
+   ],
+   "updated": "2024-08-25T21:58:41.954Z"
+  },
+  "1815230": {
+   "name": "Summum Aeterna",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-29T21:31:44.677Z"
+  },
+  "1816670": {
+   "name": "Gundam Evolution",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1818750": {
+   "name": "Multiversus",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1826980": {
+   "name": "FreestyleFootball R",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-29T18:06:44.601297-05:00"
+  },
+  "1827180": {
+   "name": "Toram Online",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-19T23:30:33.393Z"
+  },
+  "1849250": {
+   "name": "EA SPORTS™ WRC 24",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "EA anticheat"
+   ],
+   "updated": "2024-10-27T21:09:55.615Z"
+  },
+  "1858630": {
+   "name": "SWORD ART ONLINE Fractured Daydream",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-26T16:25:55.479624-05:00"
+  },
+  "1863390": {
+   "name": "N-Age",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-07-22T21:02:45.334Z"
+  },
+  "1867420": {
+   "name": "LEAP",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-23T15:17:30.187123-05:00"
+  },
+  "1872760": {
+   "name": "Spirit Detective",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-09-29T21:31:44.679Z"
+  },
+  "1873030": {
+   "name": "Wolfenstein: Enemy Territory",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "PunkBuster"
+   ],
+   "updated": "2024-11-10T23:20:07.490699-06:00"
+  },
+  "1874880": {
+   "name": "ArmA Reforger",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1877600": {
+   "name": "Midnight Guns",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-22T16:28:22.252564-05:00"
+  },
+  "1881700": {
+   "name": "Undawn",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Expert"
+   ],
+   "updated": "2024-09-27T20:50:11.625Z"
+  },
+  "1888160": {
+   "name": "Armored Core VI: Fires of Rubicon",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1903270": {
+   "name": "Sunset World Online",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-26T16:25:55.481593-05:00"
+  },
+  "1908530": {
+   "name": "Raise Your Tribe",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-30T17:48:27.614771-05:00"
+  },
+  "1908720": {
+   "name": "Half-Life: VR Mod",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-09-29T21:31:44.676Z"
+  },
+  "1913730": {
+   "name": "Chimeraland",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Expert"
+   ],
+   "updated": "2024-09-29T21:31:44.679Z"
+  },
+  "1922010": {
+   "name": "Breachers",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-12-17T12:41:42.0000000-05:00"
+  },
+  "1924490": {
+   "name": "Gigantic: Rampage Edition",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-04-11T19:23:20.579Z"
+  },
+  "1928420": {
+   "name": "Farlight 84",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "NetEase Yidun"
+   ],
+   "updated": "2025-09-17T04:00:00.000Z"
+  },
+  "1938090": {
+   "name": "Call of Duty: Modern Warfare II (2022)",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "RICOCHET"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1940990": {
+   "name": "Ironsight",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1955960": {
+   "name": "HAWKED",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "MY.GAMES Anti-Cheat"
+   ],
+   "updated": "2024-09-15T22:37:01.023Z"
+  },
+  "1961460": {
+   "name": "PROJECT: PLAYTIME",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-02-10T21:51:14.522Z"
+  },
+  "1962663": {
+   "name": "Call of Duty: Warzone",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "RICOCHET"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1969870": {
+   "name": "Battle Teams 2",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Expert"
+   ],
+   "updated": "2024-02-24T22:08:12.463Z"
+  },
+  "1973710": {
+   "name": "ヘブンバーンズレッド (Heaven Burns Red)",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Expert",
+    "Crackproof",
+    "WFSDrv"
+   ],
+   "updated": "2025-05-30T17:20:03.0000000-04:00"
+  },
+  "1979310": {
+   "name": "Veiled Experts",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "BattlEye",
+    "Nexon Game Security"
+   ],
+   "updated": "2024-02-14T22:37:23.636Z"
+  },
+  "1985810": {
+   "name": "Call of Duty Black Ops: Cold War",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Treyarch Anti-Cheat"
+   ],
+   "updated": "2026-04-26T16:24:56.000Z"
+  },
+  "1985820": {
+   "name": "Call of Duty: Vanguard",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "RICOCHET"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "1991140": {
+   "name": "Robocraft 2",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-31T15:26:18.103630-05:00"
+  },
+  "1995520": {
+   "name": "Pax Dei",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-02-02T22:17:50.0000000-06:00"
+  },
+  "2000270": {
+   "name": "Dual Universe",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-15T22:37:01.190Z"
+  },
+  "2012510": {
+   "name": "Stormgate",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-08-12T21:17:06.920Z"
+  },
+  "2016590": {
+   "name": "Dark and Darker",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "IronShield",
+    "Tavern"
+   ],
+   "updated": "2024-05-23T22:24:18.973Z"
+  },
+  "2022330": {
+   "name": "The Riflemen",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-24T16:01:34.372167-05:00"
+  },
+  "2051120": {
+   "name": "Hot Wheels UNLEASHED 2 - Turbocharged",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "2051620": {
+   "name": "Enlisted: Reinforced",
+   "status": "Supported",
+   "native": true,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "BattlEye"
+   ],
+   "updated": "2024-12-07T22:39:24.216Z"
+  },
+  "2064650": {
+   "name": "Tower of Fantasy",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "KSophon"
+   ],
+   "updated": "2025-04-30T17:16:00.000Z"
+  },
+  "2064870": {
+   "name": "Deceit 2",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-06-18T15:20:49.0000000-04:00"
+  },
+  "2073620": {
+   "name": "Arena Breakout: Infinite",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Expert"
+   ],
+   "updated": "2025-11-08T12:58:21.0000000-05:00"
+  },
+  "2073850": {
+   "name": "THE FINALS",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "Denuvo Anti-Cheat",
+    "AnyBrain"
+   ],
+   "updated": "2025-11-08T12:54:47.0000000-05:00"
+  },
+  "2073930": {
+   "name": "Radikal Fighters",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-18T16:33:32.414611-06:00"
+  },
+  "2074920": {
+   "name": "The First Descendant",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Nexon Game Security",
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-07-02T01:20:38.623Z"
+  },
+  "2077110": {
+   "name": "Rise of Agon",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-18T17:04:48.772187-05:00"
+  },
+  "2078450": {
+   "name": "Warhammer 40,000: Speed Freeks",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-08-06T21:54:36.387Z"
+  },
+  "2083800": {
+   "name": "Trimurti Online",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-20T20:59:10.997Z"
+  },
+  "2087030": {
+   "name": "Shatterline",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "2088180": {
+   "name": "Kritika Global",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-11-10T23:20:07.490699-06:00"
+  },
+  "2091110": {
+   "name": "Hell is Others",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-10T01:03:28.440Z"
+  },
+  "2107670": {
+   "name": "Warhaven",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Nexon Game Security"
+   ],
+   "updated": "2024-11-18T16:33:32.433149-06:00"
+  },
+  "2119490": {
+   "name": "TRAHA Global",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-05T16:27:40.510Z"
+  },
+  "2131860": {
+   "name": "Ashfall",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "NEAC Protect",
+    "NetEase Anti-Cheat Expert"
+   ],
+   "updated": "2024-08-17T22:50:54.203Z"
+  },
+  "2137090": {
+   "name": "Lightning",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "GuardenAC"
+   ],
+   "updated": "2024-07-18T19:29:55.985Z"
+  },
+  "2139090": {
+   "name": "Project ETHOS",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-01T15:44:02.212468-05:00"
+  },
+  "2139460": {
+   "name": "Once Human (ROW/INTL)",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "NEAC Protect"
+   ],
+   "updated": "2024-09-22T22:18:43.901Z"
+  },
+  "2140330": {
+   "name": "EA SPORTS™ Madden NFL 24",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "EA anticheat"
+   ],
+   "updated": "2024-10-27T21:09:55.568Z"
+  },
+  "2152790": {
+   "name": "United 1944",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-26T20:38:09.812Z"
+  },
+  "2167580": {
+   "name": "Summoners War: Chronicles",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-10-21T16:34:58.628671-05:00"
+  },
+  "2170050": {
+   "name": "WolfTeam: Reboot",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-11-03T15:08:08.659850-06:00"
+  },
+  "2170420": {
+   "name": "Starsiege: Deadzone",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "2175780": {
+   "name": "Dominance",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-18T17:04:48.781171-05:00"
+  },
+  "2176770": {
+   "name": "Ragnarok Begins",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "SARD"
+   ],
+   "updated": "2024-10-25T16:23:49.396560-05:00"
+  },
+  "2203070": {
+   "name": "Dragonheir: Silent Gods",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Proxima Game Anti Cheat"
+   ],
+   "updated": "2025-08-08T21:35:30.0000000-04:00"
+  },
+  "2208530": {
+   "name": "Alchemia Story",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-18T17:04:48.769172-05:00"
+  },
+  "2215430": {
+   "name": "Ghost of Tsushima Director's Cut",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "PlayStation Overlay"
+   ],
+   "updated": "2025-07-19T23:51:36.0000000-04:00"
+  },
+  "2221490": {
+   "name": "Tom Clancy's The Division 2",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "2231380": {
+   "name": "Tom Clancy's Ghost Recon Breakpoint",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "2247220": {
+   "name": "Revenblade",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-13T22:38:31.287Z"
+  },
+  "2257910": {
+   "name": "Project Zero",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-18T17:04:48.781171-05:00"
+  },
+  "2258870": {
+   "name": "Kingdom: The Blood",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-24T16:01:34.374167-05:00"
+  },
+  "2279730": {
+   "name": "King Arthur: Legends Rise",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-07T22:48:08.635Z"
+  },
+  "2285150": {
+   "name": "The Front",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Expert",
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-07T22:48:08.634Z"
+  },
+  "2287920": {
+   "name": "Battle Crush",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-15T22:37:01.071Z"
+  },
+  "2290180": {
+   "name": "Riders Republic",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "2294660": {
+   "name": "The Quinfall",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2025-08-09T21:46:27.0000000-04:00"
+  },
+  "2302770": {
+   "name": "Space Gears",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-10-29T18:06:44.604277-05:00"
+  },
+  "2304660": {
+   "name": "A Twisted Path to Renown",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-05T16:27:40.510Z"
+  },
+  "2340400": {
+   "name": "R2BEAT (アールツービート)",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-08-14T21:21:22.469Z"
+  },
+  "2344320": {
+   "name": "Legacy: Steel & Sorcery",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-02-19T12:27:09.0000000-05:00"
+  },
+  "2344520": {
+   "name": "Diablo® IV",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Warden"
+   ],
+   "updated": "2024-09-23T20:36:25.031Z"
+  },
+  "2350280": {
+   "name": "Monster Jam™ Showdown",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-21T16:34:58.628671-05:00"
+  },
+  "2353050": {
+   "name": "WTF: Waifu Tactical Force",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2026-02-07T03:19:14.487000-05:00"
+  },
+  "2356310": {
+   "name": "Continent of the Ninth Golden",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-11-10T23:20:07.492706-06:00"
+  },
+  "2357570": {
+   "name": "Overwatch 2",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Warden"
+   ],
+   "updated": "2024-01-19T04:40:56.000Z"
+  },
+  "2359600": {
+   "name": "Perfect New World",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Expert"
+   ],
+   "updated": "2024-08-05T20:28:25.228Z"
+  },
+  "2371630": {
+   "name": "Sword Art Online: Integral Factor",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-10-10T01:03:28.439Z"
+  },
+  "2373990": {
+   "name": "Solo Leveling: Arise OVERDRIVE",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2025-11-08T12:56:10.0000000-05:00"
+  },
+  "2379390": {
+   "name": "Tom Clancy’s Rainbow Six® Extraction",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Denuvo Anti-Cheat"
+   ],
+   "updated": "2024-01-27T04:14:03.069Z"
+  },
+  "2393590": {
+   "name": "Blockade",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-30T17:48:27.616768-05:00"
+  },
+  "2394590": {
+   "name": "Just Survive",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-09-24T20:41:16.930Z"
+  },
+  "2399830": {
+   "name": "ARK: Survival Ascended",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-02-20T21:24:07.762Z"
+  },
+  "2411280": {
+   "name": "The Bornless",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-05-10T04:47:27.068Z"
+  },
+  "2429640": {
+   "name": "Throne and Liberty",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-05T16:27:40.462Z"
+  },
+  "2437170": {
+   "name": "Smite 2",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-02-24T04:19:43.190Z"
+  },
+  "2445510": {
+   "name": "Contenders: Arena",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-27T16:28:12.861702-05:00"
+  },
+  "2448970": {
+   "name": "Dungeonborne",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Expert"
+   ],
+   "updated": "2024-12-07T17:22:04.182Z"
+  },
+  "2450450": {
+   "name": "MEGATON MUSASHI W: WIRED",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-03-13T21:56:13.188Z"
+  },
+  "2452280": {
+   "name": "Mecha BREAK",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Expert",
+    "Seasun Protect"
+   ],
+   "updated": "2025-03-02T14:25:09.0000000-05:00"
+  },
+  "2468730": {
+   "name": "Dungeon Stalkers",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2025-12-11T00:53:59.0000000-05:00"
+  },
+  "2479810": {
+   "name": "Gray Zone Warfare",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "AnyBrain"
+   ],
+   "updated": "2024-09-22T22:18:43.937Z"
+  },
+  "2484250": {
+   "name": "ASTRA: Knights of Veda",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Expert"
+   ],
+   "updated": "2024-09-16T21:14:19.247Z"
+  },
+  "2488620": {
+   "name": "F1® 24",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "EA anticheat"
+   ],
+   "updated": "2024-10-01T20:31:17.588Z"
+  },
+  "2552340": {
+   "name": "TEMPEST: Tower of Probatio",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "nProtect GameGuard"
+   ],
+   "updated": "2024-10-19T23:30:33.392Z"
+  },
+  "2562000": {
+   "name": "Argo",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-10-07T22:48:08.633Z"
+  },
+  "2581700": {
+   "name": "MotoGP™24",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-07T22:48:08.631Z"
+  },
+  "2582960": {
+   "name": "NAKWON: LAST PARADISE",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Nexon Game Security"
+   ],
+   "updated": "2024-09-27T20:50:11.627Z"
+  },
+  "2590150": {
+   "name": "Faaast Penguin",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-12-27T08:29:56.0000000-06:00"
+  },
+  "2622380": {
+   "name": "Elden Ring: Nightreign",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-05-30T17:20:59.0000000-04:00"
+  },
+  "2641470": {
+   "name": "Spectre Divide",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-09-15T22:37:01.139Z"
+  },
+  "2668080": {
+   "name": "Snowbreak: Containment Zone (ROW/INTL)",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Seasun Protect"
+   ],
+   "updated": "2024-07-31T00:00:00.000Z"
+  },
+  "2669320": {
+   "name": "EA SPORTS FC™ 25",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "EA anticheat"
+   ],
+   "updated": "2024-12-27T08:32:03.0000000-06:00"
+  },
+  "2682580": {
+   "name": "DUCKSIDE",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-23T20:36:25.027Z"
+  },
+  "2690190": {
+   "name": "shaiya",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "VAC"
+   ],
+   "updated": "2024-10-31T15:26:18.105628-05:00"
+  },
+  "2698870": {
+   "name": "Midnight Murder Club",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "PlayStation Overlay"
+   ],
+   "updated": "2025-08-09T21:58:06.0000000-04:00"
+  },
+  "2698940": {
+   "name": "The Crew™ Motorfest",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2025-10-30T04:00:00.000Z"
+  },
+  "2705130": {
+   "name": "Exoborne",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat",
+    "AnyBrain"
+   ],
+   "updated": "2025-10-30T04:00:000Z"
+  },
+  "2730410": {
+   "name": "Sweet Time",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-21T16:34:58.627671-05:00"
+  },
+  "2767030": {
+   "name": "Marvel Rivals",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "NetEase Game Security"
+   ],
+   "updated": "2025-02-02T22:33:43.0000000-06:00"
+  },
+  "2790930": {
+   "name": "Velev",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-18T16:33:32.398149-06:00"
+  },
+  "2799860": {
+   "name": "INAZUMA ELEVEN: Victory Road",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-10T23:20:07.495701-06:00"
+  },
+  "2803360": {
+   "name": "Project L33T",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-09-15T22:37:01.101Z"
+  },
+  "2805060": {
+   "name": "Diabotical Rogue",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-06-08T22:42:43.843Z"
+  },
+  "2807960": {
+   "name": "Battlefield 6",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "EA anticheat"
+   ],
+   "updated": "2025-07-16T20:26:00.0000000-04:00"
+  },
+  "2818260": {
+   "name": "Vigor",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-27T16:28:12.859702-05:00"
+  },
+  "2827230": {
+   "name": "Wild Assault",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-26T16:25:55.479624-05:00"
+  },
+  "2853730": {
+   "name": "Skull and Bones",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-09-01T22:22:14.556Z"
+  },
+  "2854480": {
+   "name": "Blindfire",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-06-15T14:55:48.0000000-04:00"
+  },
+  "2878600": {
+   "name": "Harry Potter: Quidditch Champions",
+   "status": "Supported",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-20T20:59:10.941Z"
+  },
+  "2878980": {
+   "name": "NBA 2K25",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-05-29T18:34:45.0000000-04:00"
+  },
+  "2918300": {
+   "name": "Splitgate 2",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "RedKard"
+   ],
+   "updated": "2025-06-19T15:01:37.0000000-04:00"
+  },
+  "2933620": {
+   "name": "Call of Duty: Black Ops 6",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Treyarch Anti-Cheat",
+    "RICOCHET"
+   ],
+   "updated": "2024-12-27T08:27:26.0000000-06:00"
+  },
+  "2939830": {
+   "name": "Dungeon Done",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-08-10T16:48:11.0000000-04:00"
+  },
+  "2943650": {
+   "name": "FragPunk",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "NEAC Protect"
+   ],
+   "updated": "2024-10-13T20:19:23.741Z"
+  },
+  "2951690": {
+   "name": "Sonic Rumble",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Uncheater"
+   ],
+   "updated": "2025-07-10T23:58:07.0000000-04:00"
+  },
+  "2963870": {
+   "name": "Metal Slug: Awakening",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Expert"
+   ],
+   "updated": "2024-12-27T08:05:36.0000000-06:00"
+  },
+  "3004100": {
+   "name": "Freedom Wars Remastered",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2025-08-10T16:50:40.0000000-04:00"
+  },
+  "3065800": {
+   "name": "Marathon",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "BattlEye"
+   ],
+   "updated": "2024-11-03T15:08:08.654851-06:00"
+  },
+  "3077390": {
+   "name": "MotoGP™25",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-26T16:25:55.483594-05:00"
+  },
+  "3092660": {
+   "name": "Reverse: 1999",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Expert"
+   ],
+   "updated": "2025-05-28T06:30:00.000Z"
+  },
+  "3126180": {
+   "name": "Tarisland",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Expert"
+   ],
+   "updated": "2024-09-25T21:16:49.656Z"
+  },
+  "3126860": {
+   "name": "Legends of Kailrate",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-10-26T16:25:55.482594-05:00"
+  },
+  "3218230": {
+   "name": "ArcheAge Chronicles",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "XIGNCODE3"
+   ],
+   "updated": "2024-11-18T16:33:32.410612-06:00"
+  },
+  "3224770": {
+   "name": "Umamusume: Pretty Derby",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "CrackProof"
+   ],
+   "updated": "2025-07-12T15:55:19.0000000-04:00"
+  },
+  "3230400": {
+   "name": "EA SPORTS™ Madden NFL 26",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "EA anticheat"
+   ],
+   "updated": "2024-10-24T16:01:34.373167-05:00"
+  },
+  "3513350": {
+   "name": "Wuthering Waves",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Expert"
+   ],
+   "updated": "2025-07-04T23:34:35.0000000-04:00"
+  },
+  "3557620": {
+   "name": "Blue Archive",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Nexon Game Security"
+   ],
+   "updated": "2025-08-09T21:52:11.0000000-04:00"
+  },
+  "3606480": {
+   "name": "Call of Duty: Black Ops 7",
+   "status": "Denied",
+   "native": false,
+   "anticheats": [
+    "Ricochet"
+   ],
+   "updated": "2025-11-08T23:40:22.0000000-05:00"
+  },
+  "3616890": {
+   "name": "Blade & Soul Heroes",
+   "status": "Broken",
+   "native": false,
+   "anticheats": [
+    "Anti-Cheat Solution"
+   ],
+   "updated": "2025-08-09T21:50:32.0000000-04:00"
+  },
+  "3659280": {
+   "name": "Off The Grid",
+   "status": "Running",
+   "native": false,
+   "anticheats": [
+    "Easy Anti-Cheat"
+   ],
+   "updated": "2024-11-18T16:33:32.420653-06:00"
+  }
+ }
+}
