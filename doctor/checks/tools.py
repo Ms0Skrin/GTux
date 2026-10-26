@@ -5,42 +5,45 @@ from __future__ import annotations
 from doctor import packages
 from doctor.i18n import t
 from doctor.models import Context, Status
-from doctor.packages import Pacman
 from doctor.runner import check, result
 from doctor.system import which
 
 GROUP = "tools"
 
-# id: (программа для поиска в PATH, пакет Arch, 32-битный пакет Arch или None)
+# id: (программа в PATH, компонент, 32-битный компонент или None)
 TOOLS = {
-    "gamemode": ("gamemoderun", "gamemode", "lib32-gamemode"),
-    "mangohud": ("mangohud", "mangohud", "lib32-mangohud"),
+    "gamemode": ("gamemoderun", "gamemode", "lib32_gamemode"),
+    "mangohud": ("mangohud", "mangohud", "lib32_mangohud"),
     "gamescope": ("gamescope", "gamescope", None),
 }
 
+# Утилиты, которые не всем нужны: не предлагаем их в автоустановке по умолчанию.
+OPTIONAL = {"gamescope"}
+
 
 def _make_check(tool_id: str):
-    binary, pkg, pkg32 = TOOLS[tool_id]
+    binary, comp, comp32 = TOOLS[tool_id]
 
     @check(tool_id)
     def _check(ctx: Context):
-        is_pacman = isinstance(ctx.package_manager, Pacman)
-        hint = t(f"tools.{tool_id}.hint")
+        main = packages.component(ctx, comp) or []
+        lib32 = (packages.component(ctx, comp32) or []) if comp32 else []
         if not which(binary):
-            fix = ctx.package_manager.install_command([pkg] + ([pkg32] if pkg32 else [])) \
-                if is_pacman else None
+            fix = packages.fix_for(ctx, main + lib32)
+            if tool_id in OPTIONAL:
+                fix.pop("packages", None)  # команду покажем, но в --fix не включаем
             return result(GROUP, tool_id, Status.WARN, value=t("common.not_installed"),
-                          hint=hint, fix=fix)
+                          hint=t(f"tools.{tool_id}.hint"), **fix)
         value = t("tools.found")
-        if is_pacman:
-            wanted = [pkg] + ([pkg32] if pkg32 else [])
-            versions = packages.query(ctx, wanted)
-            if versions.get(pkg):
-                value = packages.strip_version(versions[pkg])
-            if pkg32 and not versions.get(pkg32):
+        if main:
+            versions = packages.query(ctx, main + lib32)
+            if versions.get(main[0]):
+                value = packages.strip_version(versions[main[0]])
+            missing32 = [p for p in lib32 if not versions.get(p)]
+            if missing32:
                 return result(GROUP, tool_id, Status.WARN, value=value,
-                              hint=t("tools.no32_hint", pkg32=pkg32),
-                              fix=ctx.package_manager.install_command([pkg32]))
+                              hint=t("tools.no32_hint", pkg32=", ".join(missing32)),
+                              **packages.fix_for(ctx, missing32))
         return result(GROUP, tool_id, Status.OK, value=value)
 
     return _check

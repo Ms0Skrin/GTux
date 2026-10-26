@@ -60,6 +60,9 @@ def _pci_name(slot: str, vendor: str) -> str:
 @check("detect")
 def check_detect(ctx: Context):
     ctx.gpus = detect_gpus()
+    nvidia = read_text("/sys/module/nvidia/version")
+    if nvidia:
+        ctx.pkg_params["nvidia_branch"] = nvidia.split(".")[0]  # 550.120 -> 550 (для Ubuntu)
     if not ctx.gpus:
         return result(GROUP, "detect", Status.UNKNOWN, value=t("gpu.detect.none"),
                       error=t("gpu.detect.none_error"))
@@ -106,8 +109,9 @@ def check_nvidia_version(ctx: Context):
     if loaded is None:
         return result(GROUP, "nvidia_version", Status.UNKNOWN,
                       error=t("gpu.nvidia_version.no_sysfs"))
-    pkgs = packages.query(ctx, ["nvidia-utils"])
-    userspace = pkgs.get("nvidia-utils") if pkgs else None
+    names = packages.component(ctx, "nvidia_userspace")
+    pkgs = packages.query(ctx, names) if names else None
+    userspace = pkgs.get(names[0]) if pkgs else None
     if userspace and packages.strip_version(userspace) != loaded:
         # Классика после обновления без перезагрузки: «Driver/library version mismatch».
         return result(GROUP, "nvidia_version", Status.FAIL,
@@ -121,9 +125,10 @@ def check_nvidia_version(ctx: Context):
 def check_mesa_version(ctx: Context):
     if not any(g.vendor in ("amd", "intel") for g in ctx.gpus):
         return []  # Mesa для NVIDIA-драйвера не главная, не путаем пользователя
-    pkgs = packages.query(ctx, ["mesa"])
-    if pkgs and pkgs.get("mesa"):
-        return result(GROUP, "mesa_version", Status.OK, value=packages.strip_version(pkgs["mesa"]))
+    names = packages.component(ctx, "mesa")
+    pkgs = packages.query(ctx, names) if names else None
+    if pkgs and pkgs.get(names[0]):
+        return result(GROUP, "mesa_version", Status.OK, value=packages.strip_version(pkgs[names[0]]))
     if which("glxinfo"):
         out = run(["glxinfo", "-B"]).stdout
         m = re.search(r"Mesa (\d+\.\d+\.\d+\S*)", out)

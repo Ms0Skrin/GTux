@@ -46,10 +46,10 @@ def check_kernel(ctx: Context):
 
 @check("package_manager")
 def check_package_manager(ctx: Context):
-    ctx.package_manager = packages.detect()
+    ctx.package_manager = packages.detect([ctx.distro_id, *ctx.distro_like])
     if ctx.package_manager is None:
         # Узнаём хотя бы имя, чтобы честно сказать, что не поддерживаем.
-        found = next((pm for pm in ("apt-get", "dnf", "zypper", "xbps-install", "emerge")
+        found = next((pm for pm in ("zypper", "xbps-install", "emerge", "apk", "nix-env")
                       if which(pm)), None)
         return result(GROUP, "package_manager", Status.WARN,
                       value=found or t("distro.package_manager.none"),

@@ -1,4 +1,7 @@
-"""Группа 4: 32-битная поддержка. Steam и многие игры (особенно старые) 32-битные."""
+"""Группа 4: 32-битная поддержка. Steam и многие игры (особенно старые) 32-битные.
+
+Arch: репозиторий [multilib]. Debian/Ubuntu: архитектура i386. Fedora: пакеты .i686 доступны всегда.
+"""
 
 from __future__ import annotations
 
@@ -8,7 +11,7 @@ from doctor import packages
 from doctor.checks.gpu import GOOD_DRIVERS, VENDOR_NAMES
 from doctor.i18n import t
 from doctor.models import Context, Status
-from doctor.packages import Pacman
+from doctor.packages import Apt, Dnf, Pacman
 from doctor.runner import check, result
 from doctor.system import read_text
 
@@ -16,13 +19,10 @@ GROUP = "multilib"
 
 PACMAN_CONF = "/etc/pacman.conf"
 
-# 32-битные пакеты Arch, нужные для каждого вендора (проверено по базе multilib).
-LIB32_BY_VENDOR = {
-    "nvidia": ["lib32-nvidia-utils"],
-    "amd": ["lib32-mesa", "lib32-vulkan-radeon"],
-    "intel": ["lib32-mesa", "lib32-vulkan-intel"],
-}
-LIB32_COMMON = ["lib32-vulkan-icd-loader"]
+LIB32_BY_VENDOR = {"nvidia": "lib32_nvidia", "amd": "lib32_amd", "intel": "lib32_intel"}
+
+# Команды, включающие 32-битную архитектуру (для показа и для --fix).
+ENABLE_I386 = "sudo dpkg --add-architecture i386 && sudo apt update"
 
 
 def multilib_enabled(conf_text: str) -> bool:
@@ -31,51 +31,69 @@ def multilib_enabled(conf_text: str) -> bool:
                for line in conf_text.splitlines())
 
 
-def _is_pacman(ctx: Context) -> bool:
-    return isinstance(ctx.package_manager, Pacman)
-
-
 @check("repo")
 def check_repo(ctx: Context):
-    if not _is_pacman(ctx):
-        return result(GROUP, "repo", Status.UNKNOWN, value=t("multilib.only_arch"))
-    conf = read_text(PACMAN_CONF)
-    if conf is None:
-        return result(GROUP, "repo", Status.UNKNOWN, error=t("multilib.repo.no_conf", path=PACMAN_CONF))
-    ctx.multilib_enabled = multilib_enabled(conf)
-    if not ctx.multilib_enabled:
-        return result(GROUP, "repo", Status.FAIL, value=t("multilib.repo.disabled"),
-                      hint=t("multilib.repo.disabled_hint", path=PACMAN_CONF),
-                      fix=f"sudoedit {PACMAN_CONF} && sudo pacman -Syu")
-    return result(GROUP, "repo", Status.OK, value=t("multilib.repo.enabled"))
+    pm = ctx.package_manager
+    if isinstance(pm, Pacman):
+        conf = read_text(PACMAN_CONF)
+        if conf is None:
+            return result(GROUP, "repo", Status.UNKNOWN, error=t("multilib.repo.no_conf", path=PACMAN_CONF))
+        ctx.multilib_enabled = multilib_enabled(conf)
+        if not ctx.multilib_enabled:
+            return result(GROUP, "repo", Status.FAIL, value=t("multilib.repo.disabled"),
+                          hint=t("multilib.repo.disabled_hint", path=PACMAN_CONF),
+                          fix=f"sudoedit {PACMAN_CONF} && sudo pacman -Syu")
+        return result(GROUP, "repo", Status.OK, value=t("multilib.repo.enabled"))
+    if isinstance(pm, Apt):
+        ctx.multilib_enabled = pm.i386_enabled()
+        if not ctx.multilib_enabled:
+            return result(GROUP, "repo", Status.FAIL, value=t("multilib.repo.i386_disabled"),
+                          hint=t("multilib.repo.i386_hint"), fix=ENABLE_I386)
+        return result(GROUP, "repo", Status.OK, value=t("multilib.repo.i386_enabled"))
+    if isinstance(pm, Dnf):
+        ctx.multilib_enabled = True
+        return result(GROUP, "repo", Status.OK, value=t("multilib.repo.fedora"))
+    return result(GROUP, "repo", Status.UNKNOWN, value=t("multilib.unsupported"))
 
 
 @check("packages")
 def check_packages(ctx: Context):
-    if not _is_pacman(ctx):
+    if ctx.package_manager is None:
         return []  # причину уже показала проверка repo
     vendors = sorted({g.vendor for g in ctx.gpus
                       if g.vendor in LIB32_BY_VENDOR and g.driver in GOOD_DRIVERS[g.vendor]})
-    wanted = list(dict.fromkeys(LIB32_COMMON + [p for v in vendors for p in LIB32_BY_VENDOR[v]]))
+    wanted = list(packages.component(ctx, "lib32_vulkan_loader") or [])
+    unknown = []
+    for v in vendors:
+        names = packages.component(ctx, LIB32_BY_VENDOR[v])
+        if names is None:
+            unknown.append(VENDOR_NAMES[v])
+        else:
+            wanted += [n for n in names if n not in wanted]
+    if not wanted:
+        return result(GROUP, "packages", Status.UNKNOWN, value=t("multilib.unsupported"))
+
     versions = packages.query(ctx, wanted)
     missing = [p for p in wanted if versions[p] is None]
     installed = [p for p in wanted if versions[p] is not None]
+    note = "\n" + t("multilib.packages.unknown_vendor", vendors=", ".join(unknown)) if unknown else ""
     if missing:
         hint = t("multilib.packages.missing_hint")
         if ctx.multilib_enabled is False:
             hint += " " + t("multilib.packages.enable_first")
         return result(GROUP, "packages", Status.FAIL,
-                      value=t("multilib.packages.missing", packages=", ".join(missing)),
-                      hint=hint, fix=ctx.package_manager.install_command(missing))
+                      value=t("multilib.packages.missing", packages=", ".join(missing)) + note,
+                      hint=hint, **packages.fix_for(ctx, missing))
     vendor_names = ", ".join(VENDOR_NAMES[v] for v in vendors)
-    value = ", ".join(installed) + (f" ({vendor_names})" if vendor_names else "")
+    value = ", ".join(installed) + (f" ({vendor_names})" if vendor_names else "") + note
     return result(GROUP, "packages", Status.OK, value=value)
 
 
 @check("nvidia_match")
 def check_nvidia_match(ctx: Context):
-    """64- и 32-битная части драйвера NVIDIA должны быть одной версии."""
-    if not _is_pacman(ctx) or not any(g.vendor == "nvidia" and g.driver == "nvidia" for g in ctx.gpus):
+    """64- и 32-битная части драйвера NVIDIA должны быть одной версии (проверяем на Arch)."""
+    if not isinstance(ctx.package_manager, Pacman) or \
+            not any(g.vendor == "nvidia" and g.driver == "nvidia" for g in ctx.gpus):
         return []
     v = packages.query(ctx, ["nvidia-utils", "lib32-nvidia-utils"])
     v64, v32 = v["nvidia-utils"], v["lib32-nvidia-utils"]

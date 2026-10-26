@@ -55,8 +55,8 @@ TEXTS = {
     "distro.package_manager.aur": ", AUR: {helpers}",
     "distro.package_manager.flatpak": ", есть flatpak",
     "distro.package_manager.unsupported_hint": (
-        "Пока программа умеет проверять пакеты только через pacman (Arch и производные). "
-        "Проверки, которым нужен список пакетов, будут пропущены."
+        "Программа умеет проверять пакеты через pacman, apt и dnf. "
+        "Здесь другой менеджер, проверки пакетов будут пропущены."
     ),
 
     # --- видеокарта ---
@@ -112,8 +112,9 @@ TEXTS = {
     "vulkan.icd.none": "не найдены",
     "vulkan.icd.missing_hint": (
         "Нет Vulkan-драйвера для: {vendors}. Без него игры через Proton не запустятся "
-        "или пойдут на процессоре. Нужный пакет: {packages}."
+        "или пойдут на процессоре."
     ),
+    "vulkan.icd.packages": "Нужный пакет: {packages}.",
     "vulkan.devices.title": "Vulkan видит видеокарту",
     "vulkan.devices.no_tool": "нет vulkaninfo",
     "vulkan.devices.no_tool_hint": "Утилита vulkaninfo нужна только для проверки, играм она не требуется.",
@@ -126,8 +127,12 @@ TEXTS = {
     "vulkan.devices.unseen_hint": "Эти видеокарты есть в системе, но Vulkan их не видит: {gpus}.",
 
     # --- 32 бита ---
-    "multilib.only_arch": "пока проверяется только на Arch и производных",
-    "multilib.repo.title": "Репозиторий multilib",
+    "multilib.unsupported": "для этого дистрибутива пока не проверяем",
+    "multilib.repo.title": "32-битные пакеты (multilib / i386)",
+    "multilib.repo.i386_enabled": "архитектура i386 включена",
+    "multilib.repo.i386_disabled": "архитектура i386 выключена",
+    "multilib.repo.i386_hint": "Без i386 не поставить 32-битные библиотеки, а без них не работают Steam и многие игры.",
+    "multilib.repo.fedora": "пакеты .i686 доступны всегда",
     "multilib.repo.no_conf": "не удалось прочитать {path}",
     "multilib.repo.enabled": "включён",
     "multilib.repo.disabled": "выключен",
@@ -142,7 +147,8 @@ TEXTS = {
         "32-битные игры и сам Steam не увидят видеокарту: будут вылеты при запуске "
         "или ошибка «no Vulkan device»."
     ),
-    "multilib.packages.enable_first": "Сначала включите multilib (см. строку выше).",
+    "multilib.packages.enable_first": "Сначала включите 32-битные пакеты (см. строку выше).",
+    "multilib.packages.unknown_vendor": "32-битный драйвер для {vendors} на этом дистрибутиве не проверяем.",
     "multilib.nvidia_match.title": "Версии драйвера NVIDIA 64/32 бит",
     "multilib.nvidia_match.differ": "64 бит: {v64}, 32 бит: {v32}",
     "multilib.nvidia_match.differ_hint": (
@@ -156,6 +162,7 @@ TEXTS = {
     "steam.install.other": "другой способ (папка есть, пакета нет)",
     "steam.install.not_found": "не найден",
     "steam.install.not_found_hint": "Steam не установлен. Если играете через Heroic или Lutris, это не проблема.",
+    "steam.install.fedora_hint": "На Fedora пакет steam есть в репозитории RPM Fusion nonfree, его нужно подключить.",
     "steam.install.several_hint": "Steam стоит несколькими способами. Легко запутаться, где какие игры и настройки.",
     "steam.libraries.title": "Библиотеки игр",
     "steam.libraries.no_root": "папка Steam не найдена",

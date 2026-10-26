@@ -52,9 +52,10 @@ def count_games(library: Path) -> int:
 
 def _install_methods(ctx: Context) -> list[str]:
     methods = []
-    pkgs = packages.query(ctx, ["steam"])
-    if pkgs and pkgs.get("steam"):
-        methods.append(t("steam.install.package", version=packages.strip_version(pkgs["steam"])))
+    names = packages.component(ctx, "steam")
+    pkgs = packages.query(ctx, names) if names else None
+    if pkgs and pkgs.get(names[0]):
+        methods.append(t("steam.install.package", version=packages.strip_version(pkgs[names[0]])))
     if which("flatpak"):
         try:
             apps = run(["flatpak", "list", "--app", "--columns=application"]).stdout.split()
@@ -76,9 +77,11 @@ def check_install(ctx: Context):
     ctx.steam_roots = find_roots()
     methods = _install_methods(ctx)
     if not methods and not ctx.steam_roots:
-        fix = ctx.package_manager.install_command(["steam"]) if ctx.package_manager else None
+        hint = t("steam.install.not_found_hint")
+        if ctx.package_manager and ctx.package_manager.family == "fedora":
+            hint += " " + t("steam.install.fedora_hint")
         return result(GROUP, "install", Status.WARN, value=t("steam.install.not_found"),
-                      hint=t("steam.install.not_found_hint"), fix=fix)
+                      hint=hint, **packages.fix_for(ctx, packages.component(ctx, "steam") or []))
     if not methods:
         methods.append(t("steam.install.other"))
     value = ", ".join(methods)

@@ -29,6 +29,7 @@ class CheckResult:
     hint: str = ""             # пояснение: что это и чем грозит
     fix: str | None = None     # команда-исправление (только показываем, не выполняем)
     error: str | None = None   # текст ошибки, если проверка не удалась
+    packages: list[str] = field(default_factory=list)  # что поставить для исправления (для --fix)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -40,6 +41,7 @@ class CheckResult:
             "hint": self.hint,
             "fix": self.fix,
             "error": self.error,
+            "packages": self.packages,
         }
 
 
@@ -61,5 +63,6 @@ class Context:
     package_manager: Any = None  # doctor.packages.PackageManager | None
     gpus: list[GPU] = field(default_factory=list)
     multilib_enabled: bool | None = None  # None = не проверяли
+    pkg_params: dict[str, str] = field(default_factory=dict)  # подстановки в имена пакетов
     steam_roots: list[tuple[str, Path]] = field(default_factory=list)  # [(способ установки, путь)]
     steam_libraries: list[Path] = field(default_factory=list)

@@ -16,11 +16,11 @@ GROUP = "vulkan"
 
 ICD_DIRS = [Path("/usr/share/vulkan/icd.d"), Path("/etc/vulkan/icd.d")]
 
-# Начало имени ICD-файла (описания Vulkan-драйвера) и пакет Arch, который его ставит.
+# Начало имени ICD-файла (описания Vulkan-драйвера) и компонент из doctor.pkgnames, который его ставит.
 ICD_BY_VENDOR = {
-    "nvidia": ("nvidia_icd", "nvidia-utils"),
-    "amd": ("radeon_icd", "vulkan-radeon"),
-    "intel": ("intel_icd", "vulkan-intel"),
+    "nvidia": ("nvidia_icd", "vulkan_nvidia"),
+    "amd": ("radeon_icd", "vulkan_amd"),
+    "intel": ("intel_icd", "vulkan_intel"),
 }
 
 
@@ -30,14 +30,13 @@ def _icd_files() -> list[str]:
 
 @check("loader")
 def check_loader(ctx: Context):
-    pkgs = packages.query(ctx, ["vulkan-icd-loader"])
-    if pkgs is None:
+    names = packages.component(ctx, "vulkan_loader")
+    if not names:
         return []  # пакетный менеджер не поддерживается — судим по vulkaninfo ниже
-    version = pkgs["vulkan-icd-loader"]
+    version = packages.query(ctx, names)[names[0]]
     if version is None:
         return result(GROUP, "loader", Status.FAIL, value=t("common.not_installed"),
-                      hint=t("vulkan.loader.missing_hint"),
-                      fix=ctx.package_manager.install_command(["vulkan-icd-loader"]))
+                      hint=t("vulkan.loader.missing_hint"), **packages.fix_for(ctx, names))
     return result(GROUP, "loader", Status.OK, value=packages.strip_version(version))
 
 
@@ -51,12 +50,13 @@ def check_icd(ctx: Context):
     missing = [v for v in vendors if not any(f.startswith(ICD_BY_VENDOR[v][0]) for f in files)]
     value = ", ".join(files) or t("vulkan.icd.none")
     if missing:
-        pkgs = [ICD_BY_VENDOR[v][1] for v in missing]
-        fix = ctx.package_manager.install_command(pkgs) if ctx.package_manager else None
-        return result(GROUP, "icd", Status.FAIL, value=value,
-                      hint=t("vulkan.icd.missing_hint", vendors=", ".join(VENDOR_NAMES[v] for v in missing),
-                             packages=", ".join(pkgs)),
-                      fix=fix)
+        resolved = [packages.component(ctx, ICD_BY_VENDOR[v][1]) for v in missing]
+        pkgs = list(dict.fromkeys(p for names in resolved if names for p in names))
+        hint = t("vulkan.icd.missing_hint", vendors=", ".join(VENDOR_NAMES[v] for v in missing))
+        if pkgs:
+            hint += " " + t("vulkan.icd.packages", packages=", ".join(pkgs))
+        return result(GROUP, "icd", Status.FAIL, value=value, hint=hint,
+                      **packages.fix_for(ctx, pkgs))
     if not files:
         return result(GROUP, "icd", Status.UNKNOWN, value=value)
     return result(GROUP, "icd", Status.OK, value=value)
@@ -85,9 +85,9 @@ def parse_vulkaninfo_summary(text: str) -> list[dict[str, str]]:
 @check("devices")
 def check_devices(ctx: Context):
     if not which("vulkaninfo"):
-        fix = ctx.package_manager.install_command(["vulkan-tools"]) if ctx.package_manager else None
         return result(GROUP, "devices", Status.UNKNOWN, value=t("vulkan.devices.no_tool"),
-                      hint=t("vulkan.devices.no_tool_hint"), fix=fix)
+                      hint=t("vulkan.devices.no_tool_hint"),
+                      **packages.fix_for(ctx, packages.component(ctx, "vulkan_tools") or []))
     out = run(["vulkaninfo", "--summary"])
     devices = parse_vulkaninfo_summary(out.stdout)
     if out.returncode != 0 or not devices:
