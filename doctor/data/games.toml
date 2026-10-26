@@ -2,7 +2,7 @@
 #
 # Правила:
 #   - пишем только то, что подтверждено источником (sources);
-#   - notes — по языкам, чтобы потом добавить английский;
+#   - notes — по языкам: notes.ru и notes.en (тест проверяет, что есть оба);
 #   - native = true — у игры есть Linux-версия (по API Steam);
 #   - min_max_map_count — игре нужен vm.max_map_count не меньше этого;
 #   - online_broken = true — онлайн не работает на Linux из-за античита.
@@ -12,6 +12,7 @@
 name = "Grand Theft Auto V Legacy"
 online_broken = true
 notes.ru = "GTA Online не работает на Linux: с сентября 2024 BattlEye не пускает Proton. Сюжетный режим работает."
+notes.en = "GTA Online doesn't work on Linux: since September 2024 BattlEye blocks Proton. Story Mode works."
 sources = [
   "https://www.gamingonlinux.com/2024/09/grand-theft-auto-v-gets-battleye-anti-cheat-breaks-online-play-on-steam-deck-linux/",
   "https://areweanticheatyet.com/game/grand-theft-auto-v",
@@ -21,6 +22,7 @@ sources = [
 name = "Grand Theft Auto V Enhanced"
 online_broken = true
 notes.ru = "GTA Online не работает на Linux: BattlEye не пускает Proton. Сюжетный режим работает."
+notes.en = "GTA Online doesn't work on Linux: BattlEye blocks Proton. Story Mode works."
 sources = [
   "https://www.gamingonlinux.com/2024/09/grand-theft-auto-v-gets-battleye-anti-cheat-breaks-online-play-on-steam-deck-linux/",
 ]
@@ -45,6 +47,7 @@ name = "Counter-Strike 2"
 native = true
 min_max_map_count = 1048576
 notes.ru = "Матчмейкинг Valve работает. Сторонние платформы (FACEIT, ESEA и др.) Linux не пускают."
+notes.en = "Valve matchmaking works. Third-party platforms (FACEIT, ESEA, etc.) block Linux."
 sources = [
   "https://lists.archlinux.org/archives/list/arch-dev-public@lists.archlinux.org/thread/5GU7ZUFI25T2IRXIQ62YYERQKIPE3U6E/",
   "https://areweanticheatyet.com/",

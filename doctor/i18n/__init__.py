@@ -1,14 +1,27 @@
 """Переводы. Все тексты интерфейса лежат в doctor/i18n/<язык>.py в словаре TEXTS.
 
-Чтобы добавить язык: скопировать ru.py в en.py, перевести значения и добавить код в AVAILABLE.
+Чтобы добавить язык: скопировать en.py в <код>.py, перевести значения и добавить код в AVAILABLE.
+Язык по умолчанию берётся из локали системы (LANG и др.).
 """
 
 from __future__ import annotations
 
+import os
 from importlib import import_module
 
-AVAILABLE = ("ru",)
-DEFAULT = "ru"
+AVAILABLE = ("ru", "en")
+
+
+def system_language() -> str:
+    """Язык по переменным окружения: ru для русской локали, иначе en."""
+    for var in ("LC_ALL", "LC_MESSAGES", "LANG", "LANGUAGE"):
+        value = os.environ.get(var, "")
+        if value:
+            return "ru" if value.lower().startswith(("ru", "uk", "be")) else "en"
+    return "en"
+
+
+DEFAULT = system_language()
 
 _texts: dict[str, str] = {}
 _lang = DEFAULT

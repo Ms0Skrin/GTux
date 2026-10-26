@@ -12,7 +12,7 @@ from doctor.i18n import t
 from doctor.models import CheckResult, Context
 
 YES = {"y", "yes", "д", "да"}
-SELECT = {"s", "в", "выбрать"}
+SELECT = {"s", "select", "в", "выбрать"}
 
 
 def _ask(console: Console, prompt: str) -> str:
