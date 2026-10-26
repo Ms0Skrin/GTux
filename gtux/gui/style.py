@@ -31,6 +31,7 @@ def css(p: dict) -> str:
 .stat.{s} {{ background: {bg}; }}
 .stat.{s} .stat-number, .stat.{s} .stat-label {{ color: {fg}; }}
 .dot.{s} {{ background: {fg}; }}
+image.status-{s} {{ color: {fg}; }}
 """ for s, (bg, fg) in ((k, p[k]) for k in ("ok", "warn", "fail", "unknown")))
     return f"""
 :root {{

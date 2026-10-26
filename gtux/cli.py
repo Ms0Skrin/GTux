@@ -26,6 +26,7 @@ def main() -> int:
     mode.add_argument("--report", action="store_true", help=t("cli.report"))
     mode.add_argument("--update-kb", action="store_true", help=t("cli.update_kb"))
     mode.add_argument("--install-ge", metavar="DIR", help=t("cli.install_ge"))
+    mode.add_argument("--library", action="store_true", help=t("cli.library"))
     parser.add_argument("--lang", choices=i18n.AVAILABLE, default=None, help=t("cli.lang"))
     parser.add_argument("--debug", action="store_true", help=t("cli.debug"))
     parser.add_argument("--no-history", action="store_true", help=t("cli.no_history"))
@@ -66,6 +67,8 @@ def run(args) -> int:
 
     ctx = Context(verify_packages=True)
     results = run_all(ALL_GROUPS, ctx)
+    if args.library:
+        return show_library(ctx)
 
     if args.json:
         from gtux.output import json_out
@@ -90,6 +93,28 @@ def run(args) -> int:
 
     return 1 if any(r.status == Status.FAIL for r in results) else 0
 
+
+
+def show_library(ctx) -> int:
+    """Вся библиотека Steam в терминале: та же сводка, что на странице «Библиотека» в окне."""
+    from rich.console import Console
+    from rich.table import Table
+
+    from gtux import knowledge, library
+    games = library.scan([root for _, root in ctx.steam_roots], ctx.steam_libraries, knowledge.profile_from(ctx))
+    if not games:
+        print(t("gui.library.empty"))
+        return 1
+    colors = {"ok": "green", "warn": "yellow", "fail": "red", "unknown": "bright_black"}
+    table = Table(title=t("gui.library.title"), show_lines=False)
+    table.add_column("", width=2)
+    table.add_column(t("gui.launch.game"))
+    table.add_column("")
+    for game in games:
+        status, parts = library.summary(game)
+        table.add_row(f"[{colors[status.value]}]●[/]", game.name, " · ".join(parts))
+    Console().print(table)
+    return 0
 
 
 def install_ge(target: Path) -> int:

@@ -21,12 +21,13 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Adw, Gdk, Gio, GLib, Gtk  # noqa: E402
 
-from gtux import __version__, fixer, gamedb, history, i18n, knowledge, paths  # noqa: E402
+from gtux import __version__, fixer, gamedb, history, i18n, knowledge, library, paths  # noqa: E402
 from gtux import log as gtux_log  # noqa: E402
 from gtux.checks import ALL_GROUPS  # noqa: E402
 from gtux.checks import proton as proton_checks  # noqa: E402
 from gtux.gui import style  # noqa: E402
 from gtux.gui.launch_page import LaunchOptionsPage  # noqa: E402
+from gtux.gui.library_page import LibraryPage  # noqa: E402
 from gtux.i18n import t  # noqa: E402
 from gtux.models import CheckResult, Context, Status  # noqa: E402
 from gtux.output import report  # noqa: E402
@@ -227,6 +228,11 @@ class DoctorWindow(Adw.ApplicationWindow):
             self.protons = proton_checks.installed_variants(ctx)
             self.internal_tools = proton_checks.internal_names(ctx)
             self.latest_official = proton_checks.latest_official(ctx)
+            try:
+                self.library = library.scan([root for _, root in ctx.steam_roots], ctx.steam_libraries, self.profile)
+            except Exception:  # noqa: BLE001 — библиотека не главное: без неё окно всё равно открывается
+                log.exception("library scan failed")
+                self.library = []
             # в демо и при снимках экрана сравнивать с настоящей историей бессмысленно
             fake = os.environ.get("GTUX_GUI_DEMO") or os.environ.get("GTUX_GUI_SNAPSHOT")
             previous = None if fake else history.load_latest()
@@ -273,6 +279,7 @@ class DoctorWindow(Adw.ApplicationWindow):
                                              self.steam_games, self.profile, self.open_kb_dialog, self.protons,
                                              self.internal_tools, self.latest_official)
         self.stack.add_named(self.launch_page, "tool:launch")
+        self.stack.add_named(LibraryPage(self.library, self.open_in_launch_page), "tool:library")
         self._fill_sidebar()
         self.fix_btn.set_visible(bool(plan.steps or plan.offers))
         self.report_btn.set_sensitive(True)
@@ -298,7 +305,16 @@ class DoctorWindow(Adw.ApplicationWindow):
         tool_row = self._nav_row("document-edit-symbolic", t("gui.launch.title"), None)
         tool_row.set_margin_top(12)
         self.nav.append(tool_row)
+        self._nav_names.append("tool:library")
+        self.nav.append(self._nav_row("view-list-symbolic", t("gui.library.title"), None))
         self.nav.select_row(self.nav.get_row_at_index(0))
+
+    def open_in_launch_page(self, appid: str):
+        """Из «Библиотеки»: открыть установленную игру на странице «Параметры запуска»."""
+        ids = [s.game.appid for s in self.steam_games]
+        if appid in ids:
+            self.nav.select_row(self.nav.get_row_at_index(self._nav_names.index("tool:launch")))
+            self.launch_page.game_row.set_selected(ids.index(appid) + 1)
 
     def _nav_row(self, icon_name: str, text: str, items: list[CheckResult] | None) -> Gtk.ListBoxRow:
         box = Gtk.Box(spacing=12, margin_top=6, margin_bottom=6, margin_start=6, margin_end=6)
