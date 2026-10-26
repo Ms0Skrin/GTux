@@ -27,6 +27,9 @@ from gtux.packages import Apt, Pacman
 PROBLEMS = (Status.FAIL, Status.WARN, Status.UNKNOWN)
 PACKAGE_KINDS = ("enable_i386", "install")
 FLATHUB = "https://dl.flathub.org/repo/flathub.flatpakrepo"
+# «Подготовить всё для игр»: какие пункты «по желанию» отмечаются сразу. Полное обновление системы и
+# protontricks — нет: они для конкретных случаев (рассинхрон драйвера, лог конкретной игры).
+SETUP_KINDS = {"install", "flatpak_app", "ge_proton", "enable_multilib"}
 
 
 @dataclass
@@ -264,3 +267,8 @@ def execute(plan: Plan, echo) -> tuple[bool, Step | None, int]:
             if code != 0:
                 return False, step, code
     return True, None, 0
+
+
+def setup_offers(plan: Plan) -> list[Step]:
+    """Пункты «по желанию», которые «Подготовить всё для игр» отмечает сразу."""
+    return [s for s in plan.offers if s.kind in SETUP_KINDS]

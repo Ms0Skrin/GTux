@@ -191,3 +191,17 @@ class VerifyTest(unittest.TestCase):
         self.assertEqual([s.command for s in plan.steps], ["sudo apt install gamemode"])  # i386 больше не нужен
         self.assertEqual(plan.offers[0].kind, "flatpak_app")
         self.assertIn("net.lutris.Lutris", plan.offers[0].command)
+
+
+class SetupTest(unittest.TestCase):
+    def test_setup_preselects_useful_not_risky_specific(self):
+        res = [CheckResult("apps.lutris", "apps", "Lutris", Status.OK,
+                           actions=[Action("package", "lutris", optional=True)]),
+               CheckResult("proton.custom", "proton", "GE", Status.WARN,
+                           actions=[Action("ge_proton", "/x/compatibilitytools.d", optional=True)]),
+               CheckResult("multilib.nvidia_match", "multilib", "nv", Status.FAIL,
+                           actions=[Action("system_upgrade", "pacman", optional=True)]),
+               CheckResult("logs.proton.1", "logs", "log", Status.FAIL,
+                           actions=[Action("protontricks", "1", "vcrun2022", optional=True)])]
+        plan = fixer.build_plan(res, Context(package_manager=packages.Pacman()))
+        self.assertEqual([s.kind for s in fixer.setup_offers(plan)], ["install", "ge_proton"])

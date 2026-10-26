@@ -18,6 +18,7 @@ shot() {  # shot <файл> [переменные окружения...] [-- а�
 LANG_ARG="--lang ru" shot overview-light.png GTUX_GUI_SCHEME=light GTUX_GUI_DEMO=1
 LANG_ARG="--lang ru" shot overview-dark.png  GTUX_GUI_SCHEME=dark  GTUX_GUI_DEMO=1
 LANG_ARG="--lang ru" shot games-dark.png     GTUX_GUI_SCHEME=dark  GTUX_GUI_PAGE=games
+LANG_ARG="--lang ru" shot library.png        GTUX_GUI_SCHEME=light GTUX_GUI_PAGE=library
 LANG_ARG="--lang ru" shot launch-options.png GTUX_GUI_SCHEME=dark GTUX_GUI_PAGE=launch GTUX_GUI_GAME=1771300
 LANG_ARG="--lang en" shot vulkan-en.png      GTUX_GUI_SCHEME=light GTUX_GUI_DEMO=1 GTUX_GUI_PAGE=vulkan
 # fix-dialog.png снимается только на настоящем экране: на Broadway без подключённого браузера

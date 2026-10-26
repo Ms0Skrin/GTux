@@ -2,7 +2,7 @@
 # Пакет для AUR: исходники с GitHub по тегу v$pkgver. Обновление: scripts/update_aur.sh
 
 pkgname=gtux
-pkgver=0.7.0
+pkgver=0.8.0
 pkgrel=1
 pkgdesc="Checks a Linux system and explains in plain words what is missing for gaming"
 url='https://github.com/Ms0Skrin/GTux'

@@ -169,6 +169,7 @@ class DoctorWindow(Adw.ApplicationWindow):
             item.set_action_and_target_value("app.language", GLib.Variant.new_string(code))
             lang_menu.append_item(item)
         menu.append_submenu(t("gui.menu.language"), lang_menu)
+        menu.append(t("gui.setup.menu"), "app.setup")
         menu.append(t("gui.kb.update"), "app.update-kb")
         menu.append(t("gui.menu.log"), "app.open-log")
         menu.append(t("gui.menu.about"), "app.about")
@@ -236,6 +237,8 @@ class DoctorWindow(Adw.ApplicationWindow):
             # в демо и при снимках экрана сравнивать с настоящей историей бессмысленно
             fake = os.environ.get("GTUX_GUI_DEMO") or os.environ.get("GTUX_GUI_SNAPSHOT")
             previous = None if fake else history.load_latest()
+            # первый запуск: истории ещё нет — на «Обзоре» предлагаем подготовить всё для игр
+            self.first_run = os.environ.get("GTUX_GUI_FIRST_RUN") == "1" or (not fake and previous is None)
             self.changes = history.diff(previous, results)
             self.previous_time = previous.get("time") if previous else None
             if self.app.save_history and not os.environ.get("GTUX_GUI_SNAPSHOT"):
@@ -396,6 +399,19 @@ class DoctorWindow(Adw.ApplicationWindow):
             stats.append(card)
         box.append(stats)
 
+        # первый запуск: «подготовить всё для игр» одной кнопкой (как в CachyOS Hello, но для любого дистрибутива)
+        if getattr(self, "first_run", False) and self.plan and (self.plan.steps or fixer.setup_offers(self.plan)):
+            setup = Gtk.Box(spacing=12)
+            setup.add_css_class("fix-banner")
+            setup.append(icon("starred-symbolic", "emblem-favorite-symbolic"))
+            setup.append(self._expand(label(t("gui.setup.banner"))))
+            sbtn = Gtk.Button(label=t("gui.setup.button"), valign=Gtk.Align.CENTER)
+            sbtn.add_css_class("suggested-action")
+            sbtn.add_css_class("pill")
+            sbtn.connect("clicked", lambda *_: self.open_fix_dialog(setup=True))
+            setup.append(sbtn)
+            box.append(setup)
+
         # баннер автоисправления
         if self.plan and self.plan.steps:
             count = sum(len(st.packages) if st.packages else int(st.kind not in fixer.PACKAGE_KINDS)
@@ -524,10 +540,12 @@ class DoctorWindow(Adw.ApplicationWindow):
         KnowledgeDialog(self).present(self)
 
     # ----- исправление -----
-    def open_fix_dialog(self):
+    def open_fix_dialog(self, setup: bool = False):
         if not self.plan or not (self.plan.steps or self.plan.offers):
+            if setup:
+                self.toasts.add_toast(Adw.Toast.new(t("gui.setup.nothing")))
             return
-        FixDialog(self).present(self)
+        FixDialog(self, setup).present(self)
 
     # ----- снимок экрана для разработчиков (GTUX_GUI_SNAPSHOT=путь.png) -----
     def _maybe_snapshot(self):
@@ -562,15 +580,16 @@ class DoctorWindow(Adw.ApplicationWindow):
 
 
 class FixDialog(Adw.Dialog):
-    def __init__(self, win: DoctorWindow):
-        super().__init__(title=t("gui.fix.title"), content_width=640)
+    def __init__(self, win: DoctorWindow, setup: bool = False):
+        super().__init__(title=t("gui.setup.title") if setup else t("gui.fix.title"), content_width=640)
         self.win = win
         self.pm = win.ctx.package_manager if win.ctx else None
         self.checks: list[tuple[Gtk.CheckButton, list[fixer.Step]]] = []
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=14,
                       margin_top=12, margin_bottom=18, margin_start=18, margin_end=18)
-        box.append(label(t("gui.fix.intro")))
+        box.append(label(t("gui.setup.intro") if setup else t("gui.fix.intro")))
+        preset = {id(s) for s in fixer.setup_offers(win.plan)} if setup else set()
         # включение i386 нужно только вместе с установкой пакетов — одна галочка на всё
         prereq = [st for st in win.plan.steps if st.kind == "enable_i386"]
         for step in win.plan.steps:
@@ -580,7 +599,7 @@ class FixDialog(Adw.Dialog):
         if win.plan.offers:
             box.append(label(t("gui.fix.offers"), "heading"))
             for step in win.plan.offers:  # по желанию: галочку ставит сам человек
-                self._add_check(box, step.chain(), step, active=False)
+                self._add_check(box, step.chain(), step, active=id(step) in preset)
         if win.plan.skipped:
             box.append(label(t("gui.fix.skipped", packages=", ".join(win.plan.skipped)), "error-box"))
         if win.plan.unavailable:
@@ -782,6 +801,9 @@ class DoctorApp(Adw.Application):
         open_log = Gio.SimpleAction.new("open-log", None)
         open_log.connect("activate", self._on_open_log)
         self.add_action(open_log)
+        setup = Gio.SimpleAction.new("setup", None)
+        setup.connect("activate", lambda *_: self.win.open_fix_dialog(setup=True))
+        self.add_action(setup)
         update_kb = Gio.SimpleAction.new("update-kb", None)
         update_kb.connect("activate", lambda *_: self.win.open_kb_dialog())
         self.add_action(update_kb)

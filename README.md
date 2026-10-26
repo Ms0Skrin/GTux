@@ -12,8 +12,8 @@
 | ![Обзор](docs/screenshots/overview-light.png) | ![Игры](docs/screenshots/games-dark.png) |
 | **Раздел с проблемой (English)** | **Исправление одной кнопкой** |
 | ![Vulkan](docs/screenshots/vulkan-en.png) | ![Исправление](docs/screenshots/fix-dialog.png) |
-| **Конструктор параметров запуска** | |
-| ![Параметры запуска](docs/screenshots/launch-options.png) | |
+| **Параметры запуска: рекомендация под ваш ПК** | **Вся библиотека Steam** |
+| ![Параметры запуска](docs/screenshots/launch-options.png) | ![Библиотека](docs/screenshots/library.png) |
 
 На скриншотах с проблемами добавлены демо-данные (`GTUX_GUI_DEMO=1`), чтобы были видны все статусы.
 
@@ -68,6 +68,8 @@ python main.py --gui     # графическое окно
 python main.py --fix     # то же + предложить исправить автоматически
 python main.py --update-kb # скачать базу знаний ProtonDB (советы по параметрам)
 python main.py --install-ge ~/.local/share/Steam/compatibilitytools.d  # свежий GE-Proton
+python main.py --library   # вся библиотека Steam с оценкой под ваш ПК
+python main.py --setup     # подготовить всё для игр (--fix + лаунчеры, GE-Proton, multilib)
 python main.py --json    # JSON для скриптов, бота, GUI
 python main.py --report  # отчёт в Markdown, чтобы вставить на форум
 python main.py --lang en # English
@@ -152,6 +154,19 @@ sudo dnf install libadwaita python3-gobject            # Fedora
 
 Результат лежит в `~/.cache/gtux/knowledge.json`, проверки читают только его.
 Данные отчётов: ProtonDB, лицензия [ODbL](https://opendatacommons.org/licenses/odbl/).
+
+### Библиотека (страница «Библиотека» или `--library`)
+
+Все игры вашей библиотеки Steam, включая неустановленные, — без ключа Steam API: список берётся из
+`appcache/librarycache` и `localconfig.vdf`, названия, тип и ОС — из `appcache/appinfo.vdf`. Для каждой игры:
+есть ли Linux-версия, какая сборка лучше всего работает у игроков с такой же видеокартой (база знаний ProtonDB),
+что говорит античит. Установленную игру можно открыть на странице «Параметры запуска».
+
+### Подготовить всё для игр (`--setup`, кнопка при первом запуске и в меню)
+
+То же, что «Исправить…», но сразу отмечены и полезные пункты «по желанию»: включение multilib, Lutris,
+protontricks, Heroic, Faugus, GE-Proton. Не отмечаются полное обновление системы и protontricks для
+конкретной игры. Всё видно списком, лишнее можно снять.
 
 ### Исправление одной кнопкой (`--fix` или «Исправить…» в окне)
 
@@ -283,6 +298,7 @@ gtux/
   output/               вывод: terminal.py (rich), json_out.py
   launchers.py          игры из Heroic / Lutris / Faugus (форматы взяты из их исходников)
   launchopts.py         конструктор параметров запуска, разбор и слияние строк
+  library.py            вся библиотека Steam: appinfo.vdf (двоичный v28/v29), librarycache, сводка по игре
   history.py            история проверок и «что изменилось»
   log.py                отладочный журнал
   paths.py              папки программы (XDG), переезд со старого имени linux-gamer-doctor

@@ -60,10 +60,15 @@ def _show_recheck(console: Console, before: list[CheckResult], after: list[Check
 
 
 def run(results: list[CheckResult], ctx: Context, console: Console | None = None,
-        recheck=None) -> int:
-    """recheck() — заново запустить проверки после исправления (необязательно)."""
+        recheck=None, setup: bool = False) -> int:
+    """recheck() — заново запустить проверки после исправления (необязательно).
+    setup — «подготовить всё для игр»: пункты «по желанию» из fixer.SETUP_KINDS сразу входят в план."""
     console = console or Console()
     plan = fixer.build_plan(results, ctx)
+    if setup:
+        chosen = fixer.setup_offers(plan)
+        plan.steps += chosen
+        plan.offers = [s for s in plan.offers if s not in chosen]
     if not plan.steps and not plan.skipped and not plan.offers and not plan.unavailable:
         console.print(f"\n[green]{escape(t('fix.nothing'))}[/]")
         return 0

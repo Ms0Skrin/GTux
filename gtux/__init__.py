@@ -4,7 +4,7 @@ Copyright (C) 2026 Евгений
 SPDX-License-Identifier: GPL-3.0-or-later
 """
 
-__version__ = "0.7.0"
+__version__ = "0.8.0"
 __license__ = "GPL-3.0-or-later"
 
 

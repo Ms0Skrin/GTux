@@ -22,6 +22,7 @@ def main() -> int:
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--gui", action="store_true", help=t("cli.gui"))
     mode.add_argument("--fix", action="store_true", help=t("cli.fix"))
+    mode.add_argument("--setup", action="store_true", help=t("cli.setup"))
     mode.add_argument("--json", action="store_true", help=t("cli.json"))
     mode.add_argument("--report", action="store_true", help=t("cli.report"))
     mode.add_argument("--update-kb", action="store_true", help=t("cli.update_kb"))
@@ -86,10 +87,11 @@ def run(args) -> int:
         changes = history.diff(previous, results)
         if not args.no_history:
             history.save(results)
-        terminal.render(results, show_fix_hint=not args.fix, changes=changes,
+        terminal.render(results, show_fix_hint=not (args.fix or args.setup), changes=changes,
                         previous_time=previous.get("time") if previous else None)
-        if args.fix:
-            return fix_ui.run(results, ctx, recheck=lambda: run_all(ALL_GROUPS, Context(verify_packages=True)))
+        if args.fix or args.setup:
+            return fix_ui.run(results, ctx, recheck=lambda: run_all(ALL_GROUPS, Context(verify_packages=True)),
+                              setup=args.setup)
 
     return 1 if any(r.status == Status.FAIL for r in results) else 0
 

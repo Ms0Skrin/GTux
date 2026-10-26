@@ -1,6 +1,6 @@
 # План и состояние проекта
 
-Обновляется в конце каждой рабочей сессии. Последнее обновление: **2026-10-26**, версия **0.7.0**. Название приложения — **GTux**.
+Обновляется в конце каждой рабочей сессии. Последнее обновление: **2026-10-26**, версия **0.8.0**. Название приложения — **GTux**.
 
 ## Сделано
 
@@ -46,6 +46,13 @@ protontricks — contrib/non-free; Fedora: Steam, NVIDIA — RPM Fusion), и `ap
 dnf -C repoquery), недоступное выносится в подсказку «какой репозиторий включить», Lutris/protontricks — с Flathub.
 Заголовок «Диск: {path}» без библиотек Steam — исправлен.
 
+**Библиотека** (0.8.0, идея из Protonux): все игры Steam, включая неустановленные, без ключа Steam API —
+`gtux/library.py` разбирает `appcache/appinfo.vdf` (v28/v29), список из `librarycache` + `localconfig.vdf`;
+страница «Библиотека» (поиск, фильтр, переход к параметрам запуска) и `gtux --library`.
+
+**Подготовить всё для игр** (0.8.0, идея из CachyOS Hello): баннер при первом запуске, пункт меню, `gtux --setup` —
+«Исправить…» с заранее отмеченными пунктами `fixer.SETUP_KINDS` (multilib, лаунчеры, GE-Proton).
+
 **Рискованные исправления «по желанию»** (сняты по умолчанию, с предупреждением): включение [multilib]
 (`sed` только по строкам раздела, сверка SHA-256 файла перед правкой, копия `pacman.conf.gtux-<время>`,
 затем `pacman -Syu` и пропущенные lib32-пакеты), `pacman -Syu` при рассинхроне NVIDIA 64/32,
@@ -71,12 +78,13 @@ GTK4/libadwaita/PyGObject — обязательные зависимости п
 
 **Прочее**: история проверок и diff, отладочный журнал
 с ротацией, английский перевод, лицензия GPL-3.0-or-later, пакет pacman (`scripts/build_arch_package.sh`),
-`pyproject.toml` для pipx, ярлык в меню, иконки GTux (цветная и symbolic), пакет 0.7.0-1 собран, GitHub Actions с тестами (`.github/workflows/tests.yml`, Python 3.11–3.14), строка статуса Claude Code в `~/.claude/statusline.py`
+`pyproject.toml` для pipx, ярлык в меню, иконки GTux (цветная и symbolic), пакет 0.8.0-1 собран, GitHub Actions с тестами (`.github/workflows/tests.yml`, Python 3.11–3.14), строка статуса Claude Code в `~/.claude/statusline.py`
 (лимиты 5ч/неделя Claude Code присылает устаревшими — помечаем «лимиты от …»).
 
 ## Дальше (по приоритету)
 
-4. **AUR**: пакет `gtux` (GitHub готов: https://github.com/Ms0Skrin/GTux, Actions зелёные на Python 3.11–3.14).
+4. **AUR**: всё готово (`packaging/aur/PKGBUILD`, `scripts/update_aur.sh`, имя `gtux` свободно) — нужен аккаунт
+   Евгения на aur.archlinux.org с SSH-ключом, затем залить PKGBUILD и .SRCINFO.
 5. Кнопка «Обновить базу античитов» в окне (по желанию пользователя, с интернетом).
 6. Расширять `games.toml` (только с источниками).
 7. Telegram-бот на домашнем сервере поверх `--json` (решить: проверяет сервер или принимает отчёты).
