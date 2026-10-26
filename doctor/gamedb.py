@@ -17,7 +17,7 @@ from dataclasses import dataclass
 from functools import cache
 from pathlib import Path
 
-from doctor import vdf
+from doctor import steamcfg, vdf
 
 DATA = Path(__file__).parent / "data"
 
@@ -64,14 +64,32 @@ def compat_mapping(root: Path) -> dict[str, str]:
 
 def launch_options(root: Path) -> dict[str, str]:
     """{appid: параметры запуска} из localconfig.vdf последнего активного пользователя."""
-    configs = sorted((root / "userdata").glob("*/config/localconfig.vdf"),
-                     key=lambda p: p.stat().st_mtime, reverse=True)
-    if not configs:
+    config = steamcfg.localconfig_path(root)
+    if config is None:
         return {}
-    apps = (_load_vdf(configs[0]).get("userlocalconfigstore", {}).get("software", {})
+    apps = (_load_vdf(config).get("userlocalconfigstore", {}).get("software", {})
             .get("valve", {}).get("steam", {}).get("apps", {}))
     return {appid: v["launchoptions"] for appid, v in apps.items()
             if isinstance(v, dict) and v.get("launchoptions", "").strip()}
+
+
+@dataclass
+class SteamSettings:
+    """Игра Steam вместе с тем, что нужно странице «Параметры запуска»."""
+    game: Game
+    config: Path | None     # localconfig.vdf, куда писать параметры
+    options: str            # текущие параметры запуска
+    tool: str | None        # сборка Proton, выбранная для игры (или по умолчанию)
+
+
+def steam_settings(roots: list[Path], libraries: list[Path]) -> list[SteamSettings]:
+    mapping, options, config = {}, {}, None
+    for root in roots:
+        mapping.update(compat_mapping(root))
+        options.update(launch_options(root))
+        config = config or steamcfg.localconfig_path(root)
+    return [SteamSettings(g, config, options.get(g.appid, ""), mapping.get(g.appid) or mapping.get("0"))
+            for g in installed_games([lib for lib in libraries if lib.exists()])]
 
 
 @cache

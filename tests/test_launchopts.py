@@ -31,3 +31,30 @@ class BuildTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ParseTest(unittest.TestCase):
+    def test_roundtrip_and_env_first(self):
+        from doctor.launchopts import compose, parse
+        self.assertEqual(compose(parse("gamemoderun PROTON_NO_ESYNC=1 %command% -novid")),
+                         "PROTON_NO_ESYNC=1 gamemoderun %command% -novid")
+        self.assertEqual(compose(parse("-novid -high")), "%command% -novid -high")
+        self.assertEqual(compose(parse('WINEDLLOVERRIDES="winmm=n,b" %command%')),
+                         "WINEDLLOVERRIDES=winmm=n,b %command%")
+
+    def test_refuses_shell(self):
+        from doctor.launchopts import parse
+        for bad in ["bash -c 'x' %command%", "%command% %command%", "%command% ; rm -rf ~",
+                    "echo hi", "%command% $(id)"]:
+            self.assertIsNone(parse(bad), bad)
+
+    def test_merge_and_config_from(self):
+        from doctor.launchopts import Parsed, compose, config_from, merge, parse
+        base = parse("mangohud PROTON_NO_ESYNC=1 VKD3D_CONFIG=dxr %command% -dx11")
+        merged = merge(base, Parsed(env={"PROTON_NO_ESYNC": "1"}, wrappers=["gamemoderun"], args=["-dx11"]))
+        self.assertEqual(compose(merged), "PROTON_NO_ESYNC=1 VKD3D_CONFIG=dxr gamemoderun mangohud %command% -dx11")
+        cfg, rest = config_from(base)
+        self.assertTrue(cfg.mangohud and cfg.no_esync)
+        self.assertEqual((rest.env, rest.wrappers, cfg.game_args), ({"VKD3D_CONFIG": "dxr"}, [], "-dx11"))
+        # переключатели + остаток дают то же самое (порядок переменных не важен)
+        self.assertEqual(merge(rest, parse(build(cfg))), base)

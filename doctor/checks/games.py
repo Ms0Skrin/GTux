@@ -6,12 +6,13 @@ import os
 import re
 import shlex
 
-from doctor import gamedb, launchers
+from doctor import gamedb, knowledge, launchers
 from doctor.checks import disks
 from doctor.checks.proton import installed_tool_names
 from doctor.i18n import current_language, t
 from doctor.models import Context, Status
 from doctor.runner import check, result
+from doctor.launchopts import merge, parse
 from doctor.system import read_text, which
 
 GROUP = "games"
@@ -73,7 +74,8 @@ def _tool_is_known(name: str, installed: set[str]) -> bool:
 
 
 def assess_game(game: gamedb.Game, *, mapping: dict[str, str], options: dict[str, str],
-                installed_tools: set[str], max_map_count: int | None) -> dict:
+                installed_tools: set[str], max_map_count: int | None,
+                profile: knowledge.Profile | None = None) -> dict:
     note = gamedb.notes_db().get(game.appid, {})
     ac = gamedb.anticheat_db().get(game.appid)
     native = bool(note.get("native") or (ac and ac.get("native")))
@@ -121,6 +123,19 @@ def assess_game(game: gamedb.Game, *, mapping: dict[str, str], options: dict[str
     if note_text:
         lines.append(note_text)
 
+    # --- база знаний ProtonDB (скачивается отдельно, см. doctor/knowledge.py) ---
+    tier = knowledge.tier_for(game.appid)
+    if tier and tier.get("tier"):
+        lines.append(t("games.tier", tier=tier["tier"], total=tier.get("total") or 0))
+    if profile is not None:
+        current = parse(opts) if opts else None
+        # аргументы игры (например -nobattleye) без пояснений вводят в заблуждение — они только в окне
+        tips = [tip.text for tip in knowledge.tips_for(game.appid, profile)
+                if not tip.missing_tool and not tip.token.startswith("arg:")
+                and not (current and merge(current, tip.as_parsed()) == current)]
+        if tips:
+            lines.append(t("games.tips", tips=", ".join(tips)))
+
     status = max((s for s, _ in findings), key=SEVERITY.index, default=Status.OK)
     hint = "\n".join(h for _, h in findings)
     if status != Status.OK:
@@ -142,11 +157,12 @@ def check_games(ctx: Context):
     installed_tools = installed_tool_names(ctx)
     raw = read_text("/proc/sys/vm/max_map_count")
     max_map_count = int(raw) if raw and raw.isdigit() else None
+    profile = knowledge.profile_from(ctx) if knowledge.load() else None
 
     results = []
     for game in games:
         verdict = assess_game(game, mapping=mapping, options=options,
-                              installed_tools=installed_tools, max_map_count=max_map_count)
+                              installed_tools=installed_tools, max_map_count=max_map_count, profile=profile)
         results.append(result(GROUP, f"app.{game.appid}", title=game.name, **verdict))
     return results
 

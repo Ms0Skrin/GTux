@@ -23,6 +23,7 @@ def main() -> int:
     mode.add_argument("--fix", action="store_true", help=t("cli.fix"))
     mode.add_argument("--json", action="store_true", help=t("cli.json"))
     mode.add_argument("--report", action="store_true", help=t("cli.report"))
+    mode.add_argument("--update-kb", action="store_true", help=t("cli.update_kb"))
     parser.add_argument("--lang", choices=i18n.AVAILABLE, default=None, help=t("cli.lang"))
     parser.add_argument("--debug", action="store_true", help=t("cli.debug"))
     parser.add_argument("--no-history", action="store_true", help=t("cli.no_history"))
@@ -52,6 +53,8 @@ def run(args) -> int:
         return app.run(args.lang, save_history=not args.no_history)
 
     i18n.set_language(args.lang or i18n.DEFAULT)
+    if args.update_kb:
+        return update_kb()
     from doctor import fixer, history
     from doctor.checks import ALL_GROUPS
     from doctor.models import Context, Status
@@ -83,3 +86,33 @@ def run(args) -> int:
 
     return 1 if any(r.status == Status.FAIL for r in results) else 0
 
+
+
+def update_kb() -> int:
+    """Скачать базу знаний ProtonDB (интернет нужен только здесь)."""
+    from doctor import gamedb, knowledge
+    from doctor.checks import steam
+
+    libraries = []
+    for _, root in steam.find_roots():
+        try:
+            libraries += steam.read_libraries(root)
+        except (OSError, ValueError):
+            pass
+    appids = [g.appid for g in gamedb.installed_games([lib for lib in libraries if lib.exists()])]
+    print(t("kb.intro"))
+
+    def progress(stage, done=0, total=0):
+        extra = f" {done / 1e6:.0f}/{total / 1e6:.0f} MB" if stage == "download" and total else (
+            f" {done}/{total}" if total else "")
+        print(f"\r{t('gui.kb.stage.' + stage)}{extra}" + " " * 10, end="", flush=True)
+
+    try:
+        data = knowledge.update(appids, progress)
+    except Exception as e:  # noqa: BLE001 — сеть, GitHub, формат
+        log.exception("knowledge update failed")
+        print(f"\n{t('gui.kb.failed', error=f'{type(e).__name__}: {e}')}", file=sys.stderr)
+        return 1
+    print("\n" + t("gui.kb.done", games=len(data["games"])))
+    print(knowledge.LICENSE)
+    return 0

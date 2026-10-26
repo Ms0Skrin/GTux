@@ -22,7 +22,7 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Adw, Gdk, Gio, GLib, Gtk  # noqa: E402
 
-from doctor import __version__, fixer, history, i18n  # noqa: E402
+from doctor import __version__, fixer, gamedb, history, i18n, knowledge  # noqa: E402
 from doctor import log as doctor_log  # noqa: E402
 from doctor.checks import ALL_GROUPS  # noqa: E402
 from doctor.gui import style  # noqa: E402
@@ -167,6 +167,7 @@ class DoctorWindow(Adw.ApplicationWindow):
             item.set_action_and_target_value("app.language", GLib.Variant.new_string(code))
             lang_menu.append_item(item)
         menu.append_submenu(t("gui.menu.language"), lang_menu)
+        menu.append(t("gui.kb.update"), "app.update-kb")
         menu.append(t("gui.menu.log"), "app.open-log")
         menu.append(t("gui.menu.about"), "app.about")
         menu_btn = Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=menu,
@@ -220,6 +221,8 @@ class DoctorWindow(Adw.ApplicationWindow):
                 from doctor.gui.demo import add_demo_problems
                 results, ctx = add_demo_problems(results, ctx)
             plan = fixer.build_plan(results, ctx)
+            self.steam_games = gamedb.steam_settings([root for _, root in ctx.steam_roots], ctx.steam_libraries)
+            self.profile = knowledge.profile_from(ctx)
             # в демо и при снимках экрана сравнивать с настоящей историей бессмысленно
             fake = os.environ.get("DOCTOR_GUI_DEMO") or os.environ.get("DOCTOR_GUI_SNAPSHOT")
             previous = None if fake else history.load_latest()
@@ -262,7 +265,9 @@ class DoctorWindow(Adw.ApplicationWindow):
         self.stack.add_named(self._overview_page(), "overview")
         for g in self.groups:
             self.stack.add_named(self._group_page(g), f"group:{g}")
-        self.stack.add_named(LaunchOptionsPage(self._copy), "tool:launch")
+        self.launch_page = LaunchOptionsPage(self._copy, lambda text: self.toasts.add_toast(Adw.Toast.new(text)),
+                                             self.steam_games, self.profile, self.open_kb_dialog)
+        self.stack.add_named(self.launch_page, "tool:launch")
         self._fill_sidebar()
         self.fix_btn.set_visible(bool(plan.steps))
         self.report_btn.set_sensitive(True)
@@ -493,6 +498,10 @@ class DoctorWindow(Adw.ApplicationWindow):
         copy_to_clipboard(self, text)
         self.toasts.add_toast(Adw.Toast.new(t("gui.copied")))
 
+    # ----- база знаний -----
+    def open_kb_dialog(self):
+        KnowledgeDialog(self).present(self)
+
     # ----- исправление -----
     def open_fix_dialog(self):
         if not self.plan or not self.plan.steps:
@@ -510,6 +519,11 @@ class DoctorWindow(Adw.ApplicationWindow):
             self.nav.select_row(self.nav.get_row_at_index(self._nav_names.index(name)))
         if os.environ.get("DOCTOR_GUI_OPEN_FIX"):
             self.open_fix_dialog()
+        game = os.environ.get("DOCTOR_GUI_GAME")  # appid: выбрать игру на странице параметров
+        if game:
+            ids = [s.game.appid for s in self.steam_games]
+            if game in ids:
+                self.launch_page.game_row.set_selected(ids.index(game) + 1)
         GLib.timeout_add(900, self._save_snapshot, path)
         return False
 
@@ -642,6 +656,77 @@ class FixDialog(Adw.Dialog):
         return False
 
 
+class KnowledgeDialog(Adw.Dialog):
+    """Скачивание базы знаний ProtonDB: что качаем, прогресс, результат."""
+
+    def __init__(self, win: DoctorWindow):
+        super().__init__(title=t("gui.kb.title"), content_width=520)
+        self.win = win
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=14,
+                      margin_top=12, margin_bottom=18, margin_start=18, margin_end=18)
+        box.append(label(t("gui.kb.intro")))
+        data = knowledge.load()
+        when = time.strftime("%d.%m.%Y", time.localtime(data["fetched"])) if data.get("fetched") else None
+        box.append(label(t("gui.kb.current", when=when, dump=data.get("dump", "")) if when else t("gui.kb.never"),
+                         "muted"))
+        box.append(label(knowledge.LICENSE, "muted"))
+        self.progress = Gtk.ProgressBar(show_text=True, visible=False)
+        box.append(self.progress)
+        self.status = label("", "muted")
+        box.append(self.status)
+        buttons = Gtk.Box(spacing=10, halign=Gtk.Align.END)
+        self.start = Gtk.Button(label=t("gui.kb.start"))
+        self.start.add_css_class("pill")
+        self.start.add_css_class("suggested-action")
+        self.start.connect("clicked", self._on_start)
+        buttons.append(self.start)
+        box.append(buttons)
+        view = Adw.ToolbarView()
+        view.add_top_bar(Adw.HeaderBar())
+        view.set_content(box)
+        self.set_child(view)
+
+    def _on_start(self, *_):
+        self.start.set_sensitive(False)
+        self.progress.set_visible(True)
+        appids = [s.game.appid for s in getattr(self.win, "steam_games", [])]
+        threading.Thread(target=self._run, args=(appids,), daemon=True).start()
+
+    def _progress(self, stage: str, done: int = 0, total: int = 0):
+        def show():
+            if stage == "download" and total:
+                self.progress.set_fraction(done / total)
+                self.progress.set_text(t("gui.kb.mb", done=f"{done / 1e6:.0f}", total=f"{total / 1e6:.0f}"))
+            elif stage == "tiers" and total:
+                self.progress.set_fraction(done / total)
+                self.progress.set_text(f"{done} / {total}")
+            else:
+                self.progress.pulse()
+                self.progress.set_text("")
+            self.status.set_text(t(f"gui.kb.stage.{stage}"))
+            return False
+        GLib.idle_add(show)
+
+    def _run(self, appids):
+        try:
+            data = knowledge.update(appids, self._progress)
+        except Exception as e:  # noqa: BLE001 — сеть, GitHub, формат: показываем как есть
+            log.exception("knowledge update failed")
+            GLib.idle_add(self._finish, None, f"{type(e).__name__}: {e}")
+            return
+        GLib.idle_add(self._finish, data, None)
+
+    def _finish(self, data, error):
+        if error:
+            self.status.set_text(t("gui.kb.failed", error=error))
+            self.start.set_sensitive(True)
+            return False
+        self.win.toasts.add_toast(Adw.Toast.new(t("gui.kb.done", games=len(data["games"]))))
+        self.close()
+        self.win.refresh()
+        return False
+
+
 class DoctorApp(Adw.Application):
     def __init__(self, lang: str | None = None, save_history: bool = True):
         super().__init__(application_id=APP_ID, flags=Gio.ApplicationFlags.NON_UNIQUE)
@@ -664,6 +749,9 @@ class DoctorApp(Adw.Application):
         open_log = Gio.SimpleAction.new("open-log", None)
         open_log.connect("activate", self._on_open_log)
         self.add_action(open_log)
+        update_kb = Gio.SimpleAction.new("update-kb", None)
+        update_kb.connect("activate", lambda *_: self.win.open_kb_dialog())
+        self.add_action(update_kb)
         about = Gio.SimpleAction.new("about", None)
         about.connect("activate", self._on_about)
         self.add_action(about)
