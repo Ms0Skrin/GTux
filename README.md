@@ -28,6 +28,27 @@
 Итого — ок: 30, можно улучшить: 6, проблем: 0, не проверено: 0
 ```
 
+## Установка
+
+**Arch / CachyOS / Manjaro**: собрать пакет pacman из исходников (sudo нужен только для установки):
+
+```bash
+git clone <адрес репозитория> linux-gamer-doctor && cd linux-gamer-doctor
+scripts/build_arch_package.sh                      # -> dist/linux-gamer-doctor-<версия>-1-any.pkg.tar.zst
+sudo pacman -U dist/linux-gamer-doctor-*.pkg.tar.zst
+linux-gamer-doctor --gui
+```
+
+Удаление: `sudo pacman -R linux-gamer-doctor`. История и журнал остаются в `~/.local/state/linux-gamer-doctor/`.
+
+**Другие дистрибутивы**: через [pipx](https://pipx.pypa.io/):
+
+```bash
+pipx install --system-site-packages .   # system-site-packages — чтобы окно видело системный PyGObject
+```
+
+Можно и без установки: `python main.py` из папки проекта.
+
 ## Запуск
 
 Нужен Python 3.11+ и библиотека [rich](https://github.com/Textualize/rich) для красивого вывода.
