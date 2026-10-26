@@ -12,6 +12,8 @@
 | ![Обзор](docs/screenshots/overview-light.png) | ![Игры](docs/screenshots/games-dark.png) |
 | **Раздел с проблемой (English)** | **Исправление одной кнопкой** |
 | ![Vulkan](docs/screenshots/vulkan-en.png) | ![Исправление](docs/screenshots/fix-dialog.png) |
+| **Конструктор параметров запуска** | |
+| ![Параметры запуска](docs/screenshots/launch-options.png) | |
 
 На скриншотах с проблемами добавлены демо-данные (`DOCTOR_GUI_DEMO=1`), чтобы были видны все статусы.
 
@@ -40,7 +42,9 @@ python main.py           # таблица в терминале
 python main.py --gui     # графическое окно
 python main.py --fix     # то же + предложить установить недостающие пакеты
 python main.py --json    # JSON для скриптов, бота, GUI
+python main.py --report  # отчёт в Markdown, чтобы вставить на форум
 python main.py --lang en # English
+python main.py --debug   # подробный журнал в терминал
 ```
 
 Язык по умолчанию берётся из локали системы (`LANG`). В окне язык переключается в меню ☰ и запоминается.
@@ -62,6 +66,25 @@ sudo dnf install libadwaita python3-gobject            # Fedora
 
 Для проверки права root не нужны. `--fix` вызывает `sudo`, и пароль вы вводите сами.
 
+### История, отчёт и журнал
+
+- **История.** Каждая проверка сохраняется в `~/.local/state/linux-gamer-doctor/history/`
+  (хранятся последние 30). В следующий раз программа покажет, **что изменилось**: новое ядро,
+  драйвер, исправленные или новые проблемы. Флаг `--no-history` отключает сохранение.
+- **Отчёт для форума**: `--report` или кнопка с иконкой копирования в окне. Получается Markdown
+  со сводкой системы и проблемами, домашняя папка в нём заменена на `~`.
+- **Отладочный журнал**: `~/.local/state/linux-gamer-doctor/doctor.log` (до 1 МБ, плюс 3 старые копии).
+  В нём запуски, длительность каждой проверки, вызванные команды с кодами возврата и полные
+  трассировки ошибок, в том числе из окна. **Если нашли баг, приложите этот файл.** Он есть только
+  у вас на компьютере. В окне его можно открыть через меню ☰ → «Открыть журнал».
+
+### Параметры запуска (в окне)
+
+Страница «Параметры запуска» собирает строку для Steam из переключателей: GameMode, MangoHud, gamescope
+(с разрешением, MangoHud тогда включается через `--mangoapp`), счётчик FPS DXVK, журнал Proton,
+отключение fsync/esync, WineD3D, ограничение ядер (`WINE_CPU_TOPOLOGY`), аргументы игры.
+Готовая строка сразу проверяется той же проверкой, что и параметры ваших игр.
+
 ### Установка недостающего (`--fix`)
 
 1. Программа собирает пакеты, которые предложили проверки с жёлтым или красным статусом.
@@ -78,15 +101,17 @@ sudo dnf install libadwaita python3-gobject            # Fedora
 | Группа | Что смотрим |
 |---|---|
 | Система | дистрибутив, ядро (≥ 5.16 для fsync в Proton), пакетный менеджер |
-| Видеокарта | модель, загруженный драйвер (nvidia / nouveau / amdgpu / radeon / i915 / xe), версия NVIDIA или Mesa, рассинхрон драйвера после обновления без перезагрузки, Resizable BAR |
+| Видеокарта | модель, загруженный драйвер (nvidia / nouveau / amdgpu / radeon / i915 / xe), версия NVIDIA или Mesa, рассинхрон драйвера после обновления без перезагрузки, `nvidia_drm.modeset`, Resizable BAR |
 | Vulkan | загрузчик, ICD-файлы под вашу видеокарту, видит ли `vulkaninfo` настоящую карту, а не llvmpipe |
 | 32 бита | включён ли multilib, стоят ли lib32-драйвер и Vulkan, совпадают ли версии NVIDIA 64/32 |
-| Steam | способ установки (пакет, flatpak, snap, другое), библиотеки игр и число игр в каждой |
-| Диски | NTFS/exFAT под библиотекой, опция `windows_names`, где лежат префиксы Proton (`compatdata`), read-only, `noexec`, «грязный» NTFS-том, свободное место |
+| Steam | способ установки (пакет, flatpak, snap, другое), библиотеки игр и число игр в каждой, доступ Steam из Flatpak к библиотекам на других дисках |
+| Диски | NTFS/exFAT под библиотекой, опция `windows_names`, где лежат префиксы Proton (`compatdata`), read-only, `noexec`, «грязный» NTFS-том, HDD или SSD, свободное место |
 | Proton | версии от Valve, сторонние сборки (GE, CachyOS…), есть ли Proton-GE |
 | Утилиты | gamemode, MangoHud, gamescope и их 32-битные части |
-| Настройки | governor процессора (с учётом intel_pstate/amd-pstate EPP), `vm.max_map_count`, лимит открытых файлов |
+| Настройки | governor процессора (с учётом intel_pstate/amd-pstate EPP), `vm.max_map_count`, лимит открытых файлов, `split_lock_mitigate` |
+| Железо | память и swap/zram, звуковой сервер (PipeWire + pipewire-pulse или PulseAudio), udev-правила для геймпадов |
 | Игры | для каждой игры Steam, Heroic (Epic, GOG, Amazon, свои), Lutris и Faugus: Linux-версия или Proton (и какой), не удалена ли выбранная сборка Proton, ошибки в параметрах запуска (нет `%command%`, не установлен `gamemoderun`/`mangohud`, неверный `WINE_CPU_TOPOLOGY`, переменные Proton у нативной игры), статус античита, требования игры к системе |
+| Логи Proton | `~/steam-<appid>.log`: недостающие DLL Windows (с командой protontricks), падение внутри Wine, сброс видеокарты (`VK_ERROR_DEVICE_LOST`), повреждённый префикс |
 
 ### Почему NTFS — частая проблема
 
@@ -163,6 +188,9 @@ doctor/
   checks/<группа>.py    проверки, по файлу на группу
   output/               вывод: terminal.py (rich), json_out.py
   launchers.py          игры из Heroic / Lutris / Faugus (форматы взяты из их исходников)
+  launchopts.py         конструктор параметров запуска
+  history.py            история проверок и «что изменилось»
+  log.py                отладочный журнал
   gui/                  окно: app.py (libadwaita), style.py (пастельная тема), demo.py
   i18n/en.py            английские тексты (тест следит, что ключи совпадают с ru.py)
 tests/                  unittest

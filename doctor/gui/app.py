@@ -220,7 +220,9 @@ class DoctorWindow(Adw.ApplicationWindow):
                 from doctor.gui.demo import add_demo_problems
                 results, ctx = add_demo_problems(results, ctx)
             plan = fixer.build_plan(results, ctx)
-            previous = history.load_latest()
+            # в демо и при снимках экрана сравнивать с настоящей историей бессмысленно
+            fake = os.environ.get("DOCTOR_GUI_DEMO") or os.environ.get("DOCTOR_GUI_SNAPSHOT")
+            previous = None if fake else history.load_latest()
             self.changes = history.diff(previous, results)
             self.previous_time = previous.get("time") if previous else None
             if self.app.save_history and not os.environ.get("DOCTOR_GUI_SNAPSHOT"):
@@ -382,23 +384,6 @@ class DoctorWindow(Adw.ApplicationWindow):
             banner.append(btn)
             box.append(banner)
 
-        # что изменилось с прошлого раза
-        if getattr(self, "changes", None):
-            when = time.strftime("%d.%m %H:%M", time.localtime(self.previous_time)) if self.previous_time else ""
-            changed = Adw.PreferencesGroup(title=t("gui.changes.title"), description=when)
-            for c in self.changes:
-                if c.kind == "status":
-                    sub = t("history.status", title="", old=t(f"status.{c.old}"), new=t(f"status.{c.new}"))
-                elif c.kind == "value":
-                    sub = t("history.value", title="", old=c.old, new=c.new)
-                else:
-                    sub = t(f"history.{c.kind}", title="")
-                row = Adw.ActionRow(title=c.title, subtitle=sub.lstrip(": "))
-                row.set_use_markup(False)
-                row.add_prefix(status_chip(c.new_status or Status.UNKNOWN))
-                changed.add(row)
-            box.append(changed)
-
         # что сделать
         todo = Adw.PreferencesGroup(title=t("gui.todo.title"), description=t("gui.todo.desc"))
         problems = sorted((r for r in self.results if r.status != Status.OK),
@@ -415,6 +400,23 @@ class DoctorWindow(Adw.ApplicationWindow):
             row.connect("activated", lambda _row, res=r: self.go_to_check(res))
             todo.add(row)
         box.append(todo)
+
+        # что изменилось с прошлого раза
+        if getattr(self, "changes", None):
+            when = time.strftime("%d.%m %H:%M", time.localtime(self.previous_time)) if self.previous_time else ""
+            changed = Adw.PreferencesGroup(title=t("gui.changes.title"), description=when)
+            for c in self.changes:
+                if c.kind == "status":
+                    sub = t("history.status", title="", old=t(f"status.{c.old}"), new=t(f"status.{c.new}"))
+                elif c.kind == "value":
+                    sub = t("history.value", title="", old=c.old, new=c.new)
+                else:
+                    sub = t(f"history.{c.kind}", title="")
+                row = Adw.ActionRow(title=c.title, subtitle=sub.lstrip(": "))
+                row.set_use_markup(False)
+                row.add_prefix(status_chip(c.new_status or Status.UNKNOWN))
+                changed.add(row)
+            box.append(changed)
 
         clamp = Adw.Clamp(maximum_size=920, child=box)
         scroller = Gtk.ScrolledWindow(hscrollbar_policy=Gtk.PolicyType.NEVER)
