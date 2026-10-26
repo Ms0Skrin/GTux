@@ -56,6 +56,7 @@ GROUP_ICON = {
     "tuning": "preferences-system-symbolic",
     "hardware": "audio-card-symbolic",
     "games": "input-gaming-symbolic",
+    "logs": "text-x-generic-symbolic",
 }
 URL = re.compile(r"https?://[^\s)»]+")
 
