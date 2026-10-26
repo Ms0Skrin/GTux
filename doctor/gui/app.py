@@ -26,6 +26,7 @@ from doctor import __version__, fixer, history, i18n  # noqa: E402
 from doctor import log as doctor_log  # noqa: E402
 from doctor.checks import ALL_GROUPS  # noqa: E402
 from doctor.gui import style  # noqa: E402
+from doctor.gui.launch_page import LaunchOptionsPage  # noqa: E402
 from doctor.i18n import t  # noqa: E402
 from doctor.models import CheckResult, Context, Status  # noqa: E402
 from doctor.output import report  # noqa: E402
@@ -53,6 +54,7 @@ GROUP_ICON = {
     "proton": "system-run-symbolic",
     "tools": "applications-utilities-symbolic",
     "tuning": "preferences-system-symbolic",
+    "hardware": "audio-card-symbolic",
     "games": "input-gaming-symbolic",
 }
 URL = re.compile(r"https?://[^\s)»]+")
@@ -257,6 +259,7 @@ class DoctorWindow(Adw.ApplicationWindow):
         self.stack.add_named(self._overview_page(), "overview")
         for g in self.groups:
             self.stack.add_named(self._group_page(g), f"group:{g}")
+        self.stack.add_named(LaunchOptionsPage(self._copy), "tool:launch")
         self._fill_sidebar()
         self.fix_btn.set_visible(bool(plan.steps))
         self.report_btn.set_sensitive(True)
@@ -277,6 +280,11 @@ class DoctorWindow(Adw.ApplicationWindow):
         for g in self.groups:
             items = [r for r in self.results if r.group == g]
             self.nav.append(self._nav_row(GROUP_ICON.get(g, "folder-symbolic"), t(f"group.{g}"), items))
+        # инструменты — отдельно от разделов проверки
+        self._nav_names.append("tool:launch")
+        tool_row = self._nav_row("document-edit-symbolic", t("gui.launch.title"), None)
+        tool_row.set_margin_top(12)
+        self.nav.append(tool_row)
         self.nav.select_row(self.nav.get_row_at_index(0))
 
     def _nav_row(self, icon_name: str, text: str, items: list[CheckResult] | None) -> Gtk.ListBoxRow:
@@ -304,7 +312,8 @@ class DoctorWindow(Adw.ApplicationWindow):
             return
         name = self._nav_names[row.get_index()]
         self.stack.set_visible_child_name(name)
-        title = t("gui.overview") if name == "overview" else t(f"group.{name.split(':', 1)[1]}")
+        kind, _, key = name.partition(":")
+        title = {"overview": t("gui.overview"), "tool": t(f"gui.{key}.title")}.get(kind) or t(f"group.{key}")
         self.title.set_title(title)
         self.content_page.set_title(title)
         self.split.set_show_content(True)
@@ -492,8 +501,9 @@ class DoctorWindow(Adw.ApplicationWindow):
         if not path:
             return False
         page = os.environ.get("DOCTOR_GUI_PAGE", "overview")
-        if page != "overview" and page in self.groups:
-            self.nav.select_row(self.nav.get_row_at_index(self.groups.index(page) + 1))
+        if f"group:{page}" in self._nav_names or f"tool:{page}" in self._nav_names:
+            name = f"group:{page}" if f"group:{page}" in self._nav_names else f"tool:{page}"
+            self.nav.select_row(self.nav.get_row_at_index(self._nav_names.index(name)))
         if os.environ.get("DOCTOR_GUI_OPEN_FIX"):
             self.open_fix_dialog()
         GLib.timeout_add(900, self._save_snapshot, path)
