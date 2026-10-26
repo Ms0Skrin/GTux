@@ -1,0 +1,58 @@
+# Maintainer: Евгений (Ms0Skrin) <111508528+Ms0Skrin@users.noreply.github.com>
+# Пакет для AUR: исходники с GitHub по тегу v$pkgver. Обновление: scripts/update_aur.sh
+
+pkgname=gtux
+pkgver=0.7.0
+pkgrel=1
+pkgdesc="Checks a Linux system and explains in plain words what is missing for gaming"
+url='https://github.com/Ms0Skrin/GTux'
+arch=('any')
+license=('GPL-3.0-or-later')
+# окно — основной интерфейс, поэтому GTK4/libadwaita/PyGObject обязательны (pacman сам не ставит optdepends)
+depends=('python>=3.11' 'python-rich' 'gtk4' 'libadwaita' 'python-gobject')
+optdepends=(
+  'flatpak: Heroic and Faugus from Flathub (GTux offers to install it when needed)'
+  'vulkan-tools: check that Vulkan sees the GPU (vulkaninfo)'
+  'pciutils: readable GPU names (lspci)'
+  'polkit: fix problems from the window (pkexec)'
+)
+# до 0.5.0 программа называлась linux-gamer-doctor (в AUR её не было, поэтому без replaces)
+conflicts=('linux-gamer-doctor')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('SKIP')  # подставляет scripts/update_aur.sh
+
+check() {
+  cd "$srcdir/GTux-$pkgver"
+  python -m unittest discover -s tests -t .
+}
+
+package() {
+  cd "$srcdir/GTux-$pkgver"
+  local site
+  site=$(python -c 'import sysconfig; print(sysconfig.get_path("purelib"))')
+
+  # модули программы + данные (базы игр и античитов)
+  install -d "$pkgdir$site"
+  cp -r gtux "$pkgdir$site/"
+  find "$pkgdir$site/gtux" -name '__pycache__' -prune -exec rm -rf {} +
+  python -m compileall -q -s "$pkgdir" "$pkgdir$site/gtux"
+  python -O -m compileall -q -s "$pkgdir" "$pkgdir$site/gtux"
+
+  # команда gtux
+  install -Dm755 /dev/stdin "$pkgdir/usr/bin/gtux" <<'SH'
+#!/bin/sh
+exec /usr/bin/python3 -m gtux "$@"
+SH
+
+  # ярлык в меню и иконка (имя совпадает с application id окна — так GNOME связывает окно с иконкой)
+  install -Dm644 data/io.github.Ms0Skrin.GTux.desktop \
+    "$pkgdir/usr/share/applications/io.github.Ms0Skrin.GTux.desktop"
+  install -Dm644 data/io.github.Ms0Skrin.GTux.svg \
+    "$pkgdir/usr/share/icons/hicolor/scalable/apps/io.github.Ms0Skrin.GTux.svg"
+  install -Dm644 data/io.github.Ms0Skrin.GTux-symbolic.svg \
+    "$pkgdir/usr/share/icons/hicolor/symbolic/apps/io.github.Ms0Skrin.GTux-symbolic.svg"
+
+  install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 gtux/data/ANTICHEAT_LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/ANTICHEAT_LICENSE.txt"
+}
