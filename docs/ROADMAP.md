@@ -39,7 +39,7 @@
 остальные сборки со счётом, итог по параметрам. Та же строка в проверке игр и отчёте. База знаний версии 2
 (старую нужно обновить — окно об этом говорит).
 
-**Переименование в GTux** (0.5.0): Python-пакет `gtux`, команда `gtux`, application id `io.github.gtux.GTux`,
+**Переименование в GTux** (0.5.0): Python-пакет `gtux`, команда `gtux`, application id `io.github.Ms0Skrin.GTux` (по аккаунту GitHub),
 пакет pacman `gtux` (заменяет `linux-gamer-doctor`: conflicts/replaces), папки `~/.cache|.local/state|.config/gtux`
 (`gtux/paths.py` один раз переносит старые `linux-gamer-doctor`), журнал `gtux.log`, переменные `GTUX_GUI_*`.
 **Лаунчеры и «по желанию»** (0.6.0): группа «Лаунчеры и помощники» (Heroic, Lutris, Faugus, protontricks);
@@ -50,7 +50,7 @@
 Найдено и исправлено: на Arch `steam`/`steam-devices` в multilib, на Debian/Ubuntu `steam-installer` требует i386.
 GTK4/libadwaita/PyGObject — обязательные зависимости пакета.
 
-ID выбран без привязки к GitHub-аккаунту: для Flathub он должен совпасть с `io.github.<аккаунт>` — решить при публикации.
+Репозиторий: https://github.com/Ms0Skrin/GTux (ветка main). В коммитах и PKGBUILD — скрытая почта GitHub (noreply).
 
 **Прочее**: история проверок и diff, отладочный журнал
 с ротацией, английский перевод, лицензия GPL-3.0-or-later, пакет pacman (`scripts/build_arch_package.sh`),
@@ -63,8 +63,7 @@ ID выбран без привязки к GitHub-аккаунту: для Flath
 1. **Записывать выбранную сборку Proton в Steam** (CompatToolMapping в config.vdf, как с параметрами:
    только при закрытом Steam, копия и откат).
 3. **Проверить на настоящих Debian/Ubuntu/Fedora** (например, distrobox — сначала спросить про установку).
-4. **GitHub**: создать репозиторий и залить (Actions уже готов), затем пакет в AUR.
-   Перед публикацией решить: ID приложения под аккаунт (`io.github.<аккаунт>.GTux`), почта в коммитах и PKGBUILD.
+4. **GitHub**: репозиторий создан, залить (`git push -u origin main`), проверить Actions; затем пакет в AUR.
 5. Кнопка «Обновить базу античитов» в окне (по желанию пользователя, с интернетом).
 6. Расширять `games.toml` (только с источниками).
 7. Telegram-бот на домашнем сервере поверх `--json` (решить: проверяет сервер или принимает отчёты).

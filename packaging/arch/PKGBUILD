@@ -1,10 +1,11 @@
-# Maintainer: Евгений <111508528+Ms0Skrin@users.noreply.github.com>
+# Maintainer: Евгений (Ms0Skrin) <111508528+Ms0Skrin@users.noreply.github.com>
 # Сборка: scripts/build_arch_package.sh (делает архив исходников из git и запускает makepkg)
 
 pkgname=gtux
 pkgver=0.6.0
 pkgrel=1
 pkgdesc="Checks a Linux system and explains in plain words what is missing for gaming"
+url='https://github.com/Ms0Skrin/GTux'
 arch=('any')
 license=('GPL-3.0-or-later')
 # окно — основной интерфейс, поэтому GTK4/libadwaita/PyGObject обязательны (pacman сам не ставит optdepends)
@@ -40,12 +41,12 @@ exec /usr/bin/python3 -m gtux "$@"
 SH
 
   # ярлык в меню и иконка (имя совпадает с application id окна — так GNOME связывает окно с иконкой)
-  install -Dm644 data/io.github.gtux.GTux.desktop \
-    "$pkgdir/usr/share/applications/io.github.gtux.GTux.desktop"
-  install -Dm644 data/io.github.gtux.GTux.svg \
-    "$pkgdir/usr/share/icons/hicolor/scalable/apps/io.github.gtux.GTux.svg"
-  install -Dm644 data/io.github.gtux.GTux-symbolic.svg \
-    "$pkgdir/usr/share/icons/hicolor/symbolic/apps/io.github.gtux.GTux-symbolic.svg"
+  install -Dm644 data/io.github.Ms0Skrin.GTux.desktop \
+    "$pkgdir/usr/share/applications/io.github.Ms0Skrin.GTux.desktop"
+  install -Dm644 data/io.github.Ms0Skrin.GTux.svg \
+    "$pkgdir/usr/share/icons/hicolor/scalable/apps/io.github.Ms0Skrin.GTux.svg"
+  install -Dm644 data/io.github.Ms0Skrin.GTux-symbolic.svg \
+    "$pkgdir/usr/share/icons/hicolor/symbolic/apps/io.github.Ms0Skrin.GTux-symbolic.svg"
 
   install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
   install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"

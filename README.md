@@ -35,7 +35,7 @@
 **Arch / CachyOS / Manjaro**: собрать пакет pacman из исходников (sudo нужен только для установки):
 
 ```bash
-git clone <адрес репозитория> gtux && cd gtux
+git clone https://github.com/Ms0Skrin/GTux.git gtux && cd gtux
 scripts/build_arch_package.sh                      # -> dist/gtux-<версия>-1-any.pkg.tar.zst
 sudo pacman -U dist/gtux-*.pkg.tar.zst
 gtux --gui
@@ -61,7 +61,7 @@ pipx install --system-site-packages .   # system-site-packages — чтобы о
 # Arch / CachyOS / Manjaro: rich обычно уже стоит, если нет:
 sudo pacman -S python-rich
 
-git clone <адрес репозитория> gtux
+git clone https://github.com/Ms0Skrin/GTux.git gtux
 cd gtux
 python main.py           # таблица в терминале
 python main.py --gui     # графическое окно

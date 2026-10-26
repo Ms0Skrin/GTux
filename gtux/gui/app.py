@@ -34,7 +34,7 @@ from gtux.runner import run_all, summarize  # noqa: E402
 
 log = logging.getLogger("gtux.gui")
 
-APP_ID = "io.github.gtux.GTux"
+APP_ID = "io.github.Ms0Skrin.GTux"
 SETTINGS = paths.config_dir() / "gui.json"
 
 STATUS_ICON = {
