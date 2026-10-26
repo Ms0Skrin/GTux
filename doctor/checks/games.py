@@ -202,9 +202,9 @@ def check_other_launchers(ctx: Context):
         return []
     text = read_text("/proc/self/mounts")
     mounts = disks.parse_mounts(text) if text else None
-    return [result(GROUP, f"ext.{i}", title=t("games.ext.title", name=g.name, source=g.source),
+    return [result(GROUP, f"ext.{g.source}.{g.id}", title=t("games.ext.title", name=g.name, source=g.source),
                    **assess_external(g, mounts))
-            for i, g in enumerate(sorted(games, key=lambda g: (g.source, g.name.lower())))]
+            for g in sorted(games, key=lambda g: (g.source, g.name.lower()))]
 
 
 CHECKS = [check_games, check_other_launchers]

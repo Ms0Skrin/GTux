@@ -26,7 +26,6 @@ TEXTS = {
     "cli.json": "вывести результат в JSON (для скриптов, бота, GUI)",
     "cli.lang": "язык интерфейса",
     "cli.fix": "предложить установку недостающих пакетов (спросит подтверждение)",
-    "cli.json_fix_conflict": "--fix и --json вместе не работают: план установки уже есть в JSON (fix_plan)",
     "cli.need_rich": (
         "Не найдена библиотека rich для красивого вывода.\n"
         "Установите её (Arch: sudo pacman -S python-rich) или запустите с --json."
@@ -375,4 +374,26 @@ TEXTS = {
     "hardware.controllers.title": "Геймпады (правила udev)",
     "hardware.controllers.none": "правила для контроллеров Steam не найдены",
     "hardware.controllers.none_hint": "Без udev-правил Steam Controller, Steam Deck, геймпады и VR-шлемы могут не работать без root.",
+    # --- журнал, история, отчёт ---
+    "cli.report": "вывести отчёт в Markdown для форума или чата",
+    "cli.debug": "подробный журнал в терминал (он всегда пишется и в файл)",
+    "cli.no_history": "не сохранять результат в историю проверок",
+    "cli.log_epilog": "Отладочный журнал: {path}",
+    "cli.crashed": "Программа упала. Подробности в журнале: {path}",
+    "history.title": "Что изменилось с прошлой проверки ({when}):",
+    "history.status": "{title}: {old} → {new}",
+    "history.value": "{title}: {old} → {new}",
+    "history.added": "{title}: новая проверка",
+    "history.removed": "{title}: больше не проверяется (удалено?)",
+    "report.title": "отчёт о системе",
+    "report.driver": "Драйвер",
+    "report.summary": "Итого",
+    "report.problems": "Проблемы и советы",
+    "report.all_checks": "Все проверки",
+    "report.footer": "Сделано программой «Доктор Linux-геймера» {version}, {date}",
+    "gui.menu.log": "Открыть журнал",
+    "gui.log.missing": "Журнал пока пуст",
+    "gui.report.copy": "Скопировать отчёт для форума",
+    "gui.report.copied": "Отчёт скопирован: вставьте его на форум или в чат",
+    "gui.changes.title": "Что изменилось с прошлой проверки",
 }

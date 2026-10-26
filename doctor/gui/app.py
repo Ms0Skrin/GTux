@@ -7,10 +7,13 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 import re
 import subprocess
+import sys
 import threading
+import time
 from pathlib import Path
 
 import gi
@@ -19,12 +22,16 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Adw, Gdk, Gio, GLib, Gtk  # noqa: E402
 
-from doctor import __version__, fixer, i18n  # noqa: E402
+from doctor import __version__, fixer, history, i18n  # noqa: E402
+from doctor import log as doctor_log  # noqa: E402
 from doctor.checks import ALL_GROUPS  # noqa: E402
 from doctor.gui import style  # noqa: E402
 from doctor.i18n import t  # noqa: E402
 from doctor.models import CheckResult, Context, Status  # noqa: E402
+from doctor.output import report  # noqa: E402
 from doctor.runner import run_all, summarize  # noqa: E402
+
+log = logging.getLogger("doctor.gui")
 
 APP_ID = "io.github.lgdoctor.LinuxGamerDoctor"
 SETTINGS = Path(GLib.get_user_config_dir()) / "linux-gamer-doctor" / "gui.json"
@@ -157,6 +164,7 @@ class DoctorWindow(Adw.ApplicationWindow):
             item.set_action_and_target_value("app.language", GLib.Variant.new_string(code))
             lang_menu.append_item(item)
         menu.append_submenu(t("gui.menu.language"), lang_menu)
+        menu.append(t("gui.menu.log"), "app.open-log")
         menu.append(t("gui.menu.about"), "app.about")
         menu_btn = Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=menu,
                                   tooltip_text=t("gui.menu"))
@@ -180,6 +188,10 @@ class DoctorWindow(Adw.ApplicationWindow):
         refresh = Gtk.Button(icon_name="view-refresh-symbolic", tooltip_text=t("gui.refresh"))
         refresh.connect("clicked", lambda *_: self.refresh())
         self.header.pack_start(refresh)
+        self.report_btn = Gtk.Button(icon_name="edit-copy-symbolic", tooltip_text=t("gui.report.copy"),
+                                     sensitive=False)
+        self.report_btn.connect("clicked", lambda *_: self._copy_report())
+        self.header.pack_start(self.report_btn)
         self.fix_btn = Gtk.Button(label=t("gui.fix.button"), visible=False)
         self.fix_btn.add_css_class("suggested-action")
         self.fix_btn.connect("clicked", lambda *_: self.open_fix_dialog())
@@ -205,8 +217,14 @@ class DoctorWindow(Adw.ApplicationWindow):
                 from doctor.gui.demo import add_demo_problems
                 results, ctx = add_demo_problems(results, ctx)
             plan = fixer.build_plan(results, ctx)
+            previous = history.load_latest()
+            self.changes = history.diff(previous, results)
+            self.previous_time = previous.get("time") if previous else None
+            if self.app.save_history and not os.environ.get("DOCTOR_GUI_SNAPSHOT"):
+                history.save(results)
             GLib.idle_add(self._on_results, results, ctx, plan)
         except Exception as e:  # noqa: BLE001 — показываем ошибку в окне, а не молча
+            log.exception("GUI worker crashed")
             GLib.idle_add(self._show_crash, f"{type(e).__name__}: {e}")
 
     def _show_loading(self):
@@ -215,6 +233,8 @@ class DoctorWindow(Adw.ApplicationWindow):
         page = Adw.StatusPage(title=t("gui.loading"), description=t("gui.loading_sub"), child=spinner)
         self._set_page(page, "loading")
         self.fix_btn.set_visible(False)
+        if hasattr(self, "report_btn"):
+            self.report_btn.set_sensitive(False)
 
     def _show_crash(self, error: str):
         page = Adw.StatusPage(icon_name="dialog-error-symbolic", title=t("gui.crashed", error=""),
@@ -239,6 +259,7 @@ class DoctorWindow(Adw.ApplicationWindow):
             self.stack.add_named(self._group_page(g), f"group:{g}")
         self._fill_sidebar()
         self.fix_btn.set_visible(bool(plan.steps))
+        self.report_btn.set_sensitive(True)
         self.title.set_subtitle(self._system_line())
         GLib.idle_add(self._maybe_snapshot)
         return False
@@ -351,6 +372,23 @@ class DoctorWindow(Adw.ApplicationWindow):
             banner.append(btn)
             box.append(banner)
 
+        # что изменилось с прошлого раза
+        if getattr(self, "changes", None):
+            when = time.strftime("%d.%m %H:%M", time.localtime(self.previous_time)) if self.previous_time else ""
+            changed = Adw.PreferencesGroup(title=t("gui.changes.title"), description=when)
+            for c in self.changes:
+                if c.kind == "status":
+                    sub = t("history.status", title="", old=t(f"status.{c.old}"), new=t(f"status.{c.new}"))
+                elif c.kind == "value":
+                    sub = t("history.value", title="", old=c.old, new=c.new)
+                else:
+                    sub = t(f"history.{c.kind}", title="")
+                row = Adw.ActionRow(title=c.title, subtitle=sub.lstrip(": "))
+                row.set_use_markup(False)
+                row.add_prefix(status_chip(c.new_status or Status.UNKNOWN))
+                changed.add(row)
+            box.append(changed)
+
         # что сделать
         todo = Adw.PreferencesGroup(title=t("gui.todo.title"), description=t("gui.todo.desc"))
         problems = sorted((r for r in self.results if r.status != Status.OK),
@@ -433,6 +471,10 @@ class DoctorWindow(Adw.ApplicationWindow):
         holder.set_child(detail)
         row.add_row(holder)
         return row
+
+    def _copy_report(self):
+        copy_to_clipboard(self, report.render(self.results))
+        self.toasts.add_toast(Adw.Toast.new(t("gui.report.copied")))
 
     def _copy(self, text: str):
         copy_to_clipboard(self, text)
@@ -559,8 +601,9 @@ class FixDialog(Adw.Dialog):
 
 
 class DoctorApp(Adw.Application):
-    def __init__(self, lang: str | None = None):
+    def __init__(self, lang: str | None = None, save_history: bool = True):
         super().__init__(application_id=APP_ID, flags=Gio.ApplicationFlags.NON_UNIQUE)
+        self.save_history = save_history
         self.settings = load_settings()
         self.lang = lang or self.settings.get("lang") or i18n.DEFAULT
         i18n.set_language(self.lang)
@@ -576,6 +619,9 @@ class DoctorApp(Adw.Application):
                                                     GLib.Variant.new_string(self.lang))
         lang_action.connect("change-state", self._on_language)
         self.add_action(lang_action)
+        open_log = Gio.SimpleAction.new("open-log", None)
+        open_log.connect("activate", self._on_open_log)
+        self.add_action(open_log)
         about = Gio.SimpleAction.new("about", None)
         about.connect("activate", self._on_about)
         self.add_action(about)
@@ -611,6 +657,13 @@ class DoctorApp(Adw.Application):
         self.win.present()
         old.destroy()
 
+    def _on_open_log(self, *_):
+        path = doctor_log.log_path()
+        if not path.exists():
+            self.win.toasts.add_toast(Adw.Toast.new(t("gui.log.missing")))
+            return
+        Gtk.FileLauncher.new(Gio.File.new_for_path(str(path))).launch(self.win, None, None, None)
+
     def _on_about(self, *_):
         dialog = Adw.AboutDialog(application_name=t("app.title"), version=__version__,
                                  comments=t("gui.about.comments"),
@@ -619,5 +672,14 @@ class DoctorApp(Adw.Application):
         dialog.present(self.win)
 
 
-def run(lang: str | None = None) -> int:
-    return DoctorApp(lang).run([])
+def _excepthook(exc_type, exc, tb):
+    """Ошибки в обработчиках GTK иначе видны только в терминале — пишем их в журнал."""
+    log.error("unhandled GUI error", exc_info=(exc_type, exc, tb))
+    sys.__excepthook__(exc_type, exc, tb)
+
+
+def run(lang: str | None = None, save_history: bool = True) -> int:
+    doctor_log.setup()
+    sys.excepthook = _excepthook
+    log.info("GUI start, lang=%s", lang)
+    return DoctorApp(lang, save_history).run([])

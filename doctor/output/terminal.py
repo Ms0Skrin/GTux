@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import time
+
 from rich.console import Console
 from rich.markup import escape
 from rich.table import Table
@@ -32,8 +34,24 @@ def _result_cell(r: CheckResult) -> Text:
     return cell
 
 
+def render_changes(console: Console, changes, previous_time: float | None) -> None:
+    if not changes:
+        return
+    when = time.strftime("%d.%m %H:%M", time.localtime(previous_time)) if previous_time else "?"
+    console.print(f"\n[bold]{escape(t('history.title', when=when))}[/]")
+    for c in changes:
+        style = STYLES.get(c.new_status, "") if c.new_status else "dim"
+        if c.kind == "status":
+            text = t("history.status", title=c.title, old=t(f"status.{c.old}"), new=t(f"status.{c.new}"))
+        elif c.kind == "value":
+            text = t("history.value", title=c.title, old=c.old, new=c.new)
+        else:
+            text = t(f"history.{c.kind}", title=c.title)
+        console.print(Text("  • " + text, style=style))
+
+
 def render(results: list[CheckResult], console: Console | None = None,
-           show_fix_hint: bool = True) -> None:
+           show_fix_hint: bool = True, changes=None, previous_time: float | None = None) -> None:
     console = console or Console()
     console.print(f"[bold]{escape(t('app.title'))}[/]  [dim]{escape(t('app.subtitle'))}[/]\n")
 
@@ -52,6 +70,7 @@ def render(results: list[CheckResult], console: Console | None = None,
         table.add_row(Text(t(f"status.{r.status.value}"), style=STYLES[r.status]),
                       r.title, _result_cell(r))
     console.print(table)
+    render_changes(console, changes or [], previous_time)
 
     s = summarize(results)
     summary = Text()

@@ -6,11 +6,15 @@
 
 from __future__ import annotations
 
+import logging
+import time
 from collections import Counter
 from typing import Callable
 
 from doctor.i18n import t
 from doctor.models import CheckResult, Context, Status
+
+log = logging.getLogger("doctor.runner")
 
 CheckFunc = Callable[[Context], "CheckResult | list[CheckResult]"]
 
@@ -33,9 +37,11 @@ def run_all(groups, ctx: Context) -> list[CheckResult]:
     results: list[CheckResult] = []
     for module in groups:
         for func in module.CHECKS:
+            started = time.monotonic()
             try:
                 res = func(ctx)
             except Exception as e:  # noqa: BLE001 — любая ошибка проверки = серый статус
+                log.exception("check %s.%s crashed", module.GROUP, func.check_id)
                 res = result(
                     module.GROUP,
                     func.check_id,
@@ -43,7 +49,11 @@ def run_all(groups, ctx: Context) -> list[CheckResult]:
                     value=t("common.crashed"),
                     error=f"{type(e).__name__}: {e}",
                 )
-            results.extend(res if isinstance(res, list) else [res])
+            res = res if isinstance(res, list) else [res]
+            log.debug("check %s.%s: %s in %.2fs", module.GROUP, func.check_id,
+                      ",".join(r.status.value for r in res) or "-", time.monotonic() - started)
+            results.extend(res)
+    log.info("checks done: %s", summarize(results))
     return results
 
 
