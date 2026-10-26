@@ -10,7 +10,7 @@ import re
 from gtux import packages
 from gtux.checks.gpu import GOOD_DRIVERS, VENDOR_NAMES
 from gtux.i18n import t
-from gtux.models import Context, Status
+from gtux.models import Action, Context, Status
 from gtux.packages import Apt, Dnf, Pacman
 from gtux.runner import check, result
 from gtux.system import read_text
@@ -31,6 +31,24 @@ def multilib_enabled(conf_text: str) -> bool:
                for line in conf_text.splitlines())
 
 
+def multilib_lines(conf_text: str) -> list[int] | None:
+    """Номера строк (с 1), которые надо раскомментировать, чтобы включить [multilib]; None — раздела нет
+    или он нестандартный (тогда правим только руками).
+
+    Берём строку «#[multilib]» и идущие сразу за ней «#Include = …» / «#SigLevel = …» / «#Server = …» —
+    как в стандартном pacman.conf Arch. Остальной файл не трогаем."""
+    lines = conf_text.split("\n")
+    for i, line in enumerate(lines):
+        if re.fullmatch(r"\s*#\s*\[multilib\]\s*", line):
+            j = i + 1
+            while j < len(lines) and re.fullmatch(r"\s*#\s*(Include|SigLevel|Server)\s*=.*", lines[j]):
+                j += 1
+            if not any(re.fullmatch(r"\s*#\s*(Include|Server)\s*=.*", lines[k]) for k in range(i + 1, j)):
+                return None  # без Include/Server репозиторий не заработает
+            return list(range(i + 1, j + 1))
+    return None
+
+
 @check("repo")
 def check_repo(ctx: Context):
     pm = ctx.package_manager
@@ -40,9 +58,13 @@ def check_repo(ctx: Context):
             return result(GROUP, "repo", Status.UNKNOWN, error=t("multilib.repo.no_conf", path=PACMAN_CONF))
         ctx.multilib_enabled = multilib_enabled(conf)
         if not ctx.multilib_enabled:
+            lines = multilib_lines(conf)
+            # программа может включить сама (с копией файла и полным обновлением) — только по желанию
+            actions = [Action("pacman_multilib", PACMAN_CONF, ",".join(map(str, lines)), optional=True)] \
+                if lines else []
             return result(GROUP, "repo", Status.FAIL, value=t("multilib.repo.disabled"),
                           hint=t("multilib.repo.disabled_hint", path=PACMAN_CONF),
-                          fix=f"sudoedit {PACMAN_CONF} && sudo pacman -Syu")
+                          fix=f"sudoedit {PACMAN_CONF} && sudo pacman -Syu", actions=actions)
         return result(GROUP, "repo", Status.OK, value=t("multilib.repo.enabled"))
     if isinstance(pm, Apt):
         ctx.multilib_enabled = pm.i386_enabled()
@@ -103,7 +125,8 @@ def check_nvidia_match(ctx: Context):
     if s64 != s32:
         return result(GROUP, "nvidia_match", Status.FAIL,
                       value=t("multilib.nvidia_match.differ", v64=s64, v32=s32),
-                      hint=t("multilib.nvidia_match.differ_hint"), fix="sudo pacman -Syu")
+                      hint=t("multilib.nvidia_match.differ_hint"), fix="sudo pacman -Syu",
+                      actions=[Action("system_upgrade", "pacman", optional=True)])
     return result(GROUP, "nvidia_match", Status.OK, value=s64)
 
 

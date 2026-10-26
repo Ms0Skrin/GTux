@@ -557,11 +557,11 @@ class FixDialog(Adw.Dialog):
         for step in win.plan.steps:
             if step.kind == "enable_i386":
                 continue
-            self._add_check(box, prereq + [step] if step.kind == "install" else step.chain(), active=True)
+            self._add_check(box, prereq + [step] if step.kind == "install" else step.chain(), step, active=True)
         if win.plan.offers:
             box.append(label(t("gui.fix.offers"), "heading"))
             for step in win.plan.offers:  # по желанию: галочку ставит сам человек
-                self._add_check(box, step.chain(), active=False)
+                self._add_check(box, step.chain(), step, active=False)
         if win.plan.skipped:
             box.append(label(t("gui.fix.skipped", packages=", ".join(win.plan.skipped)), "error-box"))
 
@@ -596,14 +596,15 @@ class FixDialog(Adw.Dialog):
         # иначе фокус попадает на выделяемую команду и она вся подсвечивается
         self.set_focus(self.install if self.install.get_sensitive() else copy)
 
-    def _add_check(self, box: Gtk.Box, steps: list[fixer.Step], active: bool):
-        step = steps[-1]
+    def _add_check(self, box: Gtk.Box, steps: list[fixer.Step], step: fixer.Step, active: bool):
         what = t(f"fix.kind.{step.kind}") + (f" — {step.title}" if step.title else "")
         if any(st.root for st in steps):
             what += f" ({t('gui.fix.root')})"
         check = Gtk.CheckButton(label=what, active=active)
         check.connect("toggled", lambda *_: self._update_button())
         box.append(check)
+        for warning in dict.fromkeys(st.warning for st in steps if st.warning):
+            box.append(label(t(warning), "error-box"))
         for st in steps:
             box.append(label(st.command, "code", selectable=True))
         self.checks.append((check, steps))

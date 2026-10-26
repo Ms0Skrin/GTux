@@ -36,6 +36,8 @@ def _show_plan(console: Console, plan: fixer.Plan) -> None:
         console.print(f"\n[bold]{escape(t('fix.offers_title'))}[/]")
         for step in plan.offers:
             console.print(f"  • {escape(_what(step))}")
+            for warning in dict.fromkeys(st.warning for st in step.chain() if st.warning):
+                console.print(f"     [yellow]{escape(t(warning))}[/]")
             console.print(f"     [cyan]{escape(' && '.join(s.command for s in step.chain()))}[/]")
 
 

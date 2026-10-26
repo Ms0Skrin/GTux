@@ -15,8 +15,9 @@ from pathlib import Path
 
 from gtux import gamedb
 from gtux.i18n import t
-from gtux.models import Context, Status
+from gtux.models import Action, Context, Status
 from gtux.runner import check, result
+from gtux.system import which
 
 GROUP = "logs"
 
@@ -48,6 +49,12 @@ def read_tail(path: Path, limit: int = TAIL_BYTES) -> str:
         return f.read().decode("utf-8", errors="replace")
 
 
+def missing_verbs(text: str) -> list[str]:
+    """Пакеты winetricks для недостающих DLL из лога."""
+    dlls = dict.fromkeys(m[1] for m in MISSING_DLL.finditer(text))
+    return list(dict.fromkeys(v for d in dlls for rx, v in DLL_VERBS if rx.match(d)))
+
+
 def analyze(text: str, appid: str) -> list[tuple[Status, str, str | None]]:
     """[(статус, пояснение, команда)] по тексту лога."""
     findings: list[tuple[Status, str, str | None]] = []
@@ -55,7 +62,7 @@ def analyze(text: str, appid: str) -> list[tuple[Status, str, str | None]]:
         findings.append((Status.FAIL, t("logs.broken_prefix", appid=appid), None))
     dlls = list(dict.fromkeys(m[1] for m in MISSING_DLL.finditer(text)))
     if dlls:
-        verbs = list(dict.fromkeys(v for d in dlls for rx, v in DLL_VERBS if rx.match(d)))
+        verbs = missing_verbs(text)
         fix = f"protontricks {appid} {' '.join(verbs)}" if verbs else None
         findings.append((Status.FAIL, t("logs.missing_dll", dlls=", ".join(dlls[:6])), fix))
     if DEVICE_LOST.search(text):
@@ -78,7 +85,8 @@ def check_logs(ctx: Context):
         value = t("logs.value", path=path, date=time.strftime("%d.%m %H:%M", time.localtime(stat.st_mtime)),
                   size=f"{stat.st_size / 1024**2:.1f}")
         try:
-            findings = analyze(read_tail(path), appid)
+            text = read_tail(path)
+            findings = analyze(text, appid)
         except OSError as e:
             results.append(result(GROUP, f"proton.{appid}", Status.UNKNOWN, title=names.get(appid, appid),
                                   value=value, error=str(e)))
@@ -91,8 +99,12 @@ def check_logs(ctx: Context):
             hint += "\n" + t("games.protondb", appid=appid)
         else:
             value += "\n" + t("logs.clean")
+        verbs = missing_verbs(text)
+        # protontricks умеет поставить недостающее сам — по желанию, если он установлен
+        actions = [Action("protontricks", appid, " ".join(verbs), optional=True)] \
+            if verbs and which("protontricks") else []
         results.append(result(GROUP, f"proton.{appid}", status, title=t("logs.title_for", name=names.get(appid, appid)),
-                              value=value, hint=hint, fix=" && ".join(fixes) or None))
+                              value=value, hint=hint, fix=" && ".join(fixes) or None, actions=actions))
     return results
 
 

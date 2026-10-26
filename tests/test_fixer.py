@@ -110,3 +110,66 @@ class OffersTest(unittest.TestCase):
         self.assertEqual(step.argv[1:], ["-m", "gtux", "--install-ge",
                                          "/home/u/.local/share/Steam/compatibilitytools.d"])
         self.assertIn("PYTHONPATH", fixer.step_env(step))
+
+
+class RiskyTest(unittest.TestCase):
+    STD = "[core]\nInclude = /etc/pacman.d/mirrorlist\n\n#[multilib-testing]\n#Include = /etc/pacman.d/mirrorlist\n\n" \
+          "#[multilib]\n#Include = /etc/pacman.d/mirrorlist\n\n[custom]\nServer = file:///x\n"
+
+    def test_multilib_lines(self):
+        from gtux.checks.multilib import multilib_lines
+        self.assertEqual(multilib_lines(self.STD), [7, 8])
+        self.assertIsNone(multilib_lines("[core]\nInclude = x\n"))          # раздела нет
+        self.assertIsNone(multilib_lines("#[multilib]\n\n#Include = x\n"))  # Include оторван — руками
+
+    def test_multilib_step_edits_only_its_lines_with_guard_and_backup(self):
+        import subprocess
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as tmp:
+            conf = Path(tmp) / "pacman.conf"
+            conf.write_text(self.STD)
+            step = fixer.multilib_step(str(conf), [7, 8], "multilib")
+            self.assertTrue(step.optional and step.warning)
+            self.assertIn("sha256sum -c", step.command)
+            self.assertEqual([s.kind for s in step.chain()], ["enable_multilib", "system_upgrade"])
+            # выполняем то же, что root-сценарий, но без sudo и без pacman
+            script = fixer.root_script([step], packages.Pacman()).replace("pacman -Syu --noconfirm", "true")
+            subprocess.run(["sh", "-c", script], check=True, capture_output=True)
+            text = conf.read_text()
+            self.assertIn("\n[multilib]\nInclude = /etc/pacman.d/mirrorlist\n", text)
+            self.assertIn("#[multilib-testing]", text)  # соседний раздел не тронут
+            self.assertEqual(Path(step.backup).read_text(), self.STD)
+            # файл изменился после проверки — сценарий останавливается и ничего не меняет
+            conf.write_text(self.STD + "# changed\n")
+            step2 = fixer.multilib_step(str(conf), [7, 8])
+            conf.write_text(self.STD + "# changed again\n")
+            script2 = fixer.root_script([step2], packages.Pacman()).replace("pacman -Syu --noconfirm", "true")
+            self.assertNotEqual(subprocess.run(["sh", "-c", script2], capture_output=True).returncode, 0)
+            self.assertEqual(conf.read_text(), self.STD + "# changed again\n")
+
+    def test_multilib_offer_installs_skipped_packages_after(self):
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as tmp:
+            conf = Path(tmp) / "pacman.conf"
+            conf.write_text(self.STD)
+            res = [CheckResult("multilib.repo", "multilib", "multilib", Status.FAIL,
+                               actions=[Action("pacman_multilib", str(conf), "7,8", optional=True)]),
+                   r(Status.FAIL, ["lib32-vulkan-icd-loader", "steam"])]
+            plan = fixer.build_plan(res, Context(package_manager=packages.Pacman(), multilib_enabled=False))
+            chain = plan.offers[0].chain()
+            self.assertEqual([s.kind for s in chain], ["enable_multilib", "system_upgrade", "install"])
+            self.assertEqual(chain[-1].packages, ["lib32-vulkan-icd-loader", "steam"])
+            self.assertIn("pacman -Syu --noconfirm", fixer.root_script(chain, packages.Pacman()))
+
+    def test_protontricks_and_upgrade_are_optional(self):
+        res = [CheckResult("logs.proton.1", "logs", "log", Status.FAIL,
+                           actions=[Action("protontricks", "1091500", "vcrun2022 d3dcompiler_47", optional=True)]),
+               CheckResult("multilib.nvidia_match", "multilib", "nv", Status.FAIL,
+                           actions=[Action("system_upgrade", "pacman", optional=True)])]
+        plan = fixer.build_plan(res, Context(package_manager=packages.Pacman()))
+        self.assertEqual(plan.steps, [])
+        self.assertEqual(plan.offers[0].argv, ["protontricks", "1091500", "-q", "vcrun2022", "d3dcompiler_47"])
+        self.assertFalse(plan.offers[0].root)
+        self.assertEqual(plan.offers[1].command, "sudo pacman -Syu")
