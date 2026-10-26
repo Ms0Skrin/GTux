@@ -32,7 +32,8 @@ def _result_cell(r: CheckResult) -> Text:
     return cell
 
 
-def render(results: list[CheckResult], console: Console | None = None) -> None:
+def render(results: list[CheckResult], console: Console | None = None,
+           show_fix_hint: bool = True) -> None:
     console = console or Console()
     console.print(f"[bold]{escape(t('app.title'))}[/]  [dim]{escape(t('app.subtitle'))}[/]\n")
 
@@ -61,3 +62,5 @@ def render(results: list[CheckResult], console: Console | None = None) -> None:
     else:
         console.print(t("ui.all_good"), style="bold green")
     console.print(t("ui.note"), style="dim")
+    if show_fix_hint and any(r.packages and r.status != Status.OK for r in results):
+        console.print(t("ui.fix_hint"), style="bold cyan")
