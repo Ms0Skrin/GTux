@@ -7,6 +7,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 import argparse
 import logging
 import sys
+from pathlib import Path
 
 from gtux import __version__, i18n
 from gtux import log as gtux_log
@@ -24,6 +25,7 @@ def main() -> int:
     mode.add_argument("--json", action="store_true", help=t("cli.json"))
     mode.add_argument("--report", action="store_true", help=t("cli.report"))
     mode.add_argument("--update-kb", action="store_true", help=t("cli.update_kb"))
+    mode.add_argument("--install-ge", metavar="DIR", help=t("cli.install_ge"))
     parser.add_argument("--lang", choices=i18n.AVAILABLE, default=None, help=t("cli.lang"))
     parser.add_argument("--debug", action="store_true", help=t("cli.debug"))
     parser.add_argument("--no-history", action="store_true", help=t("cli.no_history"))
@@ -55,6 +57,8 @@ def run(args) -> int:
     i18n.set_language(args.lang or i18n.DEFAULT)
     if args.update_kb:
         return update_kb()
+    if args.install_ge:
+        return install_ge(Path(args.install_ge).expanduser())
     from gtux import fixer, history
     from gtux.checks import ALL_GROUPS
     from gtux.models import Context, Status
@@ -86,6 +90,26 @@ def run(args) -> int:
 
     return 1 if any(r.status == Status.FAIL for r in results) else 0
 
+
+
+def install_ge(target: Path) -> int:
+    """Скачать свежий GE-Proton в compatibilitytools.d (вызывается и из «Исправить…»)."""
+    from gtux import geproton
+
+    def progress(done, total):
+        extra = " " + t("gui.kb.mb", done=f"{done / 1e6:.0f}", total=f"{total / 1e6:.0f}") if total else ""
+        print(f"\r{t('ge.download')}{extra}" + " " * 10, end="", flush=True)
+
+    try:
+        release = geproton.latest_release()
+        print(t("ge.found", tag=release["tag"], target=target))
+        path = geproton.install(target, progress, release)
+    except (OSError, ValueError, geproton.GEError) as e:
+        log.exception("GE-Proton install failed")
+        print(f"\n{t('ge.failed', error=f'{type(e).__name__}: {e}')}", file=sys.stderr)
+        return 1
+    print("\n" + t("ge.done", path=path))
+    return 0
 
 
 def update_kb() -> int:

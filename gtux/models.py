@@ -23,12 +23,14 @@ class Status(str, Enum):
 class Action:
     """Исправление, которое программа может выполнить сама (после подтверждения)."""
 
-    kind: str     # "sysctl" | "flatpak_filesystem"
-    target: str   # sysctl: файл в /etc/sysctl.d; flatpak_filesystem: папка
-    value: str    # sysctl: строка «ключ = значение»; flatpak_filesystem: id приложения
+    kind: str     # "sysctl" | "flatpak_filesystem" | "package" | "flatpak_app" | "ge_proton"
+    target: str   # sysctl: файл в /etc/sysctl.d; flatpak_filesystem: папка; package: пакет;
+                  # flatpak_app: id приложения на Flathub; ge_proton: папка compatibilitytools.d
+    value: str = ""  # sysctl: строка «ключ = значение»; flatpak_filesystem: id приложения
+    optional: bool = False  # «по желанию»: предлагаем, но сами не отмечаем (лаунчеры, GE-Proton)
 
-    def to_dict(self) -> dict[str, str]:
-        return {"kind": self.kind, "target": self.target, "value": self.value}
+    def to_dict(self) -> dict[str, Any]:
+        return {"kind": self.kind, "target": self.target, "value": self.value, "optional": self.optional}
 
 
 @dataclass
@@ -80,3 +82,4 @@ class Context:
     pkg_params: dict[str, str] = field(default_factory=dict)  # подстановки в имена пакетов
     steam_roots: list[tuple[str, Path]] = field(default_factory=list)  # [(способ установки, путь)]
     steam_libraries: list[Path] = field(default_factory=list)
+    flatpak_apps: set[str] | None = None  # установленные Flatpak-приложения; None — ещё не смотрели

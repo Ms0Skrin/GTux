@@ -32,6 +32,15 @@ def _show_plan(console: Console, plan: fixer.Plan) -> None:
         console.print(f"     [cyan]{escape(step.command)}[/]")
     if plan.skipped:
         console.print(f"\n[yellow]{escape(t(plan.skipped_reason, packages=', '.join(plan.skipped)))}[/]")
+    if plan.offers:
+        console.print(f"\n[bold]{escape(t('fix.offers_title'))}[/]")
+        for step in plan.offers:
+            console.print(f"  • {escape(_what(step))}")
+            console.print(f"     [cyan]{escape(' && '.join(s.command for s in step.chain()))}[/]")
+
+
+def _what(step: fixer.Step) -> str:
+    return t("fix.kind." + step.kind) + (f" ({step.title})" if step.title else "")
 
 
 def _show_recheck(console: Console, before: list[CheckResult], after: list[CheckResult]) -> None:
@@ -51,11 +60,13 @@ def run(results: list[CheckResult], ctx: Context, console: Console | None = None
     """recheck() — заново запустить проверки после исправления (необязательно)."""
     console = console or Console()
     plan = fixer.build_plan(results, ctx)
-    if not plan.steps and not plan.skipped:
+    if not plan.steps and not plan.skipped and not plan.offers:
         console.print(f"\n[green]{escape(t('fix.nothing'))}[/]")
         return 0
-    _show_plan(console, plan)
     if not plan.steps:
+        console.print(f"\n[green]{escape(t('fix.nothing'))}[/]")
+    _show_plan(console, plan)
+    if not plan.steps and not plan.offers:
         return 0
     if not sys.stdin.isatty():
         console.print(f"\n[yellow]{escape(t('fix.not_tty'))}[/]")
@@ -67,8 +78,11 @@ def run(results: list[CheckResult], ctx: Context, console: Console | None = None
                   if p not in plan.skipped and _ask(console, t("fix.ask_package", package=p)) in YES]
         actions = [s for s in plan.steps if s.kind not in fixer.PACKAGE_KINDS
                    and _ask(console, t("fix.ask_step", what=t("fix.kind." + s.kind), title=s.title)) in YES]
+        offers = [s for s in plan.offers if _ask(console, t("fix.ask_offer", what=t("fix.kind." + s.kind),
+                                                              title=s.title)) in YES]
         plan = fixer.build_plan(results, ctx, only=chosen)
-        plan.steps = [s for s in plan.steps if s.kind in fixer.PACKAGE_KINDS] + actions
+        plan.steps = [s for s in plan.steps if s.kind in fixer.PACKAGE_KINDS] + actions + offers
+        plan.offers = []
         if not plan.steps:
             console.print(t("fix.cancelled"))
             return 0

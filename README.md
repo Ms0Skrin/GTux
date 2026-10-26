@@ -67,6 +67,7 @@ python main.py           # таблица в терминале
 python main.py --gui     # графическое окно
 python main.py --fix     # то же + предложить исправить автоматически
 python main.py --update-kb # скачать базу знаний ProtonDB (советы по параметрам)
+python main.py --install-ge ~/.local/share/Steam/compatibilitytools.d  # свежий GE-Proton
 python main.py --json    # JSON для скриптов, бота, GUI
 python main.py --report  # отчёт в Markdown, чтобы вставить на форум
 python main.py --lang en # English
@@ -159,6 +160,19 @@ sudo dnf install libadwaita python3-gobject            # Fedora
    В окне пароль администратора спрашивается один раз на все шаги.
 4. Выполняет шаги по очереди, останавливается на первой ошибке и после успеха проверяет систему заново.
 
+**По желанию.** Отдельно, с **снятыми** галочками (в терминале — только при выборе по одному),
+программа предлагает то, без чего можно жить:
+- **Lutris** и **protontricks** — пакетом вашего дистрибутива (есть в Arch, Debian 13, Ubuntu 26.04, Fedora);
+- **Heroic** и **Faugus** — с Flathub для вашего пользователя (`flatpak install --user`, без пароля);
+  если flatpak не установлен, он ставится тем же шагом;
+- **GE-Proton**, если его нет: программа сама скачивает последний релиз с GitHub, сверяет SHA-512
+  с файлом из релиза и распаковывает в `compatibilitytools.d` вашего Steam (без пароля). После этого
+  перезапустите Steam.
+
+Имена пакетов сверены с репозиториями 2026-10-26; пакеты RPM Fusion (Fedora: Steam, драйвер NVIDIA) —
+по документации RPM Fusion. На Arch `steam` и `steam-devices` лежат в multilib: без него программа
+их не ставит и объясняет, как включить. На Debian/Ubuntu перед `steam-installer` включается i386.
+
 `/etc/pacman.conf`, fstab и параметры ядра программа не правит, команды для них только показывает.
 Если ввод не из терминала, ничего не выполняется.
 
@@ -174,6 +188,7 @@ sudo dnf install libadwaita python3-gobject            # Fedora
 | Диски | NTFS/exFAT под библиотекой, опция `windows_names`, где лежат префиксы Proton (`compatdata`), read-only, `noexec`, «грязный» NTFS-том, HDD или SSD, свободное место |
 | Proton | версии от Valve, сторонние сборки (GE, CachyOS…), есть ли Proton-GE |
 | Утилиты | gamemode, MangoHud, gamescope и их 32-битные части |
+| Лаунчеры и помощники | Heroic, Lutris, Faugus, protontricks: установлены ли (пакетом или Flatpak); если нет — предложение «по желанию» |
 | Настройки | governor процессора (с учётом intel_pstate/amd-pstate EPP), `vm.max_map_count`, лимит открытых файлов, `split_lock_mitigate` |
 | Железо | память и swap/zram, звуковой сервер (PipeWire + pipewire-pulse или PulseAudio), udev-правила для геймпадов |
 | Игры | для каждой игры Steam, Heroic (Epic, GOG, Amazon, свои), Lutris и Faugus: Linux-версия или Proton (и какой), не удалена ли выбранная сборка Proton, ошибки в параметрах запуска (нет `%command%`, не установлен `gamemoderun`/`mangohud`, неверный `WINE_CPU_TOPOLOGY`, переменные Proton у нативной игры), статус античита, требования игры к системе |
@@ -245,7 +260,8 @@ gtux/
   system.py             запуск команд с таймаутом, чтение файлов
   packages.py           pacman / apt / dnf: что установлено, команда установки
   pkgnames.py           компонент -> имена пакетов для каждого дистрибутива
-  fixer.py              план исправления и выполнение (--fix)
+  fixer.py              план исправления и выполнение (--fix), пункты «по желанию»
+  geproton.py           установка GE-Proton с GitHub (проверка SHA-512, безопасная распаковка)
   steamcfg.py           запись параметров запуска в localconfig.vdf (копия, журнал, откат)
   knowledge.py          база знаний ProtonDB: скачивание, белый список, личные советы
   gamedb.py             установленные игры, настройки Steam, базы заметок

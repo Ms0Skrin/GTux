@@ -9,6 +9,8 @@
   Debian: wiki.debian.org/Steam, wiki.debian.org/NvidiaGraphicsDrivers
   Ubuntu: пакеты libnvidia-gl-<ветка> в restricted
   Fedora: rpmfusion.org/Howto/NVIDIA, документация по Steam из RPM Fusion
+Все имена, кроме пакетов RPM Fusion, сверены по репозиториям 2026-10-26 (Arch, Debian 13,
+Ubuntu 26.04, Fedora rawhide).
 """
 
 from __future__ import annotations
@@ -69,6 +71,11 @@ COMPONENTS: dict[str, dict[str, list[str]]] = {
                        "ubuntu": ["pipewire-pulse"], "fedora": ["pipewire-pulseaudio"]},
     # правила udev для геймпадов (сверено: packages.debian.org, mdapi.fedoraproject.org)
     "steam_devices": {f: ["steam-devices"] for f in ("arch", "debian", "ubuntu", "fedora")},
+    # лаунчеры и помощники (сверено 2026-10-26: pacman -Si, packages.debian.org (trixie),
+    # Launchpad (Ubuntu 26.04), mdapi.fedoraproject.org)
+    "lutris": {f: ["lutris"] for f in ("arch", "debian", "ubuntu", "fedora")},
+    "protontricks": {f: ["protontricks"] for f in ("arch", "debian", "ubuntu", "fedora")},
+    "flatpak": {f: ["flatpak"] for f in ("arch", "debian", "ubuntu", "fedora")},
     # 32-битные части утилит уверенно знаем только для Arch
     "lib32_gamemode": {"arch": ["lib32-gamemode"]},
     "lib32_mangohud": {"arch": ["lib32-mangohud"]},

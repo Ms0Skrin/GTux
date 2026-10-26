@@ -53,6 +53,7 @@ GROUP_ICON = {
     "disks": "drive-harddisk-symbolic",
     "proton": "system-run-symbolic",
     "tools": "applications-utilities-symbolic",
+    "apps": "view-app-grid-symbolic",
     "tuning": "preferences-system-symbolic",
     "hardware": "audio-card-symbolic",
     "games": "input-gaming-symbolic",
@@ -270,7 +271,7 @@ class DoctorWindow(Adw.ApplicationWindow):
                                              self.steam_games, self.profile, self.open_kb_dialog, self.protons)
         self.stack.add_named(self.launch_page, "tool:launch")
         self._fill_sidebar()
-        self.fix_btn.set_visible(bool(plan.steps))
+        self.fix_btn.set_visible(bool(plan.steps or plan.offers))
         self.report_btn.set_sensitive(True)
         self.title.set_subtitle(self._system_line())
         GLib.idle_add(self._maybe_snapshot)
@@ -505,7 +506,7 @@ class DoctorWindow(Adw.ApplicationWindow):
 
     # ----- исправление -----
     def open_fix_dialog(self):
-        if not self.plan or not self.plan.steps:
+        if not self.plan or not (self.plan.steps or self.plan.offers):
             return
         FixDialog(self).present(self)
 
@@ -556,16 +557,11 @@ class FixDialog(Adw.Dialog):
         for step in win.plan.steps:
             if step.kind == "enable_i386":
                 continue
-            steps = prereq + [step] if step.kind == "install" else [step]
-            what = t(f"fix.kind.{step.kind}") + (f" — {step.title}" if step.title else "")
-            if step.root:
-                what += f" ({t('gui.fix.root')})"
-            check = Gtk.CheckButton(label=what, active=True)
-            check.connect("toggled", lambda *_: self._update_button())
-            box.append(check)
-            for st in steps:
-                box.append(label(st.command, "code", selectable=True))
-            self.checks.append((check, steps))
+            self._add_check(box, prereq + [step] if step.kind == "install" else step.chain(), active=True)
+        if win.plan.offers:
+            box.append(label(t("gui.fix.offers"), "heading"))
+            for step in win.plan.offers:  # по желанию: галочку ставит сам человек
+                self._add_check(box, step.chain(), active=False)
         if win.plan.skipped:
             box.append(label(t("gui.fix.skipped", packages=", ".join(win.plan.skipped)), "error-box"))
 
@@ -600,6 +596,18 @@ class FixDialog(Adw.Dialog):
         # иначе фокус попадает на выделяемую команду и она вся подсвечивается
         self.set_focus(self.install if self.install.get_sensitive() else copy)
 
+    def _add_check(self, box: Gtk.Box, steps: list[fixer.Step], active: bool):
+        step = steps[-1]
+        what = t(f"fix.kind.{step.kind}") + (f" — {step.title}" if step.title else "")
+        if any(st.root for st in steps):
+            what += f" ({t('gui.fix.root')})"
+        check = Gtk.CheckButton(label=what, active=active)
+        check.connect("toggled", lambda *_: self._update_button())
+        box.append(check)
+        for st in steps:
+            box.append(label(st.command, "code", selectable=True))
+        self.checks.append((check, steps))
+
     def _selected(self) -> list[fixer.Step]:
         return [st for check, steps in self.checks if check.get_active() for st in steps]
 
@@ -624,15 +632,17 @@ class FixDialog(Adw.Dialog):
         threading.Thread(target=self._run, args=(self._selected(),), daemon=True).start()
 
     def _run(self, steps: list[fixer.Step]):
-        # сначала то, что не требует пароля, потом всё остальное одним запуском pkexec
-        commands = [fixer.gui_argv(st, self.pm) for st in steps if not st.root]
+        # сначала всё с root одним запуском pkexec (пароль спросят один раз), потом остальное:
+        # приложениям с Flathub нужен уже установленный flatpak
+        commands: list[tuple[list[str], dict | None]] = []
         if any(st.root for st in steps):
-            commands.append(["pkexec", "sh", "-c", fixer.root_script(steps, self.pm)])
-        for argv in commands:
+            commands.append((["pkexec", "sh", "-c", fixer.root_script(steps, self.pm)], None))
+        commands += [(argv, fixer.step_env(st)) for st in steps if not st.root for argv in fixer.user_commands(st)]
+        for argv, env in commands:
             shown = argv[3] if argv[:3] == ["pkexec", "sh", "-c"] else " ".join(argv)
             GLib.idle_add(self._append, "$ " + shown.replace("\n", "\n$ ") + "\n")
             try:
-                proc = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+                proc = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, env=env)
                 for line in proc.stdout:
                     GLib.idle_add(self._append, line)
                 code = proc.wait()

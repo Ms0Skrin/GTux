@@ -3,30 +3,42 @@
 Умеет: ставить пакеты, включать i386 на Debian/Ubuntu, записывать настройки ядра в /etc/sysctl.d
 и открывать Flatpak-Steam доступ к папкам. Остальное (pacman.conf, параметры ядра) остаётся ручным:
 такие команды мы показываем, но не выполняем.
+
+«По желанию» (plan.offers): программы, без которых можно жить, — Lutris, protontricks, Heroic и Faugus
+(Flathub, --user, без пароля), GE-Proton (скачивает сама программа: gtux --install-ge). Их мы только
+предлагаем: в окне галочка снята, в терминале они не входят в «да».
 Ничего не запускается без явного подтверждения пользователя.
 """
 
 from __future__ import annotations
 
+import os
 import shlex
 import subprocess
+import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 
 from gtux.models import Action, CheckResult, Context, Status
 from gtux.packages import Apt, Pacman
 
 PROBLEMS = (Status.FAIL, Status.WARN, Status.UNKNOWN)
 PACKAGE_KINDS = ("enable_i386", "install")
+FLATHUB = "https://dl.flathub.org/repo/flathub.flatpakrepo"
 
 
 @dataclass
 class Step:
     kind: str                       # "enable_i386" | "install" | "sysctl" | "flatpak_filesystem"
+                                    # | "flatpak_app" | "ge_proton"
     argv: list[str]
     packages: list[str] = field(default_factory=list)
     path: str = ""                  # sysctl: файл, который записываем перед argv
     content: str = ""               # sysctl: его содержимое
     title: str = ""                 # для действий: название проверки, которую исправляем
+    optional: bool = False          # «по желанию»: сами не отмечаем
+    prereq: list["Step"] = field(default_factory=list)  # что сделать до (например, поставить flatpak)
+    pre: list[list[str]] = field(default_factory=list)  # команды без root перед argv (flathub remote-add)
 
     @property
     def root(self) -> bool:
@@ -36,11 +48,16 @@ class Step:
     def command(self) -> str:
         if self.kind == "sysctl":
             return f"echo {shlex.quote(self.content)} | sudo tee {shlex.quote(self.path)} && {shlex.join(self.argv)}"
-        return shlex.join(self.argv)
+        return " && ".join(shlex.join(a) for a in [*self.pre, self.argv])
+
+    def chain(self) -> list["Step"]:
+        """Шаг вместе с тем, что нужно сделать до него."""
+        return [*self.prereq, self]
 
     def to_dict(self) -> dict:
         return {"kind": self.kind, "command": self.command, "argv": self.argv, "packages": self.packages,
-                "title": self.title}
+                "title": self.title, "optional": self.optional,
+                "prereq": [p.to_dict() for p in self.prereq]}
 
 
 @dataclass
@@ -48,10 +65,11 @@ class Plan:
     steps: list[Step] = field(default_factory=list)
     skipped: list[str] = field(default_factory=list)  # пакеты, которые поставить автоматически нельзя
     skipped_reason: str = ""                           # ключ перевода
+    offers: list[Step] = field(default_factory=list)   # «по желанию»: не выполняются без отдельного выбора
 
     def to_dict(self) -> dict:
         return {"steps": [s.to_dict() for s in self.steps], "skipped": self.skipped,
-                "skipped_reason": self.skipped_reason}
+                "skipped_reason": self.skipped_reason, "offers": [s.to_dict() for s in self.offers]}
 
 
 def wanted_packages(results: list[CheckResult]) -> list[str]:
@@ -62,7 +80,30 @@ def wanted_packages(results: list[CheckResult]) -> list[str]:
     return pkgs
 
 
-def action_step(action: Action, title: str = "") -> Step | None:
+def gtux_argv(*args: str) -> list[str]:
+    """Запуск самой программы: работает и из пакета, и из папки с исходниками."""
+    return [sys.executable, "-m", "gtux", *args]
+
+
+def action_step(action: Action, title: str = "", ctx: Context | None = None) -> Step | None:
+    pm = ctx.package_manager if ctx else None
+    if action.kind == "package":
+        if pm is None:
+            return None
+        return Step("install", pm.install_argv([action.target]), [action.target], title=title,
+                    optional=action.optional)
+    if action.kind == "flatpak_app":
+        step = Step("flatpak_app", ["flatpak", "install", "--user", "--noninteractive", "flathub", action.target],
+                    title=title, optional=action.optional,
+                    pre=[["flatpak", "remote-add", "--user", "--if-not-exists", "flathub", FLATHUB]])
+        if not (ctx and ctx.flatpak_apps is not None):  # flatpak не установлен — ставим его пакетом
+            if pm is None:
+                return None
+            names = flatpak_package(ctx)
+            step.prereq = [Step("install", pm.install_argv(names), names)]
+        return step
+    if action.kind == "ge_proton":
+        return Step("ge_proton", gtux_argv("--install-ge", action.target), title=title, optional=action.optional)
     if action.kind == "sysctl":
         return Step("sysctl", ["sudo", "sysctl", f"--load={action.target}"],
                     path=action.target, content=action.value, title=title)
@@ -70,6 +111,11 @@ def action_step(action: Action, title: str = "") -> Step | None:
         return Step("flatpak_filesystem",
                     ["flatpak", "override", "--user", f"--filesystem={action.target}", action.value], title=title)
     return None
+
+
+def flatpak_package(ctx: Context) -> list[str]:
+    from gtux.packages import component
+    return component(ctx, "flatpak") or ["flatpak"]
 
 
 def build_plan(results: list[CheckResult], ctx: Context, only: list[str] | None = None) -> Plan:
@@ -91,14 +137,27 @@ def build_plan(results: list[CheckResult], ctx: Context, only: list[str] | None 
 
     seen: set[str] = set()
     for r in results:
-        if r.status not in PROBLEMS:
-            continue
         for action in r.actions:
-            step = action_step(action, r.title)
+            if not action.optional and r.status not in PROBLEMS:
+                continue
+            step = action_step(action, r.title, ctx)
             if step is not None and step.command not in seen:
                 seen.add(step.command)
-                plan.steps.append(step)
+                (plan.offers if action.optional else plan.steps).append(step)
     return plan
+
+
+def user_commands(step: Step) -> list[list[str]]:
+    """Команды шага без root, по порядку."""
+    return [*step.pre, step.argv]
+
+
+def step_env(step: Step) -> dict[str, str] | None:
+    """Окружение для шага: GE-Proton ставит сама программа, ей нужен путь к своему пакету."""
+    if step.kind != "ge_proton":
+        return None
+    root = str(Path(__file__).resolve().parent.parent)
+    return {**os.environ, "PYTHONPATH": os.pathsep.join(filter(None, [root, os.environ.get("PYTHONPATH")]))}
 
 
 def gui_argv(step: Step, pm) -> list[str]:
@@ -125,7 +184,7 @@ def _commands(step: Step) -> list[tuple[list[str], str | None]]:
     """Что запустить для шага в терминале: (argv, что подать на вход)."""
     if step.kind == "sysctl":
         return [(["sudo", "tee", step.path], step.content + "\n"), (step.argv, None)]
-    return [(step.argv, None)]
+    return [(argv, None) for argv in user_commands(step)]
 
 
 def execute(plan: Plan, echo) -> tuple[bool, Step | None, int]:
@@ -133,11 +192,11 @@ def execute(plan: Plan, echo) -> tuple[bool, Step | None, int]:
 
     echo(step) вызывается перед каждым шагом. Возвращает (успех, упавший шаг, код возврата).
     """
-    for step in plan.steps:
+    for step in [st for s in plan.steps for st in s.chain()]:
         echo(step)
         for argv, stdin in _commands(step):
             try:
-                code = subprocess.run(argv, input=stdin, text=True,
+                code = subprocess.run(argv, input=stdin, text=True, env=step_env(step),
                                       stdout=subprocess.DEVNULL if stdin else None).returncode
             except OSError as e:
                 echo(None, error=str(e))

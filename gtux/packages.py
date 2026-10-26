@@ -54,8 +54,11 @@ class Pacman(PackageManager):
     def install_argv(self, packages):
         return ["sudo", "pacman", "-S", "--needed", *packages]
 
+    # В Arch эти пакеты лежат в репозитории multilib, хоть и без префикса lib32- (pacman -Si, 2026-10)
+    MULTILIB = {"steam", "steam-devices"}
+
     def is_32bit(self, package):
-        return package.startswith("lib32-")
+        return package.startswith("lib32-") or package in self.MULTILIB
 
 
 class Apt(PackageManager):
@@ -87,7 +90,8 @@ class Apt(PackageManager):
         return ["sudo", "apt", "install", *packages]
 
     def is_32bit(self, package):
-        return package.endswith(":i386")
+        # steam-installer ставит 32-битные библиотеки: без i386 apt его не поставит (wiki.debian.org/Steam)
+        return package.endswith(":i386") or package == "steam-installer"
 
     def i386_enabled(self) -> bool:
         return "i386" in run(["dpkg", "--print-foreign-architectures"]).stdout.split()

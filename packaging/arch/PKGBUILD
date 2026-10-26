@@ -2,16 +2,15 @@
 # Сборка: scripts/build_arch_package.sh (делает архив исходников из git и запускает makepkg)
 
 pkgname=gtux
-pkgver=0.5.0
+pkgver=0.6.0
 pkgrel=1
 pkgdesc="Checks a Linux system and explains in plain words what is missing for gaming"
 arch=('any')
 license=('GPL-3.0-or-later')
-depends=('python>=3.11' 'python-rich')
+# окно — основной интерфейс, поэтому GTK4/libadwaita/PyGObject обязательны (pacman сам не ставит optdepends)
+depends=('python>=3.11' 'python-rich' 'gtk4' 'libadwaita' 'python-gobject')
 optdepends=(
-  'gtk4: graphical window (--gui)'
-  'libadwaita: graphical window (--gui)'
-  'python-gobject: graphical window (--gui)'
+  'flatpak: Heroic and Faugus from Flathub (GTux offers to install it when needed)'
   'vulkan-tools: check that Vulkan sees the GPU (vulkaninfo)'
   'pciutils: readable GPU names (lspci)'
   'polkit: fix problems from the window (pkexec)'

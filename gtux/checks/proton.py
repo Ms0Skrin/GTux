@@ -8,7 +8,7 @@ from pathlib import Path
 
 from gtux import vdf
 from gtux.i18n import t
-from gtux.models import Context, Status
+from gtux.models import Action, Context, Status
 from gtux.runner import check, result
 
 GROUP = "proton"
@@ -101,7 +101,10 @@ def check_custom(ctx: Context):
     has_ge = any(GE_PATTERN.search(tool.name) or GE_PATTERN.search(tool.path.name) for tool in tools)
     value = ", ".join(names) or t("proton.custom.none")
     if not has_ge:
-        return result(GROUP, "custom", Status.WARN, value=value, hint=t("proton.custom.no_ge_hint"))
+        # GE-Proton программа может скачать сама (gtux --install-ge) — по желанию, в первый найденный Steam
+        actions = [Action("ge_proton", str(ctx.steam_roots[0][1] / "compatibilitytools.d"), optional=True)]
+        return result(GROUP, "custom", Status.WARN, value=value, hint=t("proton.custom.no_ge_hint"),
+                      actions=actions)
     return result(GROUP, "custom", Status.OK, value=value)
 
 

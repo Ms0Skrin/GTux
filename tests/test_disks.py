@@ -5,12 +5,14 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
+from gtux import i18n
 from gtux.checks import disks
 from gtux.models import Status
 
 
 class DiskScenarios(unittest.TestCase):
     def setUp(self):
+        i18n.set_language("ru")  # тексты в проверках ниже — русские, независимо от языка системы
         self.tmp = Path(tempfile.mkdtemp())
         self.lib = self.tmp / "games" / "SteamLibrary"
         (self.lib / "steamapps").mkdir(parents=True)

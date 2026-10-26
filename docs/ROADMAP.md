@@ -1,10 +1,10 @@
 # План и состояние проекта
 
-Обновляется в конце каждой рабочей сессии. Последнее обновление: **2026-10-26**, версия **0.5.0**. Название приложения — **GTux**.
+Обновляется в конце каждой рабочей сессии. Последнее обновление: **2026-10-26**, версия **0.6.0**. Название приложения — **GTux**.
 
 ## Сделано
 
-**Проверки** (только чтение, 13 групп, 104 теста):
+**Проверки** (только чтение, 14 групп, 112 тестов):
 - Система: дистрибутив, ядро, пакетный менеджер (pacman / apt / dnf).
 - Видеокарта: драйвер, версия NVIDIA/Mesa, рассинхрон после обновления, `nvidia_drm.modeset`, Resizable BAR.
 - Vulkan: загрузчик, ICD, `vulkaninfo`.
@@ -42,11 +42,19 @@
 **Переименование в GTux** (0.5.0): Python-пакет `gtux`, команда `gtux`, application id `io.github.gtux.GTux`,
 пакет pacman `gtux` (заменяет `linux-gamer-doctor`: conflicts/replaces), папки `~/.cache|.local/state|.config/gtux`
 (`gtux/paths.py` один раз переносит старые `linux-gamer-doctor`), журнал `gtux.log`, переменные `GTUX_GUI_*`.
+**Лаунчеры и «по желанию»** (0.6.0): группа «Лаунчеры и помощники» (Heroic, Lutris, Faugus, protontricks);
+в плане исправлений — `plan.offers` с снятыми галочками: Lutris/protontricks пакетом, Heroic/Faugus с Flathub
+(`--user`, flatpak ставится тем же шагом), GE-Proton — `gtux --install-ge DIR` (GitHub, SHA-512, проверено вживую
+на GE-Proton11-11). В окне root-шаги идут первыми одним pkexec, потом шаги без пароля.
+Сверка имён пакетов 2026-10-26: Arch (pacman -Si), Debian 13, Ubuntu 26.04 (Launchpad), Fedora (mdapi), Flathub.
+Найдено и исправлено: на Arch `steam`/`steam-devices` в multilib, на Debian/Ubuntu `steam-installer` требует i386.
+GTK4/libadwaita/PyGObject — обязательные зависимости пакета.
+
 ID выбран без привязки к GitHub-аккаунту: для Flathub он должен совпасть с `io.github.<аккаунт>` — решить при публикации.
 
 **Прочее**: история проверок и diff, отладочный журнал
 с ротацией, английский перевод, лицензия GPL-3.0-or-later, пакет pacman (`scripts/build_arch_package.sh`),
-`pyproject.toml` для pipx, ярлык в меню, иконки GTux (цветная и symbolic), пакет 0.5.0-1 собран, строка статуса Claude Code в `~/.claude/statusline.py`
+`pyproject.toml` для pipx, ярлык в меню, иконки GTux (цветная и symbolic), пакет 0.6.0-1 собран, GitHub Actions с тестами (`.github/workflows/tests.yml`, Python 3.11–3.14), строка статуса Claude Code в `~/.claude/statusline.py`
 (лимиты 5ч/неделя Claude Code присылает устаревшими — помечаем «лимиты от …»).
 
 ## Дальше (по приоритету)
@@ -55,7 +63,8 @@ ID выбран без привязки к GitHub-аккаунту: для Flath
 1. **Записывать выбранную сборку Proton в Steam** (CompatToolMapping в config.vdf, как с параметрами:
    только при закрытом Steam, копия и откат).
 3. **Проверить на настоящих Debian/Ubuntu/Fedora** (например, distrobox — сначала спросить про установку).
-4. **GitHub**: репозиторий, GitHub Actions с тестами, затем пакет в AUR.
+4. **GitHub**: создать репозиторий и залить (Actions уже готов), затем пакет в AUR.
+   Перед публикацией решить: ID приложения под аккаунт (`io.github.<аккаунт>.GTux`), почта в коммитах и PKGBUILD.
 5. Кнопка «Обновить базу античитов» в окне (по желанию пользователя, с интернетом).
 6. Расширять `games.toml` (только с источниками).
 7. Telegram-бот на домашнем сервере поверх `--json` (решить: проверяет сервер или принимает отчёты).
@@ -73,3 +82,5 @@ ID выбран без привязки к GitHub-аккаунту: для Flath
 - Рекомендация сборки: proton-cachyos в ProtonDB не выделяется (попадает в notListed, его не считаем);
   «официальный» = текущий стабильный Proton на момент отчёта. Linux-версию игры определяем по games.toml
   и AreWeAntiCheatYet — для игр вне этих баз текущей считается сборка Steam по умолчанию.
+- GE-Proton предлагается только когда его нет совсем; обновление до свежего релиза — пока вручную (`gtux --install-ge`).
+  Ставится в первый найденный Steam. Пакеты RPM Fusion (Fedora) автоматически не сверялись.

@@ -66,3 +66,47 @@ class PlanTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class OffersTest(unittest.TestCase):
+    def test_multilib_only_packages_on_arch(self):
+        # steam и steam-devices лежат в multilib: без него их ставить нельзя
+        ctx = Context(package_manager=packages.Pacman(), multilib_enabled=False)
+        plan = fixer.build_plan([r(Status.FAIL, ["steam", "steam-devices", "gamemode"])], ctx)
+        self.assertEqual(plan.skipped, ["steam", "steam-devices"])
+        self.assertEqual(plan.steps[0].packages, ["gamemode"])
+        self.assertTrue(packages.Apt().is_32bit("steam-installer"))
+
+    def test_optional_offered_even_when_ok_and_not_in_steps(self):
+        res = CheckResult("apps.lutris", "apps", "Lutris", Status.OK,
+                          actions=[Action("package", "lutris", optional=True)])
+        heroic = CheckResult("apps.heroic", "apps", "Heroic", Status.OK,
+                             actions=[Action("flatpak_app", "com.heroicgameslauncher.hgl", optional=True)])
+        ctx = Context(package_manager=packages.Pacman(), multilib_enabled=True, flatpak_apps=set())
+        plan = fixer.build_plan([res, heroic], ctx)
+        self.assertEqual(plan.steps, [])
+        self.assertEqual([s.kind for s in plan.offers], ["install", "flatpak_app"])
+        self.assertTrue(all(s.optional for s in plan.offers))
+        fp = plan.offers[1]
+        self.assertEqual(fp.prereq, [])  # flatpak уже есть
+        self.assertFalse(fp.root)
+        self.assertEqual(fixer.user_commands(fp)[0][:3], ["flatpak", "remote-add", "--user"])
+        self.assertIn("flatpak install --user --noninteractive flathub com.heroicgameslauncher.hgl", fp.command)
+
+    def test_flatpak_missing_adds_package_prereq(self):
+        heroic = CheckResult("apps.heroic", "apps", "Heroic", Status.OK,
+                             actions=[Action("flatpak_app", "com.heroicgameslauncher.hgl", optional=True)])
+        ctx = Context(package_manager=packages.Apt(), flatpak_apps=None)
+        step = fixer.build_plan([heroic], ctx).offers[0]
+        self.assertEqual([s.command for s in step.chain()][0], "sudo apt install flatpak")
+        # в окне: сначала root (flatpak), потом приложение без пароля
+        self.assertIn("apt install -y flatpak", fixer.root_script(step.chain(), ctx.package_manager))
+
+    def test_ge_proton_runs_gtux_itself(self):
+        res = CheckResult("proton.custom", "proton", "GE", Status.WARN,
+                          actions=[Action("ge_proton", "/home/u/.local/share/Steam/compatibilitytools.d",
+                                          optional=True)])
+        step = fixer.build_plan([res], Context()).offers[0]
+        self.assertEqual(step.argv[1:], ["-m", "gtux", "--install-ge",
+                                         "/home/u/.local/share/Steam/compatibilitytools.d"])
+        self.assertIn("PYTHONPATH", fixer.step_env(step))

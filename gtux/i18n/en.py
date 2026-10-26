@@ -221,8 +221,33 @@ TEXTS = {
     "proton.custom.none": "none",
     "proton.custom.no_ge_hint": (
         "No Proton-GE. It fixes cutscene videos and many games that don't run on "
-        "official Proton. The easiest way to get it is ProtonUp-Qt."
+        "official Proton. GTux can download the latest GE-Proton itself: Fix… → optional "
+        "(or gtux --install-ge <compatibilitytools.d folder>). Restart Steam afterwards."
     ),
+
+    # --- launchers and helpers ---
+    "group.apps": "Launchers and helpers",
+    "apps.native": "installed",
+    "apps.flatpak": "installed (Flatpak)",
+    "apps.missing": "not installed — can be added in Fix… (optional)",
+    "apps.heroic.title": "Heroic Games Launcher",
+    "apps.heroic.hint": "Games from Epic Games, GOG and Amazon via Proton/Wine. Installed from Flathub, no password.",
+    "apps.lutris.title": "Lutris",
+    "apps.lutris.hint": "Launcher for non-Steam games: install scripts, Battle.net, emulators.",
+    "apps.faugus.title": "Faugus Launcher",
+    "apps.faugus.hint": "Simple way to run .exe games with umu-launcher and Proton. Installed from Flathub, no password.",
+    "apps.protontricks.title": "protontricks",
+    "apps.protontricks.hint": "Installs missing Windows components (DLLs, fonts, .NET) into a Steam game's prefix when a game needs them.",
+    "fix.kind.flatpak_app": "install an app from Flathub (for your user)",
+    "fix.kind.ge_proton": "download the latest GE-Proton from GitHub (SHA-512 checked)",
+    "fix.offers_title": "Optional (not included in “yes”, can be selected one by one):",
+    "fix.ask_offer": "  {what} ({title})? [y / Enter — no]: ",
+    "gui.fix.offers": "Optional — tick what you need:",
+    "cli.install_ge": "download the latest GE-Proton into a compatibilitytools.d folder (DIR) and exit",
+    "ge.found": "Latest GE-Proton: {tag}. Installing into {target}",
+    "ge.download": "Downloading…",
+    "ge.failed": "Could not install GE-Proton: {error}",
+    "ge.done": "Done: {path}. Restart Steam and pick the build in the game's Properties → Compatibility.",
 
     # --- tools ---
     "tools.found": "installed",

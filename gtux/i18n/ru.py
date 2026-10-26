@@ -221,8 +221,33 @@ TEXTS = {
     "proton.custom.none": "нет",
     "proton.custom.no_ge_hint": (
         "Нет Proton-GE. Он чинит видео в катсценах и многие игры, которые не идут на "
-        "официальном Proton. Проще всего поставить через ProtonUp-Qt."
+        "официальном Proton. Программа может скачать свежий GE-Proton сама: «Исправить…» → «по желанию» "
+        "(или gtux --install-ge <папка compatibilitytools.d>). После установки перезапустите Steam."
     ),
+
+    # --- лаунчеры и помощники ---
+    "group.apps": "Лаунчеры и помощники",
+    "apps.native": "установлен",
+    "apps.flatpak": "установлен (Flatpak)",
+    "apps.missing": "не установлен — можно поставить в «Исправить…» (по желанию)",
+    "apps.heroic.title": "Heroic Games Launcher",
+    "apps.heroic.hint": "Игры из Epic Games, GOG и Amazon через Proton/Wine. Ставится с Flathub, без пароля.",
+    "apps.lutris.title": "Lutris",
+    "apps.lutris.hint": "Лаунчер для игр не из Steam: установочные скрипты, Battle.net, эмуляторы.",
+    "apps.faugus.title": "Faugus Launcher",
+    "apps.faugus.hint": "Простой запуск .exe-игр через umu-launcher и Proton. Ставится с Flathub, без пароля.",
+    "apps.protontricks.title": "protontricks",
+    "apps.protontricks.hint": "Ставит в префикс игры Steam недостающие компоненты Windows (DLL, шрифты, .NET), если игра просит.",
+    "fix.kind.flatpak_app": "установить приложение с Flathub (для вашего пользователя)",
+    "fix.kind.ge_proton": "скачать свежий GE-Proton с GitHub (проверка SHA-512)",
+    "fix.offers_title": "По желанию (не входит в «да», можно выбрать по одному):",
+    "fix.ask_offer": "  {what} ({title})? [д/y / Enter — нет]: ",
+    "gui.fix.offers": "По желанию — отметьте, если нужно:",
+    "cli.install_ge": "скачать свежий GE-Proton в папку compatibilitytools.d (DIR) и выйти",
+    "ge.found": "Последний GE-Proton: {tag}. Ставлю в {target}",
+    "ge.download": "Скачиваю…",
+    "ge.failed": "Не получилось установить GE-Proton: {error}",
+    "ge.done": "Готово: {path}. Перезапустите Steam и выберите сборку в свойствах игры → Совместимость.",
 
     # --- утилиты ---
     "tools.found": "есть",
