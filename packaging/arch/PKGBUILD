@@ -3,7 +3,7 @@
 
 pkgname=linux-gamer-doctor
 pkgver=0.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Checks a Linux system and explains in plain words what is missing for gaming"
 arch=('any')
 license=('GPL-3.0-or-later')
@@ -36,6 +36,12 @@ package() {
 #!/bin/sh
 exec /usr/bin/python3 -m doctor "$@"
 SH
+
+  # ярлык в меню и иконка (имя совпадает с application id окна — так GNOME связывает окно с иконкой)
+  install -Dm644 data/io.github.lgdoctor.LinuxGamerDoctor.desktop \
+    "$pkgdir/usr/share/applications/io.github.lgdoctor.LinuxGamerDoctor.desktop"
+  install -Dm644 data/io.github.lgdoctor.LinuxGamerDoctor.svg \
+    "$pkgdir/usr/share/icons/hicolor/scalable/apps/io.github.lgdoctor.LinuxGamerDoctor.svg"
 
   install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
   install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"

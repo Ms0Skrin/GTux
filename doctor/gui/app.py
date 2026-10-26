@@ -680,7 +680,7 @@ class DoctorApp(Adw.Application):
     def _on_about(self, *_):
         dialog = Adw.AboutDialog(application_name=t("app.title"), version=__version__,
                                  comments=t("gui.about.comments"),
-                                 application_icon="input-gaming-symbolic",
+                                 application_icon=APP_ID,
                                  license_type=Gtk.License.GPL_3_0)
         dialog.present(self.win)
 

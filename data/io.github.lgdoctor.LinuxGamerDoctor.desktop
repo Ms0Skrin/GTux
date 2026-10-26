@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=Linux Gamer Doctor
+Name[ru]=Доктор Linux-геймера
+GenericName=Gaming System Checker
+GenericName[ru]=Проверка системы для игр
+Comment=Checks your system and explains what is missing for gaming
+Comment[ru]=Проверяет систему и объясняет, чего не хватает для игр
+Exec=linux-gamer-doctor --gui
+Icon=io.github.lgdoctor.LinuxGamerDoctor
+Terminal=false
+Categories=Game;
+Keywords=steam;proton;vulkan;wine;gaming;driver;nvidia;amd;
+Keywords[ru]=steam;proton;vulkan;wine;игры;драйвер;видеокарта;
+StartupNotify=true
