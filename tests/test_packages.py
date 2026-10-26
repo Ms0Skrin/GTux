@@ -95,3 +95,28 @@ class Lib32Scenarios(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class UnavailableTest(unittest.TestCase):
+    def test_apt_candidates_and_lists(self):
+        import tempfile
+        from pathlib import Path
+        from unittest import mock
+        out = ("steam-installer:\n  Installed: (none)\n  Candidate: (none)\n"
+               "gamemode:\n  Installed: (none)\n  Candidate: 1.8.2-2\n")
+        with tempfile.TemporaryDirectory() as lists, \
+                mock.patch.object(packages, "APT_LISTS", lists), \
+                mock.patch.object(packages, "run", return_value=CmdResult(0, out, "")):
+            self.assertIsNone(packages.Apt().unavailable(["gamemode"]))  # списков нет — не судим
+            (Path(lists) / "deb.debian.org_debian_dists_trixie_main_binary-amd64_Packages").write_text("")
+            # lutris apt вообще не знает (нет в выводе), steam-installer без кандидата, :i386 — по 64-битному имени
+            self.assertEqual(packages.Apt().unavailable(["gamemode", "steam-installer", "lutris", "gamemode:i386"]),
+                             ["steam-installer", "lutris"])
+
+    def test_pacman_not_found(self):
+        from unittest import mock
+        from gtux.system import CmdResult
+        err = "error: package 'heroic-games-launcher' was not found\n"
+        with mock.patch.object(packages, "run", return_value=CmdResult(1, "", err)):
+            self.assertEqual(packages.Pacman().unavailable(["lutris", "heroic-games-launcher"]),
+                             ["heroic-games-launcher"])

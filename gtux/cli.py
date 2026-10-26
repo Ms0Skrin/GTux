@@ -64,7 +64,7 @@ def run(args) -> int:
     from gtux.models import Context, Status
     from gtux.runner import run_all
 
-    ctx = Context()
+    ctx = Context(verify_packages=True)
     results = run_all(ALL_GROUPS, ctx)
 
     if args.json:
@@ -86,7 +86,7 @@ def run(args) -> int:
         terminal.render(results, show_fix_hint=not args.fix, changes=changes,
                         previous_time=previous.get("time") if previous else None)
         if args.fix:
-            return fix_ui.run(results, ctx, recheck=lambda: run_all(ALL_GROUPS, Context()))
+            return fix_ui.run(results, ctx, recheck=lambda: run_all(ALL_GROUPS, Context(verify_packages=True)))
 
     return 1 if any(r.status == Status.FAIL for r in results) else 0
 

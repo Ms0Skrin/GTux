@@ -168,10 +168,10 @@ def assess_library(lib: Path, mounts: list[Mount], dirty_log: list[str] | None) 
 @check("library")
 def check_libraries(ctx: Context):
     if not ctx.steam_libraries:
-        return result(GROUP, "library", Status.UNKNOWN, value=t("disks.no_libraries"))
+        return result(GROUP, "library", Status.UNKNOWN, title=t("group.disks"), value=t("disks.no_libraries"))
     text = read_text("/proc/self/mounts")
     if text is None:
-        return result(GROUP, "library", Status.UNKNOWN, error=t("disks.no_proc_mounts"))
+        return result(GROUP, "library", Status.UNKNOWN, title=t("group.disks"), error=t("disks.no_proc_mounts"))
     mounts = parse_mounts(text)
     present = [lib for lib in ctx.steam_libraries if lib.exists()]
     if not present:

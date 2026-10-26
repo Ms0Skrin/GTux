@@ -32,6 +32,8 @@ def _show_plan(console: Console, plan: fixer.Plan) -> None:
         console.print(f"     [cyan]{escape(step.command)}[/]")
     if plan.skipped:
         console.print(f"\n[yellow]{escape(t(plan.skipped_reason, packages=', '.join(plan.skipped)))}[/]")
+    if plan.unavailable:
+        console.print(f"\n[yellow]{escape(t(plan.unavailable_hint, packages=', '.join(plan.unavailable)))}[/]")
     if plan.offers:
         console.print(f"\n[bold]{escape(t('fix.offers_title'))}[/]")
         for step in plan.offers:
@@ -62,7 +64,7 @@ def run(results: list[CheckResult], ctx: Context, console: Console | None = None
     """recheck() — заново запустить проверки после исправления (необязательно)."""
     console = console or Console()
     plan = fixer.build_plan(results, ctx)
-    if not plan.steps and not plan.skipped and not plan.offers:
+    if not plan.steps and not plan.skipped and not plan.offers and not plan.unavailable:
         console.print(f"\n[green]{escape(t('fix.nothing'))}[/]")
         return 0
     if not plan.steps:

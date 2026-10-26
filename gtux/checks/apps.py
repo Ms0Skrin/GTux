@@ -45,7 +45,7 @@ def _make_check(app_id: str):
             return result(GROUP, app_id, Status.OK, value=t("apps.flatpak"), hint=hint)
         names = packages.component(ctx, comp) if comp else None
         if names:
-            action = Action("package", names[0], optional=True)
+            action = Action("package", names[0], flatpak_id, optional=True)  # value: запасной вариант с Flathub
             fix = ctx.package_manager.install_command(names) if ctx.package_manager else None
         else:
             action = Action("flatpak_app", flatpak_id, optional=True)

@@ -216,7 +216,7 @@ class DoctorWindow(Adw.ApplicationWindow):
 
     def _worker(self):
         try:
-            ctx = Context()
+            ctx = Context(verify_packages=True)
             results = run_all(ALL_GROUPS, ctx)
             if os.environ.get("GTUX_GUI_DEMO"):
                 from gtux.gui.demo import add_demo_problems
@@ -567,6 +567,8 @@ class FixDialog(Adw.Dialog):
                 self._add_check(box, step.chain(), step, active=False)
         if win.plan.skipped:
             box.append(label(t("gui.fix.skipped", packages=", ".join(win.plan.skipped)), "error-box"))
+        if win.plan.unavailable:
+            box.append(label(t(win.plan.unavailable_hint, packages=", ".join(win.plan.unavailable)), "error-box"))
 
         self.status = label("", "muted")
         box.append(self.status)

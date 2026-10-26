@@ -173,3 +173,21 @@ class RiskyTest(unittest.TestCase):
         self.assertEqual(plan.offers[0].argv, ["protontricks", "1091500", "-q", "vcrun2022", "d3dcompiler_47"])
         self.assertFalse(plan.offers[0].root)
         self.assertEqual(plan.offers[1].command, "sudo pacman -Syu")
+
+
+class VerifyTest(unittest.TestCase):
+    def test_unavailable_moved_out_and_flatpak_fallback(self):
+        from unittest import mock
+        pm = packages.Apt()
+        ctx = Context(package_manager=pm, multilib_enabled=False, verify_packages=True, flatpak_apps=set())
+        missing = {"steam-installer", "nvidia-driver-libs:i386", "lutris"}
+        with mock.patch.object(pm, "unavailable", side_effect=lambda pkgs: [p for p in pkgs if p in missing]):
+            res = [r(Status.FAIL, ["gamemode", "steam-installer", "nvidia-driver-libs:i386"]),
+                   CheckResult("apps.lutris", "apps", "Lutris", Status.OK,
+                               actions=[Action("package", "lutris", "net.lutris.Lutris", optional=True)])]
+            plan = fixer.build_plan(res, ctx)
+        self.assertEqual(plan.unavailable, ["steam-installer", "nvidia-driver-libs:i386"])
+        self.assertEqual(plan.unavailable_hint, "fix.unavailable.debian")
+        self.assertEqual([s.command for s in plan.steps], ["sudo apt install gamemode"])  # i386 больше не нужен
+        self.assertEqual(plan.offers[0].kind, "flatpak_app")
+        self.assertIn("net.lutris.Lutris", plan.offers[0].command)

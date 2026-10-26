@@ -178,6 +178,14 @@ sudo dnf install libadwaita python3-gobject            # Fedora
 `/etc/pacman.conf`, fstab и параметры ядра программа не правит, команды для них только показывает.
 Если ввод не из терминала, ничего не выполняется.
 
+**Нет в репозиториях.** Перед установкой GTux сверяет пакеты с подключёнными репозиториями (только локальные
+списки: `pacman -Si`, `apt-cache policy`, `dnf -C repoquery`). Чего нет — не попадает в команду (иначе apt/dnf отказались
+бы ставить всё) и выносится в подсказку, какой репозиторий включить: contrib/non-free в Debian, universe/multiverse
+в Ubuntu, RPM Fusion в Fedora. Lutris и protontricks в этом случае предлагаются с Flathub.
+
+**Проверка в других дистрибутивах**: `scripts/distro_test.sh` запускает тесты и GTux в контейнерах Debian 13,
+Ubuntu 26.04 и Fedora (podman, без root) и печатает, что программа распознала и что предложила бы исправить.
+
 ## Что проверяется
 
 | Группа | Что смотрим |

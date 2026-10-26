@@ -75,10 +75,13 @@ class Plan:
     skipped: list[str] = field(default_factory=list)  # пакеты, которые поставить автоматически нельзя
     skipped_reason: str = ""                           # ключ перевода
     offers: list[Step] = field(default_factory=list)   # «по желанию»: не выполняются без отдельного выбора
+    unavailable: list[str] = field(default_factory=list)  # нет в подключённых репозиториях
+    unavailable_hint: str = ""                            # ключ перевода: какой репозиторий включить
 
     def to_dict(self) -> dict:
         return {"steps": [s.to_dict() for s in self.steps], "skipped": self.skipped,
-                "skipped_reason": self.skipped_reason, "offers": [s.to_dict() for s in self.offers]}
+                "skipped_reason": self.skipped_reason, "offers": [s.to_dict() for s in self.offers],
+                "unavailable": self.unavailable, "unavailable_hint": self.unavailable_hint}
 
 
 def wanted_packages(results: list[CheckResult]) -> list[str]:
@@ -99,6 +102,10 @@ def action_step(action: Action, title: str = "", ctx: Context | None = None) -> 
     if action.kind == "package":
         if pm is None:
             return None
+        if ctx is not None and ctx.verify_packages and pm.unavailable([action.target]):
+            # пакета нет в подключённых репозиториях — та же программа с Flathub, если она там есть
+            return action_step(Action("flatpak_app", action.value, optional=action.optional), title, ctx) \
+                if action.value else None
         return Step("install", pm.install_argv([action.target]), [action.target], title=title,
                     optional=action.optional)
     if action.kind == "flatpak_app":
@@ -163,6 +170,15 @@ def build_plan(results: list[CheckResult], ctx: Context, only: list[str] | None 
                 # [multilib] включается правкой /etc/pacman.conf — это делаем только руками.
                 plan.skipped, plan.skipped_reason = lib32, "fix.skip.multilib"
                 pkgs = [p for p in pkgs if p not in lib32]
+        if pkgs and ctx.verify_packages:
+            missing = pm.unavailable(pkgs) or []
+            if missing:
+                plan.unavailable = missing
+                plan.unavailable_hint = f"fix.unavailable.{pm.family}"
+                pkgs = [p for p in pkgs if p not in missing]
+                # 32-битное нечего ставить — и включать i386 незачем
+                if not any(pm.is_32bit(p) for p in pkgs):
+                    plan.steps = [s for s in plan.steps if s.kind != "enable_i386"]
         if pkgs:
             plan.steps.append(Step("install", pm.install_argv(pkgs), pkgs))
 
