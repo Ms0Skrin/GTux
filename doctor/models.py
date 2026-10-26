@@ -59,3 +59,4 @@ class Context:
     distro_like: list[str] = field(default_factory=list)
     package_manager: Any = None  # doctor.packages.PackageManager | None
     gpus: list[GPU] = field(default_factory=list)
+    multilib_enabled: bool | None = None  # None = не проверяли

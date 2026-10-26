@@ -31,6 +31,7 @@ TEXTS = {
     "group.distro": "Система",
     "group.gpu": "Видеокарта",
     "group.vulkan": "Vulkan",
+    "group.multilib": "32-битная поддержка",
 
     # --- система ---
     "distro.os.title": "Дистрибутив",
@@ -102,4 +103,29 @@ TEXTS = {
         "очень медленно или не запустятся. Проверьте драйвер видеокарты."
     ),
     "vulkan.devices.unseen_hint": "Эти видеокарты есть в системе, но Vulkan их не видит: {gpus}.",
+
+    # --- 32 бита ---
+    "multilib.only_arch": "пока проверяется только на Arch и производных",
+    "multilib.repo.title": "Репозиторий multilib",
+    "multilib.repo.no_conf": "не удалось прочитать {path}",
+    "multilib.repo.enabled": "включён",
+    "multilib.repo.disabled": "выключен",
+    "multilib.repo.disabled_hint": (
+        "Без multilib нельзя поставить 32-битные библиотеки, а без них не работает Steam "
+        "и многие игры. В {path} уберите # перед строками [multilib] и Include под ней, "
+        "затем обновите базы пакетов."
+    ),
+    "multilib.packages.title": "32-битные драйверы и Vulkan",
+    "multilib.packages.missing": "нет: {packages}",
+    "multilib.packages.missing_hint": (
+        "32-битные игры и сам Steam не увидят видеокарту: будут вылеты при запуске "
+        "или ошибка «no Vulkan device»."
+    ),
+    "multilib.packages.enable_first": "Сначала включите multilib (см. строку выше).",
+    "multilib.nvidia_match.title": "Версии драйвера NVIDIA 64/32 бит",
+    "multilib.nvidia_match.differ": "64 бит: {v64}, 32 бит: {v32}",
+    "multilib.nvidia_match.differ_hint": (
+        "Части драйвера разных версий. 32-битные игры могут падать. "
+        "Обычно лечится полным обновлением системы."
+    ),
 }
