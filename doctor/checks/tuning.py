@@ -7,7 +7,7 @@ from collections import Counter
 from pathlib import Path
 
 from doctor.i18n import t
-from doctor.models import Context, Status
+from doctor.models import Action, Context, Status
 from doctor.runner import check, result
 from doctor.system import read_text
 
@@ -55,7 +55,9 @@ def check_max_map_count(ctx: Context):
         return result(GROUP, "max_map_count", Status.WARN, value=raw,
                       hint=t("tuning.max_map_count.low_hint", good=MAX_MAP_COUNT_GOOD),
                       fix=f"echo 'vm.max_map_count = {MAX_MAP_COUNT_GOOD}' | sudo tee "
-                          "/etc/sysctl.d/80-gamecompatibility.conf && sudo sysctl --system")
+                          "/etc/sysctl.d/80-gamecompatibility.conf && sudo sysctl --system",
+                      actions=[Action("sysctl", "/etc/sysctl.d/80-gamecompatibility.conf",
+                                      f"vm.max_map_count = {MAX_MAP_COUNT_GOOD}")])
     return result(GROUP, "max_map_count", Status.OK, value=raw)
 
 
@@ -80,7 +82,8 @@ def check_split_lock(ctx: Context):
         return result(GROUP, "split_lock", Status.WARN, value=t("tuning.split_lock.on"),
                       hint=t("tuning.split_lock.on_hint"),
                       fix="echo 'kernel.split_lock_mitigate = 0' | sudo tee "
-                          "/etc/sysctl.d/99-splitlock.conf && sudo sysctl --system")
+                          "/etc/sysctl.d/99-splitlock.conf && sudo sysctl --system",
+                      actions=[Action("sysctl", "/etc/sysctl.d/99-splitlock.conf", "kernel.split_lock_mitigate = 0")])
     return result(GROUP, "split_lock", Status.OK, value=t("tuning.split_lock.off"))
 
 

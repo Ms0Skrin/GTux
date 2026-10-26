@@ -6,7 +6,7 @@ from pathlib import Path
 
 from doctor import packages, vdf
 from doctor.i18n import t
-from doctor.models import Context, Status
+from doctor.models import Action, Context, Status
 from doctor.runner import check, result
 from doctor.system import CommandError, run, which
 
@@ -166,7 +166,8 @@ def check_flatpak_access(ctx: Context):
         fix = " && ".join(f"flatpak override --user --filesystem={lib} {FLATPAK_ID}" for lib in blocked)
         return result(GROUP, "flatpak_access", Status.FAIL,
                       value=t("steam.flatpak_access.blocked", paths=", ".join(map(str, blocked))),
-                      hint=t("steam.flatpak_access.blocked_hint"), fix=fix)
+                      hint=t("steam.flatpak_access.blocked_hint"), fix=fix,
+                      actions=[Action("flatpak_filesystem", str(lib), FLATPAK_ID) for lib in blocked])
     return result(GROUP, "flatpak_access", Status.OK, value=t("steam.flatpak_access.ok"))
 
 

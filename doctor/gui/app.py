@@ -372,7 +372,8 @@ class DoctorWindow(Adw.ApplicationWindow):
 
         # баннер автоисправления
         if self.plan and self.plan.steps:
-            count = sum(len(st.packages) for st in self.plan.steps)
+            count = sum(len(st.packages) if st.packages else int(st.kind not in fixer.PACKAGE_KINDS)
+                        for st in self.plan.steps)
             banner = Gtk.Box(spacing=12)
             banner.add_css_class("fix-banner")
             banner.append(icon("software-update-available-symbolic", "system-software-install-symbolic"))
@@ -530,14 +531,26 @@ class FixDialog(Adw.Dialog):
         super().__init__(title=t("gui.fix.title"), content_width=640)
         self.win = win
         self.pm = win.ctx.package_manager if win.ctx else None
-        self.commands = [fixer.gui_argv(step, self.pm) for step in win.plan.steps]
+        self.checks: list[tuple[Gtk.CheckButton, list[fixer.Step]]] = []
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=14,
                       margin_top=12, margin_bottom=18, margin_start=18, margin_end=18)
         box.append(label(t("gui.fix.intro")))
-        for step, argv in zip(win.plan.steps, self.commands):
-            box.append(label(t(f"fix.kind.{step.kind}").upper(), "detail-title"))
-            box.append(label(" ".join(argv), "code", selectable=True))
+        # включение i386 нужно только вместе с установкой пакетов — одна галочка на всё
+        prereq = [st for st in win.plan.steps if st.kind == "enable_i386"]
+        for step in win.plan.steps:
+            if step.kind == "enable_i386":
+                continue
+            steps = prereq + [step] if step.kind == "install" else [step]
+            what = t(f"fix.kind.{step.kind}") + (f" — {step.title}" if step.title else "")
+            if step.root:
+                what += f" ({t('gui.fix.root')})"
+            check = Gtk.CheckButton(label=what, active=True)
+            check.connect("toggled", lambda *_: self._update_button())
+            box.append(check)
+            for st in steps:
+                box.append(label(st.command, "code", selectable=True))
+            self.checks.append((check, steps))
         if win.plan.skipped:
             box.append(label(t("gui.fix.skipped", packages=", ".join(win.plan.skipped)), "error-box"))
 
@@ -553,15 +566,12 @@ class FixDialog(Adw.Dialog):
         buttons = Gtk.Box(spacing=10, halign=Gtk.Align.END)
         copy = Gtk.Button(label=t("gui.fix.copy"))
         copy.add_css_class("pill")
-        copy.connect("clicked", lambda *_: win._copy("\n".join(s.command for s in win.plan.steps)))
+        copy.connect("clicked", lambda *_: win._copy("\n".join(s.command for s in self._selected())))
         buttons.append(copy)
         self.install = Gtk.Button(label=t("gui.fix.install"))
         self.install.add_css_class("pill")
         self.install.add_css_class("suggested-action")
         self.install.connect("clicked", self._on_install)
-        if not GLib.find_program_in_path("pkexec"):
-            self.install.set_sensitive(False)
-            self.status.set_text(t("gui.fix.no_pkexec"))
         buttons.append(self.install)
         box.append(buttons)
 
@@ -571,8 +581,18 @@ class FixDialog(Adw.Dialog):
         scroller.set_child(box)
         view.set_content(scroller)
         self.set_child(view)
+        self._update_button()
         # иначе фокус попадает на выделяемую команду и она вся подсвечивается
         self.set_focus(self.install if self.install.get_sensitive() else copy)
+
+    def _selected(self) -> list[fixer.Step]:
+        return [st for check, steps in self.checks if check.get_active() for st in steps]
+
+    def _update_button(self):
+        steps = self._selected()
+        no_pkexec = any(st.root for st in steps) and not GLib.find_program_in_path("pkexec")
+        self.install.set_sensitive(bool(steps) and not no_pkexec)
+        self.status.set_text(t("gui.fix.no_pkexec") if no_pkexec else "")
 
     def _append(self, text: str):
         buf = self.log.get_buffer()
@@ -582,13 +602,20 @@ class FixDialog(Adw.Dialog):
 
     def _on_install(self, *_):
         self.install.set_sensitive(False)
+        for check, _steps in self.checks:
+            check.set_sensitive(False)
         self.log_scroll.set_visible(True)
         self.status.set_text(t("gui.fix.running"))
-        threading.Thread(target=self._run, daemon=True).start()
+        threading.Thread(target=self._run, args=(self._selected(),), daemon=True).start()
 
-    def _run(self):
-        for argv in self.commands:
-            GLib.idle_add(self._append, "$ " + " ".join(argv) + "\n")
+    def _run(self, steps: list[fixer.Step]):
+        # сначала то, что не требует пароля, потом всё остальное одним запуском pkexec
+        commands = [fixer.gui_argv(st, self.pm) for st in steps if not st.root]
+        if any(st.root for st in steps):
+            commands.append(["pkexec", "sh", "-c", fixer.root_script(steps, self.pm)])
+        for argv in commands:
+            shown = argv[3] if argv[:3] == ["pkexec", "sh", "-c"] else " ".join(argv)
+            GLib.idle_add(self._append, "$ " + shown.replace("\n", "\n$ ") + "\n")
             try:
                 proc = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
                 for line in proc.stdout:
@@ -609,6 +636,8 @@ class FixDialog(Adw.Dialog):
             self.win.refresh()
         else:
             self.status.set_text(t("gui.fix.failed", code=code))
+            for check, _steps in self.checks:
+                check.set_sensitive(True)
             self.install.set_sensitive(True)
         return False
 

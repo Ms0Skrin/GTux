@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from doctor.i18n import t
-from doctor.models import CheckResult, Context, Status
+from doctor.models import Action, CheckResult, Context, Status
 from doctor.packages import Pacman
 
 
@@ -20,7 +20,8 @@ def add_demo_problems(results: list[CheckResult], ctx: Context) -> tuple[list[Ch
                     fix="sudo pacman -S --needed gamescope"),
         CheckResult("tuning.max_map_count", "tuning", t("tuning.max_map_count.title"), Status.WARN,
                     value="65530", hint=t("tuning.max_map_count.low_hint", good=1048576),
-                    fix="echo 'vm.max_map_count = 1048576' | sudo tee /etc/sysctl.d/80-gamecompatibility.conf"),
+                    fix="echo 'vm.max_map_count = 1048576' | sudo tee /etc/sysctl.d/80-gamecompatibility.conf",
+                    actions=[Action("sysctl", "/etc/sysctl.d/80-gamecompatibility.conf", "vm.max_map_count = 1048576")]),
         CheckResult("disks.demo", "disks", t("disks.library.title", path="/media/usb"), Status.UNKNOWN,
                     value="exfat", error="PermissionError: [Errno 13] /media/usb"),
     ]

@@ -1,7 +1,7 @@
 import unittest
 
 from doctor import fixer, packages
-from doctor.models import CheckResult, Context, Status
+from doctor.models import Action, CheckResult, Context, Status
 
 
 def r(status, pkgs):
@@ -30,6 +30,30 @@ class PlanTest(unittest.TestCase):
 
     def test_no_package_manager(self):
         self.assertEqual(fixer.build_plan([r(Status.FAIL, ["a"])], Context()).steps, [])
+
+    def test_actions_from_problems_only(self):
+        sysctl = Action("sysctl", "/etc/sysctl.d/80-x.conf", "vm.max_map_count = 1048576")
+        flat = Action("flatpak_filesystem", "/mnt/games", "com.valvesoftware.Steam")
+        results = [CheckResult("a", "g", "A", Status.WARN, actions=[sysctl]),
+                   CheckResult("b", "g", "B", Status.FAIL, actions=[flat, flat]),
+                   CheckResult("c", "g", "C", Status.OK, actions=[Action("sysctl", "/etc/sysctl.d/y.conf", "k = 1")])]
+        plan = fixer.build_plan(results, Context())
+        self.assertEqual([s.kind for s in plan.steps], ["sysctl", "flatpak_filesystem"])
+        self.assertEqual(plan.steps[0].command, "echo 'vm.max_map_count = 1048576' | sudo tee "
+                         "/etc/sysctl.d/80-x.conf && sudo sysctl --load=/etc/sysctl.d/80-x.conf")
+        self.assertFalse(plan.steps[1].root)
+        self.assertEqual(plan.steps[1].argv,
+                         ["flatpak", "override", "--user", "--filesystem=/mnt/games", "com.valvesoftware.Steam"])
+
+    def test_root_script_one_password(self):
+        ctx = Context(package_manager=packages.Pacman(), multilib_enabled=True)
+        results = [r(Status.FAIL, ["a"]),
+                   CheckResult("s", "g", "S", Status.WARN, actions=[Action("sysctl", "/etc/sysctl.d/x.conf", "k = 1")]),
+                   CheckResult("f", "g", "F", Status.FAIL, actions=[Action("flatpak_filesystem", "/m", "app")])]
+        plan = fixer.build_plan(results, ctx)
+        self.assertEqual(fixer.root_script(plan.steps, ctx.package_manager).splitlines(), [
+            "set -ex", "pacman -S --needed --noconfirm a",
+            "printf '%s\\n' 'k = 1' > /etc/sysctl.d/x.conf", "sysctl --load=/etc/sysctl.d/x.conf"])
 
     def test_execute_stops_on_error(self):
         plan = fixer.Plan([fixer.Step("install", ["true"]), fixer.Step("install", ["false"]),

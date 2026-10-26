@@ -20,6 +20,18 @@ class Status(str, Enum):
 
 
 @dataclass
+class Action:
+    """Исправление, которое программа может выполнить сама (после подтверждения)."""
+
+    kind: str     # "sysctl" | "flatpak_filesystem"
+    target: str   # sysctl: файл в /etc/sysctl.d; flatpak_filesystem: папка
+    value: str    # sysctl: строка «ключ = значение»; flatpak_filesystem: id приложения
+
+    def to_dict(self) -> dict[str, str]:
+        return {"kind": self.kind, "target": self.target, "value": self.value}
+
+
+@dataclass
 class CheckResult:
     id: str                    # стабильный машинный id, например "gpu.driver"
     group: str                 # id группы, например "gpu"
@@ -30,6 +42,7 @@ class CheckResult:
     fix: str | None = None     # команда-исправление (только показываем, не выполняем)
     error: str | None = None   # текст ошибки, если проверка не удалась
     packages: list[str] = field(default_factory=list)  # что поставить для исправления (для --fix)
+    actions: list[Action] = field(default_factory=list)  # что ещё --fix может сделать сам
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -42,6 +55,7 @@ class CheckResult:
             "fix": self.fix,
             "error": self.error,
             "packages": self.packages,
+            "actions": [a.to_dict() for a in self.actions],
         }
 
 

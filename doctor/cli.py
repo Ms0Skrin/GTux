@@ -79,7 +79,7 @@ def run(args) -> int:
         terminal.render(results, show_fix_hint=not args.fix, changes=changes,
                         previous_time=previous.get("time") if previous else None)
         if args.fix:
-            return fix_ui.run(results, ctx)
+            return fix_ui.run(results, ctx, recheck=lambda: run_all(ALL_GROUPS, Context()))
 
     return 1 if any(r.status == Status.FAIL for r in results) else 0
 

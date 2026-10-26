@@ -6,10 +6,11 @@ import sys
 
 from rich.console import Console
 from rich.markup import escape
+from rich.text import Text
 
-from doctor import command_name, fixer
+from doctor import fixer
 from doctor.i18n import t
-from doctor.models import CheckResult, Context
+from doctor.models import CheckResult, Context, Status
 
 YES = {"y", "yes", "д", "да"}
 SELECT = {"s", "select", "в", "выбрать"}
@@ -26,13 +27,28 @@ def _ask(console: Console, prompt: str) -> str:
 def _show_plan(console: Console, plan: fixer.Plan) -> None:
     console.print(f"\n[bold]{escape(t('fix.plan_title'))}[/]")
     for i, step in enumerate(plan.steps, 1):
-        console.print(f"  {i}. {escape(t('fix.kind.' + step.kind))}")
+        what = t("fix.kind." + step.kind) + (f" ({step.title})" if step.title else "")
+        console.print(f"  {i}. {escape(what)}")
         console.print(f"     [cyan]{escape(step.command)}[/]")
     if plan.skipped:
         console.print(f"\n[yellow]{escape(t(plan.skipped_reason, packages=', '.join(plan.skipped)))}[/]")
 
 
-def run(results: list[CheckResult], ctx: Context, console: Console | None = None) -> int:
+def _show_recheck(console: Console, before: list[CheckResult], after: list[CheckResult]) -> None:
+    """Повторная проверка: что стало лучше, а что осталось."""
+    old = {r.id: r.status for r in before}
+    for r in after:
+        if r.id in old and old[r.id] != r.status:
+            style = "green" if r.status == Status.OK else "yellow"
+            console.print(Text("  • " + t("history.status", title=r.title, old=t(f"status.{old[r.id].value}"),
+                                          new=t(f"status.{r.status.value}")), style=style))
+    if any(r.id == "gpu.nvidia_version" and r.status == Status.FAIL for r in after):
+        console.print(f"[yellow]{escape(t('fix.reboot'))}[/]")
+
+
+def run(results: list[CheckResult], ctx: Context, console: Console | None = None,
+        recheck=None) -> int:
+    """recheck() — заново запустить проверки после исправления (необязательно)."""
     console = console or Console()
     plan = fixer.build_plan(results, ctx)
     if not plan.steps and not plan.skipped:
@@ -49,10 +65,13 @@ def run(results: list[CheckResult], ctx: Context, console: Console | None = None
     if answer in SELECT:
         chosen = [p for p in fixer.wanted_packages(results)
                   if p not in plan.skipped and _ask(console, t("fix.ask_package", package=p)) in YES]
-        if not chosen:
+        actions = [s for s in plan.steps if s.kind not in fixer.PACKAGE_KINDS
+                   and _ask(console, t("fix.ask_step", what=t("fix.kind." + s.kind), title=s.title)) in YES]
+        plan = fixer.build_plan(results, ctx, only=chosen)
+        plan.steps = [s for s in plan.steps if s.kind in fixer.PACKAGE_KINDS] + actions
+        if not plan.steps:
             console.print(t("fix.cancelled"))
             return 0
-        plan = fixer.build_plan(results, ctx, only=chosen)
         _show_plan(console, plan)
         answer = _ask(console, "\n" + t("fix.confirm_short"))
     if answer not in YES:
@@ -67,7 +86,9 @@ def run(results: list[CheckResult], ctx: Context, console: Console | None = None
 
     ok, failed, code = fixer.execute(plan, echo)
     if ok:
-        console.print(f"\n[bold green]{escape(t('fix.done', cmd=command_name()))}[/]")
+        console.print(f"\n[bold green]{escape(t('fix.done'))}[/]")
+        if recheck is not None:
+            _show_recheck(console, results, recheck())
         return 0
     console.print(f"\n[bold red]{escape(t('fix.failed', command=failed.command, code=code))}[/]")
     return 1
