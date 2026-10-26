@@ -6,6 +6,8 @@ TEXTS = {
     "app.subtitle": "Только проверяю, ничего не меняю в системе",
     "common.not_installed": "не установлен",
     "common.crashed": "проверка упала с ошибкой",
+    "common.gb": "{n} ГБ",
+    "common.mb": "{n} МБ",
     "status.ok": "ОК",
     "status.warn": "МОЖНО ЛУЧШЕ",
     "status.fail": "ПРОБЛЕМА",
@@ -32,6 +34,11 @@ TEXTS = {
     "group.gpu": "Видеокарта",
     "group.vulkan": "Vulkan",
     "group.multilib": "32-битная поддержка",
+    "group.steam": "Steam",
+    "group.disks": "Диски с играми",
+    "group.proton": "Proton",
+    "group.tools": "Игровые утилиты",
+    "group.tuning": "Настройки системы",
 
     # --- система ---
     "distro.os.title": "Дистрибутив",
@@ -82,6 +89,20 @@ TEXTS = {
         "не запускаться с ошибкой «version mismatch». Нужно перезагрузиться."
     ),
     "gpu.mesa_version.title": "Версия Mesa",
+    "gpu.rebar.title": "Resizable BAR",
+    "gpu.rebar.title_for": "Resizable BAR: {name}",
+    "gpu.rebar.on": "включён",
+    "gpu.rebar.off": "выключен",
+    "gpu.rebar.value": "окно {bar}, видеопамять {vram}",
+    "gpu.rebar.no_bars": "не удалось прочитать BAR видеокарты из /sys",
+    "gpu.rebar.off_capable_hint": (
+        "Карта умеет ReBAR, но он выключен. В UEFI включите «Above 4G Decoding» и "
+        "«Re-Size BAR», CSM выключите. Даёт прирост FPS в части игр, особенно на AMD."
+    ),
+    "gpu.rebar.unsupported_hint": (
+        "Карта или плата не объявляют поддержку ReBAR. Иногда помогает обновление BIOS "
+        "или прошивки видеокарты. Не критично."
+    ),
     "gpu.mesa_version.not_found": "не удалось узнать версию Mesa: нет пакета mesa и нет glxinfo",
 
     # --- Vulkan ---
@@ -127,5 +148,102 @@ TEXTS = {
     "multilib.nvidia_match.differ_hint": (
         "Части драйвера разных версий. 32-битные игры могут падать. "
         "Обычно лечится полным обновлением системы."
+    ),
+
+    # --- Steam ---
+    "steam.install.title": "Установка Steam",
+    "steam.install.package": "пакет {version}",
+    "steam.install.other": "другой способ (папка есть, пакета нет)",
+    "steam.install.not_found": "не найден",
+    "steam.install.not_found_hint": "Steam не установлен. Если играете через Heroic или Lutris, это не проблема.",
+    "steam.install.several_hint": "Steam стоит несколькими способами. Легко запутаться, где какие игры и настройки.",
+    "steam.libraries.title": "Библиотеки игр",
+    "steam.libraries.no_root": "папка Steam не найдена",
+    "steam.libraries.vdf_error": "не удалось прочитать libraryfolders.vdf: {error}",
+    "steam.libraries.line": "{path} — игр: {games}",
+    "steam.libraries.line_missing": "{path} — недоступна",
+    "steam.libraries.missing_hint": "Библиотека недоступна: {paths}. Диск не подключён или путь изменился.",
+
+    # --- диски ---
+    "disks.library.title": "Диск: {path}",
+    "disks.no_libraries": "библиотеки Steam не найдены",
+    "disks.no_proc_mounts": "не удалось прочитать /proc/self/mounts",
+    "disks.no_mount": "не удалось определить, на каком разделе лежит библиотека",
+    "disks.value": "{fs} на {source}, свободно {free}",
+    "disks.compat_line": "префиксы Proton: {path} ({fs})",
+    "disks.ntfs_hint": (
+        "Библиотека на NTFS. Это частая причина проблем с Proton: префиксы игр требуют "
+        "Linux-прав и симлинков, игры не запускаются, теряются сохранения. Лучше держать "
+        "игры на ext4/btrfs или вынести steamapps/compatdata на Linux-раздел симлинком."
+    ),
+    "disks.ntfs_windows_names_hint": (
+        "Библиотека на NTFS с опцией windows_names: Proton не сможет создать файлы вида «c:» "
+        "в префиксах, игры не запустятся. Уберите windows_names или вынесите "
+        "steamapps/compatdata на Linux-раздел."
+    ),
+    "disks.ntfs_compat_moved_hint": (
+        "Библиотека на NTFS, но префиксы Proton уже вынесены на Linux-раздел ({target}). "
+        "Главное обойдено. Остаётся риск: после Windows с «быстрым запуском» диск может стать "
+        "«грязным» и смонтироваться только для чтения."
+    ),
+    "disks.fat_hint": (
+        "Библиотека на {fs}: нет симлинков и Linux-прав, Proton здесь работать не будет. "
+        "Переформатируйте диск в ext4/btrfs или вынесите steamapps/compatdata на Linux-раздел."
+    ),
+    "disks.fat_compat_moved_hint": "Библиотека на {fs}, префиксы вынесены. Работать будет, но медленнее и без прав.",
+    "disks.ro_hint": "Диск смонтирован только для чтения: игры не обновятся и не сохранятся.",
+    "disks.not_writable_hint": "Нет прав на запись в библиотеку: Steam не сможет ставить и обновлять игры.",
+    "disks.noexec_hint": "Диск смонтирован с noexec: игры с него запускаться не будут. Уберите noexec в /etc/fstab.",
+    "disks.dirty_hint": (
+        "Ядро сообщает, что NTFS-том «грязный» (Windows не завершилась нормально или включён быстрый "
+        "запуск). Загрузите Windows, выключите «быстрый запуск» и сделайте chkdsk."
+    ),
+    "disks.dirty_unknown": "Журнал ядра недоступен, «грязный» ли том, проверить не удалось.",
+    "disks.low_space_hint": "Мало места ({free}): обновления игр и кэш шейдеров могут не влезть.",
+
+    # --- Proton ---
+    "proton.no_steam": "Steam не найден",
+    "proton.official.title": "Proton от Valve",
+    "proton.official.none": "не установлен",
+    "proton.official.leftovers": "остатки удалённых версий (пустые папки): {names}",
+    "proton.official.none_hint": "Steam скачает Proton сам при первом запуске Windows-игры (Steam Play включён по умолчанию).",
+    "proton.custom.title": "Сторонние сборки",
+    "proton.custom.none": "нет",
+    "proton.custom.no_ge_hint": (
+        "Нет Proton-GE. Он чинит видео в катсценах и многие игры, которые не идут на "
+        "официальном Proton. Проще всего поставить через ProtonUp-Qt."
+    ),
+
+    # --- утилиты ---
+    "tools.found": "есть",
+    "tools.no32_hint": "Нет 32-битной части ({pkg32}): в 32-битных играх утилита не сработает.",
+    "tools.gamemode.title": "GameMode",
+    "tools.gamemode.hint": "Во время игры переключает процессор в режим производительности. Запуск: gamemoderun %command%",
+    "tools.mangohud.title": "MangoHud",
+    "tools.mangohud.hint": "Оверлей с FPS, загрузкой и температурами. Запуск: mangohud %command%",
+    "tools.gamescope.title": "gamescope",
+    "tools.gamescope.hint": "Микрокомпозитор от Valve: масштабирование, ограничение FPS, HDR. Нужен не всем.",
+
+    # --- настройки ---
+    "tuning.governor.title": "Governor процессора",
+    "tuning.governor.none": "cpufreq недоступен (виртуалка?)",
+    "tuning.governor.driver": " (драйвер {driver})",
+    "tuning.governor.powersave_hint": (
+        "Процессор держит минимальную частоту, игры могут тормозить. GameMode включает "
+        "performance на время игры автоматически."
+    ),
+    "tuning.governor.epp_power_hint": "Режим энергосбережения (EPP: power) режет частоты. Поставьте профиль «сбалансированный» или «производительность».",
+    "tuning.max_map_count.title": "vm.max_map_count",
+    "tuning.max_map_count.unreadable": "не удалось прочитать /proc/sys/vm/max_map_count",
+    "tuning.max_map_count.low_hint": (
+        "Мало: часть игр (CS2, Hogwarts Legacy, игры на Source 2 и др.) вылетает при загрузке. "
+        "Рекомендуется {good}, как в SteamOS."
+    ),
+    "tuning.nofile.title": "Лимит открытых файлов",
+    "tuning.nofile.value": "мягкий {soft}, жёсткий {hard}",
+    "tuning.nofile.unlimited": "без ограничений",
+    "tuning.nofile.low_hint": (
+        "Жёсткий лимит меньше {good}: в Proton не будет работать esync. Задайте "
+        "DefaultLimitNOFILE=1024:{good} в /etc/systemd/system.conf и user.conf."
     ),
 }

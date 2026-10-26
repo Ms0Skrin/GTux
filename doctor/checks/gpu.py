@@ -132,4 +132,63 @@ def check_mesa_version(ctx: Context):
     return result(GROUP, "mesa_version", Status.UNKNOWN, error=t("gpu.mesa_version.not_found"))
 
 
-CHECKS = [check_detect, check_driver, check_nvidia_version, check_mesa_version]
+IORESOURCE_PREFETCH = 0x2000
+REBAR_OFF_MAX = 256 * 1024**2  # без ReBAR окно в видеопамять обычно 256 МБ
+
+
+def pci_bars(slot: str) -> list[tuple[int, int]]:
+    """[(номер BAR, размер в байтах)] для prefetchable-областей из sysfs (root не нужен)."""
+    text = read_text(f"/sys/bus/pci/devices/{slot}/resource") or ""
+    bars = []
+    for i, line in enumerate(text.splitlines()):
+        start, end, flags = (int(x, 16) for x in line.split())
+        if end > start and flags & IORESOURCE_PREFETCH:
+            bars.append((i, end - start + 1))
+    return bars
+
+
+def vram_bytes(gpu: GPU) -> int | None:
+    if gpu.vendor == "amd":
+        v = read_text(f"/sys/bus/pci/devices/{gpu.pci_slot}/mem_info_vram_total")
+        return int(v) if v and v.isdigit() else None
+    if gpu.vendor == "nvidia" and which("nvidia-smi"):
+        out = run(["nvidia-smi", "-i", gpu.pci_slot, "--query-gpu=memory.total",
+                   "--format=csv,noheader,nounits"]).stdout.strip()
+        return int(out) * 1024**2 if out.isdigit() else None
+    return None
+
+
+def _mib(n: int) -> str:
+    return t("common.gb", n=n // 1024**3) if n >= 1024**3 else t("common.mb", n=n // 1024**2)
+
+
+@check("rebar")
+def check_rebar(ctx: Context):
+    """Resizable BAR: процессор видит всю видеопамять сразу, а не окном в 256 МБ."""
+    results = []
+    discrete = [g for g in ctx.gpus if g.vendor in ("nvidia", "amd") and g.driver in GOOD_DRIVERS[g.vendor]]
+    for i, gpu in enumerate(discrete):
+        cid = f"rebar.{i}" if len(discrete) > 1 else "rebar"
+        title = t("gpu.rebar.title_for", name=gpu.name) if len(discrete) > 1 else t("gpu.rebar.title")
+        bars = pci_bars(gpu.pci_slot)
+        if not bars:
+            results.append(result(GROUP, cid, Status.UNKNOWN, title=title, error=t("gpu.rebar.no_bars")))
+            continue
+        idx, size = max(bars, key=lambda b: b[1])
+        vram = vram_bytes(gpu)
+        capable = Path(f"/sys/bus/pci/devices/{gpu.pci_slot}/resource{idx}_resize").exists()
+        value = t("gpu.rebar.value", bar=_mib(size), vram=_mib(vram) if vram else "?")
+        if size > REBAR_OFF_MAX:
+            status, hint = Status.OK, ""
+            value = t("gpu.rebar.on") + ", " + value
+        elif capable:
+            status, hint = Status.WARN, t("gpu.rebar.off_capable_hint")
+            value = t("gpu.rebar.off") + ", " + value
+        else:
+            status, hint = Status.WARN, t("gpu.rebar.unsupported_hint")
+            value = t("gpu.rebar.off") + ", " + value
+        results.append(result(GROUP, cid, status, title=title, value=value, hint=hint))
+    return results
+
+
+CHECKS = [check_detect, check_driver, check_nvidia_version, check_mesa_version, check_rebar]

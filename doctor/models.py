@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
+from pathlib import Path
 from typing import Any
 
 
@@ -60,3 +61,5 @@ class Context:
     package_manager: Any = None  # doctor.packages.PackageManager | None
     gpus: list[GPU] = field(default_factory=list)
     multilib_enabled: bool | None = None  # None = не проверяли
+    steam_roots: list[tuple[str, Path]] = field(default_factory=list)  # [(способ установки, путь)]
+    steam_libraries: list[Path] = field(default_factory=list)
