@@ -18,7 +18,7 @@ shot() {  # shot <файл> [переменные окружения...] [-- а�
 LANG_ARG="--lang ru" shot overview-light.png DOCTOR_GUI_SCHEME=light DOCTOR_GUI_DEMO=1
 LANG_ARG="--lang ru" shot overview-dark.png  DOCTOR_GUI_SCHEME=dark  DOCTOR_GUI_DEMO=1
 LANG_ARG="--lang ru" shot games-dark.png     DOCTOR_GUI_SCHEME=dark  DOCTOR_GUI_PAGE=games
-LANG_ARG="--lang ru" shot launch-options.png DOCTOR_GUI_SCHEME=dark DOCTOR_GUI_PAGE=launch
+LANG_ARG="--lang ru" shot launch-options.png DOCTOR_GUI_SCHEME=dark DOCTOR_GUI_PAGE=launch DOCTOR_GUI_GAME=1771300
 LANG_ARG="--lang en" shot vulkan-en.png      DOCTOR_GUI_SCHEME=light DOCTOR_GUI_DEMO=1 DOCTOR_GUI_PAGE=vulkan
 # fix-dialog.png снимается только на настоящем экране: на Broadway без подключённого браузера
 # окно не пересчитывает раскладку, и всплывающий диалог в снимок не попадает:

@@ -1,7 +1,6 @@
 [Desktop Entry]
 Type=Application
-Name=Linux Gamer Doctor
-Name[ru]=Доктор Linux-геймера
+Name=GTux
 GenericName=Gaming System Checker
 GenericName[ru]=Проверка системы для игр
 Comment=Checks your system and explains what is missing for gaming

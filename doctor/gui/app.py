@@ -25,6 +25,7 @@ from gi.repository import Adw, Gdk, Gio, GLib, Gtk  # noqa: E402
 from doctor import __version__, fixer, gamedb, history, i18n, knowledge  # noqa: E402
 from doctor import log as doctor_log  # noqa: E402
 from doctor.checks import ALL_GROUPS  # noqa: E402
+from doctor.checks import proton as proton_checks  # noqa: E402
 from doctor.gui import style  # noqa: E402
 from doctor.gui.launch_page import LaunchOptionsPage  # noqa: E402
 from doctor.i18n import t  # noqa: E402
@@ -223,6 +224,7 @@ class DoctorWindow(Adw.ApplicationWindow):
             plan = fixer.build_plan(results, ctx)
             self.steam_games = gamedb.steam_settings([root for _, root in ctx.steam_roots], ctx.steam_libraries)
             self.profile = knowledge.profile_from(ctx)
+            self.protons = proton_checks.installed_variants(ctx)
             # в демо и при снимках экрана сравнивать с настоящей историей бессмысленно
             fake = os.environ.get("DOCTOR_GUI_DEMO") or os.environ.get("DOCTOR_GUI_SNAPSHOT")
             previous = None if fake else history.load_latest()
@@ -266,7 +268,7 @@ class DoctorWindow(Adw.ApplicationWindow):
         for g in self.groups:
             self.stack.add_named(self._group_page(g), f"group:{g}")
         self.launch_page = LaunchOptionsPage(self._copy, lambda text: self.toasts.add_toast(Adw.Toast.new(text)),
-                                             self.steam_games, self.profile, self.open_kb_dialog)
+                                             self.steam_games, self.profile, self.open_kb_dialog, self.protons)
         self.stack.add_named(self.launch_page, "tool:launch")
         self._fill_sidebar()
         self.fix_btn.set_visible(bool(plan.steps))

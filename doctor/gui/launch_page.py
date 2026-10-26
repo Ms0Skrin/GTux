@@ -1,5 +1,5 @@
-"""Страница «Параметры запуска»: выбор игры, советы игроков под этот ПК, переключатели ->
-готовая строка, которую можно записать прямо в Steam (с копией файла и откатом)."""
+"""Страница «Параметры запуска»: выбор игры, рекомендация сборки Proton и советы игроков под этот ПК,
+переключатели -> готовая строка, которую можно записать прямо в Steam (с копией файла и откатом)."""
 
 from __future__ import annotations
 
@@ -35,13 +35,15 @@ def monitor_size() -> tuple[int, int]:
 
 class LaunchOptionsPage(Adw.PreferencesPage):
     def __init__(self, copy_func, toast_func=None, games: list[SteamSettings] | None = None,
-                 profile: knowledge.Profile | None = None, update_kb=None):
+                 profile: knowledge.Profile | None = None, update_kb=None,
+                 protons: dict[str, list[str]] | None = None):
         super().__init__()
         self.copy_func = copy_func
         self.toast = toast_func or (lambda text: None)
         self.games = games or []
         self.profile = profile
         self.update_kb = update_kb
+        self.protons = protons or {}   # установленные сборки: knowledge.installed_variants
         self.cfg = LaunchConfig()
         self.switches: dict[str, Adw.SwitchRow] = {}
         self.kept: list[tuple[Adw.SwitchRow, Parsed]] = []   # что оставить из текущих параметров
@@ -52,6 +54,10 @@ class LaunchOptionsPage(Adw.PreferencesPage):
         self.kb_row: Adw.ActionRow | None = None
 
         self._build_game_group()
+        self.rec_group = Adw.PreferencesGroup(title=t("rec.title"), visible=False)
+        self.add(self.rec_group)
+        self.rec_rows: list[Adw.ActionRow] = []
+        self.rec_opts: Adw.ActionRow | None = None
         self.tips_group = Adw.PreferencesGroup(title=t("gui.launch.tips"), visible=False)
         self.add(self.tips_group)
         self.kept_group = Adw.PreferencesGroup(title=t("gui.launch.kept"), description=t("gui.launch.kept.desc"),
@@ -151,6 +157,7 @@ class LaunchOptionsPage(Adw.PreferencesPage):
         try:
             self._load_current()
             self._fill_tips()
+            self._fill_rec()
         finally:
             self.loading = False
         self._update()
@@ -254,6 +261,83 @@ class LaunchOptionsPage(Adw.PreferencesPage):
             self.tips_group.add(row)
             self.tips.append((row, parsed))
 
+    # ----- рекомендация: сборка Proton и итог по параметрам -----
+    def _rec_row(self, title: str, subtitle: str, icon_name: str) -> Adw.ActionRow:
+        row = Adw.ActionRow(title=title, subtitle=subtitle, subtitle_selectable=True)
+        row.set_use_markup(False)
+        row.add_prefix(Gtk.Image.new_from_icon_name(icon_name))
+        self.rec_group.add(row)
+        self.rec_rows.append(row)
+        return row
+
+    def _fill_rec(self):
+        for row in self.rec_rows:
+            self.rec_group.remove(row)
+        self.rec_rows.clear()
+        self.rec_opts = None
+        s = self.current
+        data = knowledge.load()
+        self.rec_group.set_visible(s is not None and bool(data))
+        if s is None or not data:
+            return
+        prof = self.profile or knowledge.Profile("other", False, frozenset())
+        gpu = prof.vendor.upper() if prof.vendor != "other" else "?"
+        self.rec_group.set_description(t("rec.desc", gpu=gpu))
+        if data.get("version", 1) < 2:
+            self._rec_row(t("rec.kb_old"), t("rec.kb_old.sub"), "dialog-information-symbolic")
+        else:
+            self._proton_rows(knowledge.proton_for(s.game.appid, prof, data), s, gpu)
+        self.rec_opts = self._rec_row(t("rec.opts"), "", "utilities-terminal-symbolic")
+        self._update_rec_opts()
+
+    def _proton_rows(self, pick: knowledge.ProtonPick | None, s: SteamSettings, gpu: str):
+        if pick is None:
+            self._rec_row(t("rec.few"), t("rec.few.sub", min=knowledge.MIN_REPORTS), "dialog-information-symbolic")
+            return
+        who = gpu if pick.same_vendor else t("gui.launch.tip.all")
+        if pick.broken:
+            works, total = sum(st.works for st in pick.stats), sum(st.reports for st in pick.stats)
+            self._rec_row(t("rec.broken"), t("rec.broken.sub", works=works, total=total, who=who),
+                          "dialog-warning-symbolic")
+            return
+        best = pick.best
+        if best is None:
+            self._rec_row(t("rec.few"), t("rec.few.sub", min=knowledge.MIN_REPORTS), "dialog-information-symbolic")
+        else:
+            adv = knowledge.advise(pick, s.tool, self.protons, s.native)
+            sub = [t("rec.stat", works=best.works, total=best.reports, who=who)]
+            if pick.close:
+                sub.append(t("rec.close"))
+            if adv.matches:
+                sub.append(t("rec.current_ok"))
+            elif best.variant == "native":
+                sub.append(t("rec.how_native"))
+            else:
+                if adv.use:
+                    sub.append(t("rec.use", name=adv.use))
+                if adv.missing:
+                    sub.append(t("rec.missing.ge") if best.variant == "ge" else t("rec.missing.valve"))
+                now = t("rec.variant.native") if adv.current == "native" else (s.tool or "—")
+                sub.append(t("rec.current", tool=now))
+                if adv.current == "cachyos":
+                    sub.append(t("rec.cachyos"))
+                sub.append(t("rec.how"))
+            if pick.versions:
+                sub.append(t("rec.versions", versions=", ".join(pick.versions)))
+            icon_name = "object-select-symbolic" if adv.matches else "software-update-available-symbolic"
+            self._rec_row(t("rec.proton", name=t(f"rec.variant.{best.variant}")), "\n".join(sub), icon_name)
+        others = [st for st in pick.stats if st is not best]
+        if others:
+            self._rec_row(t("rec.others"), " · ".join(
+                t("rec.others.item", name=t(f"rec.variant.{st.variant}"), works=st.works, total=st.reports)
+                for st in others), "view-list-symbolic")
+
+    def _update_rec_opts(self):
+        if self.rec_opts is None:
+            return
+        on = [row.get_title() for row, _ in self.tips if row.get_active() and row.get_sensitive()]
+        self.rec_opts.set_subtitle(t("rec.opts.on", tips=", ".join(on)) if on else t("rec.opts.none"))
+
     # ----- строка -----
     def _switch(self, field: str) -> Adw.SwitchRow:
         row = Adw.SwitchRow()
@@ -285,6 +369,7 @@ class LaunchOptionsPage(Adw.PreferencesPage):
     def _update(self, *_):
         if self.loading:
             return
+        self._update_rec_opts()
         for field, row in self.switches.items():
             setattr(self.cfg, field, row.get_active())
         self.gs_expander.set_sensitive(self.cfg.gamescope)

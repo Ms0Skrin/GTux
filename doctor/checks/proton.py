@@ -67,6 +67,13 @@ def installed_tool_names(ctx: Context) -> set[str]:
     return {n for tool in custom_tools(_compat_dirs(ctx)) for n in tool.internal}
 
 
+def installed_variants(ctx: Context) -> dict[str, list[str]]:
+    """Установленные сборки по видам ProtonDB (official, experimental, ge, cachyos)."""
+    from doctor.knowledge import installed_variants as split
+    names, _ = official_protons(ctx.steam_libraries)
+    return split(names, [tool.name for tool in custom_tools(_compat_dirs(ctx))])
+
+
 def _compat_dirs(ctx: Context) -> list[Path]:
     dirs = [root / "compatibilitytools.d" for _, root in ctx.steam_roots]
     return dirs + SYSTEM_COMPAT_DIRS

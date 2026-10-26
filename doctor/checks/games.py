@@ -78,7 +78,7 @@ def assess_game(game: gamedb.Game, *, mapping: dict[str, str], options: dict[str
                 profile: knowledge.Profile | None = None) -> dict:
     note = gamedb.notes_db().get(game.appid, {})
     ac = gamedb.anticheat_db().get(game.appid)
-    native = bool(note.get("native") or (ac and ac.get("native")))
+    native = gamedb.is_native(game.appid)
     findings: list[tuple[Status, str]] = []
     lines: list[str] = []
 
@@ -135,6 +135,13 @@ def assess_game(game: gamedb.Game, *, mapping: dict[str, str], options: dict[str
                 and not (current and merge(current, tip.as_parsed()) == current)]
         if tips:
             lines.append(t("games.tips", tips=", ".join(tips)))
+        pick = knowledge.proton_for(game.appid, profile)
+        if pick and pick.broken:
+            lines.append(t("games.rec.broken", works=sum(s.works for s in pick.stats),
+                           total=sum(s.reports for s in pick.stats)))
+        elif pick and pick.best:
+            lines.append(t("games.rec", name=t(f"rec.variant.{pick.best.variant}"),
+                           works=pick.best.works, total=pick.best.reports))
 
     status = max((s for s, _ in findings), key=SEVERITY.index, default=Status.OK)
     hint = "\n".join(h for _, h in findings)

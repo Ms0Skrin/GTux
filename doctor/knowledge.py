@@ -1,4 +1,4 @@
-"""База знаний из интернета: оценки и параметры запуска из отчётов игроков ProtonDB.
+"""База знаний из интернета: оценки, сборки Proton и параметры запуска из отчётов игроков ProtonDB.
 
 Источники (скачиваются только по кнопке «Обновить базу» или `--update-kb`):
   - выгрузка отчётов: https://github.com/bdefore/protondb-data (ODbL), раз в месяц, архив ~70 МБ;
@@ -42,6 +42,10 @@ RECENT_DAYS = 730      # старые отчёты не учитываем: Prot
 MIN_REPORTS = 3        # меньше — это мнение одного-двух человек, а не совет
 MIN_SHARE = 0.15       # доля отчётов с параметрами, где встречается этот совет
 SAME_VENDOR_MIN = 5    # столько отчётов с такой же видеокартой нужно, чтобы считать только их
+PROTON_DAYS = 365      # для выбора сборки — только последний год: сборки обновляются часто
+# Поле responses.variant в отчёте: на чём игрок запускал игру. notListed (сборка не из списка
+# сайта) не советуем — непонятно, что это за сборка.
+VARIANTS = ("official", "experimental", "ge", "older", "native")
 
 PROTON = "https://github.com/ValveSoftware/Proton/blob/proton_10.0/README.md"
 GE = "https://github.com/GloriousEggroll/proton-ge-custom/blob/master/README.md"
@@ -172,29 +176,50 @@ def iter_reports(stream):
             yield obj
 
 
-def summarize_reports(reports, since: float) -> dict[str, dict]:
-    """{appid: {"n": {вендор: отчётов с параметрами}, "t": {совет: {вендор: сколько}}}}."""
+def summarize_reports(reports, since: float, proton_since: float | None = None) -> dict[str, dict]:
+    """{appid: {"n": {вендор: отчётов с параметрами}, "t": {совет: {вендор: сколько}},
+    "p": {вендор: {сборка: [отчётов, заработало]}}, "v": {сборка: {версия: сколько раз заработала}}}}."""
+    proton_since = since if proton_since is None else proton_since
     games: dict[str, dict] = {}
     for rep in reports:
-        if rep.get("timestamp", 0) < since:
+        ts = rep.get("timestamp", 0)
+        if ts < min(since, proton_since):
             continue
-        opts = (rep.get("responses") or {}).get("launchOptions")
+        resp = rep.get("responses") or {}
         appid = ((rep.get("app") or {}).get("steam") or {}).get("appId")
-        if not opts or not isinstance(opts, str) or not appid:
+        if not appid:
+            continue
+        vendor = gpu_vendor((rep.get("systemInfo") or {}).get("gpu") or "")
+        g = games.setdefault(str(appid), {"n": Counter(), "t": {}, "p": {}, "v": {}})
+        variant = resp.get("variant")
+        if ts >= proton_since and variant in VARIANTS:
+            works = resp.get("verdict") == "yes"
+            stat = g["p"].setdefault(vendor, {}).setdefault(variant, [0, 0])
+            stat[0] += 1
+            stat[1] += works
+            version = resp.get("customProtonVersion") if variant == "ge" else resp.get("protonVersion")
+            if works and variant in ("ge", "older") and isinstance(version, str) and len(version) < 40:
+                g["v"].setdefault(variant, Counter())[version.strip()] += 1
+        opts = resp.get("launchOptions")
+        if ts < since or not opts or not isinstance(opts, str):
             continue
         tokens = safe_tokens(opts)
         if not tokens:
             continue
-        vendor = gpu_vendor((rep.get("systemInfo") or {}).get("gpu") or "")
-        g = games.setdefault(str(appid), {"n": Counter(), "t": {}})
         g["n"][vendor] += 1
         for tok in tokens:
             g["t"].setdefault(tok, Counter())[vendor] += 1
     # редкие советы не храним: файл в разы меньше
-    for g in games.values():
+    result = {}
+    for appid, g in games.items():
         g["n"] = dict(g["n"])
         g["t"] = {tok: dict(c) for tok, c in g["t"].items() if sum(c.values()) >= 2}
-    return {a: g for a, g in games.items() if g["t"]}
+        if sum(st[0] for by_var in g["p"].values() for st in by_var.values()) < MIN_REPORTS:
+            g["p"], g["v"] = {}, {}
+        g["v"] = {var: dict(c.most_common(3)) for var, c in g["v"].items()}
+        if g["t"] or g["p"]:
+            result[appid] = {k: v for k, v in g.items() if v}
+    return result
 
 
 # ---------------- скачивание ----------------
@@ -283,7 +308,8 @@ def update(appids: list[str], progress=lambda stage, done=0, total=0: None) -> d
                 for rep in iter_reports(tf.extractfile(member)):
                     newest = max(newest, rep.get("timestamp", 0))
                     yield rep
-            games = summarize_reports(tracked(), time.time() - RECENT_DAYS * 86400)
+            now = time.time()
+            games = summarize_reports(tracked(), now - RECENT_DAYS * 86400, now - PROTON_DAYS * 86400)
 
     tiers = {}
     for i, appid in enumerate(appids, 1):
@@ -293,13 +319,13 @@ def update(appids: list[str], progress=lambda stage, done=0, total=0: None) -> d
             tiers[appid] = summary
         time.sleep(0.2)  # не нагружаем сайт
 
-    data = {"version": 1, "fetched": time.time(), "dump": name, "newest_report": newest,
+    data = {"version": 2, "fetched": time.time(), "dump": name, "newest_report": newest,
             "license": LICENSE, "games": games, "tiers": tiers}
     tmp_path = kb_path().with_suffix(".tmp")
     tmp_path.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")))
     os.replace(tmp_path, kb_path())
     load.cache_clear()
-    log.info("knowledge updated: %s, %d games with tips, %d tiers", name, len(games), len(tiers))
+    log.info("knowledge updated: %s, %d games, %d tiers", name, len(games), len(tiers))
     return data
 
 
@@ -424,3 +450,140 @@ def build_family(tool: str | None) -> str:
 
 def works_with(tip: "Tip", tool: str | None) -> bool:
     return not tip.builds or build_family(tool) in tip.builds
+
+
+# ---------------- какая сборка Proton ----------------
+
+def variant_of(tool: str | None) -> str:
+    """Сборка, выбранная в Steam, в терминах ProtonDB: official, experimental, ge, cachyos, older, none.
+    Официальные внутренние имена: proton_10, proton_experimental, proton_hotfix, proton_9 и т.д."""
+    name = (tool or "").lower()
+    if not name:
+        return "none"
+    family = build_family(name)
+    if family != "valve":
+        return family
+    if "experimental" in name or "hotfix" in name:
+        return "experimental"
+    return "official" if re.fullmatch(r"proton_\d+", name) else "other"
+
+
+def wilson(works: int, n: int, z: float = 1.64) -> float:
+    """Нижняя граница доли «заработало» (интервал Уилсона, ~90%): 3 из 3 весит меньше, чем 30 из 31."""
+    if n == 0:
+        return 0.0
+    p = works / n
+    return (p + z * z / (2 * n) - z * ((p * (1 - p) + z * z / (4 * n)) / n) ** 0.5) / (1 + z * z / n)
+
+
+@dataclass
+class ProtonStat:
+    variant: str
+    reports: int
+    works: int
+
+    @property
+    def share(self) -> float:
+        return self.works / self.reports if self.reports else 0.0
+
+
+@dataclass
+class ProtonPick:
+    best: ProtonStat | None          # None — нигде не работает или мало данных
+    stats: list[ProtonStat]          # все сборки с данными, лучшие сначала
+    same_vendor: bool                # считали только отчёты с такой же видеокартой
+    versions: list[str]              # для ge/older: версии, которые чаще всего называли рабочими
+    close: bool = False              # вторая сборка почти так же хороша
+    broken: bool = False             # отчёты есть, но почти ни у кого не работает
+
+
+# при равенстве — самая простая: официальный Proton ставится сам, остальное — нет
+PREFER = {"native": 0, "official": 1, "experimental": 2, "ge": 3, "older": 4}
+
+
+def proton_for(appid: str, profile: Profile, data: dict | None = None) -> ProtonPick | None:
+    """Сборка, на которой игра чаще всего работает у игроков с такой же видеокартой. None — нет данных."""
+    data = load() if data is None else data
+    game = (data.get("games") or {}).get(appid) or {}
+    by_vendor = game.get("p") or {}
+    if not by_vendor:
+        return None
+    own = by_vendor.get(profile.vendor, {})
+    same = sum(st[0] for st in own.values()) >= SAME_VENDOR_MIN
+    counts: dict[str, list[int]] = {}
+    for vendor, variants in by_vendor.items():
+        if same and vendor != profile.vendor:
+            continue
+        for var, (n, works) in variants.items():
+            if var in VARIANTS:
+                c = counts.setdefault(var, [0, 0])
+                c[0] += n
+                c[1] += works
+    stats = [ProtonStat(var, n, works) for var, (n, works) in counts.items()]
+    stats.sort(key=lambda s: (-wilson(s.works, s.reports), PREFER[s.variant]))
+    if not stats:
+        return None
+    pick = ProtonPick(None, stats, same, [])
+    total, works = sum(s.reports for s in stats), sum(s.works for s in stats)
+    if total >= MIN_REPORTS and works / total < 0.2:
+        pick.broken = True
+        return pick
+    candidates = [s for s in stats if s.reports >= MIN_REPORTS and s.share >= 0.5]
+    if not candidates:
+        return pick
+    # из почти равных (разница меньше 5 процентных пунктов) берём самую простую
+    top = wilson(candidates[0].works, candidates[0].reports)
+    near = [s for s in candidates if top - wilson(s.works, s.reports) < 0.05]
+    best = min(near, key=lambda s: PREFER[s.variant])
+    pick.best = best
+    pick.close = len(near) > 1
+    pick.versions = list((game.get("v") or {}).get(best.variant, {}))
+    return pick
+
+
+def installed_variants(official: list[str], custom: list[str]) -> dict[str, list[str]]:
+    """Установленные сборки по видам: official, experimental, ge, cachyos. Новые версии сначала.
+    official — папки steamapps/common/Proton*, custom — имена из compatibilitytools.d."""
+    def version(name: str) -> tuple[int, ...]:
+        return tuple(int(x) for x in re.findall(r"\d+", name))
+    found: dict[str, list[str]] = {}
+    for name in official:
+        var = "experimental" if re.search(r"experimental|hotfix", name, re.I) else "official"
+        found.setdefault(var, []).append(name)
+    for name in custom:
+        fam = build_family(name)
+        if fam != "valve":
+            found.setdefault(fam, []).append(name)
+    return {var: sorted(names, key=version, reverse=True) for var, names in found.items()}
+
+
+@dataclass
+class Advice:
+    """Что показать человеку о сборке Proton для игры."""
+    pick: ProtonPick
+    current: str                 # вид сборки, выбранной сейчас (variant_of)
+    use: str | None = None       # какую из установленных выбрать
+    missing: bool = False        # подходящая сборка не установлена
+
+    @property
+    def matches(self) -> bool:
+        best = self.pick.best
+        return best is not None and best.variant == self.current
+
+
+def advise(pick: ProtonPick, tool: str | None, installed: dict[str, list[str]], native: bool = False) -> Advice:
+    adv = Advice(pick, "native" if native and not tool else variant_of(tool))
+    best = pick.best
+    if best is None or best.variant == "native":
+        return adv
+    if best.variant == "older":
+        # конкретную старую версию Steam ставит сам, её выбирают в списке совместимости
+        adv.use = pick.versions[0] if pick.versions else None
+        return adv
+    names = installed.get(best.variant, [])
+    if names:
+        adv.use = names[0]
+    else:
+        adv.missing = True
+        adv.use = pick.versions[0] if pick.versions else None
+    return adv

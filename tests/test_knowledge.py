@@ -111,3 +111,69 @@ class DownloadTest(unittest.TestCase):
             knowledge.download("https://example.invalid/f", dest, lambda d, t: None)
             self.assertEqual(dest.read_bytes(), payload)
         self.assertEqual(calls, [None, "bytes=50000-"])
+
+
+def proton_report(appid, variant, works=True, gpu="NVIDIA GeForce RTX 3060 Ti", version=None, ts=10**10):
+    resp = {"variant": variant, "verdict": "yes" if works else "no"}
+    if version:
+        resp["customProtonVersion" if variant == "ge" else "protonVersion"] = version
+    return {"app": {"steam": {"appId": appid}}, "responses": resp, "systemInfo": {"gpu": gpu}, "timestamp": ts}
+
+
+class ProtonPickTest(unittest.TestCase):
+    NV = Profile("nvidia", False, frozenset())
+
+    def summarize(self, reps, proton_since=100):
+        stream = io.BytesIO(json.dumps(reps).encode())
+        return {"games": knowledge.summarize_reports(knowledge.iter_reports(stream), since=100,
+                                                     proton_since=proton_since)}
+
+    def test_best_for_same_gpu(self):
+        reps = ([proton_report("1", "official")] * 9 + [proton_report("1", "official", works=False)] * 3
+                + [proton_report("1", "ge", version="GE-Proton10-34")] * 8
+                + [proton_report("1", "official", gpu="AMD Radeon RX 9070")] * 20
+                + [proton_report("1", "notListed")] * 50                  # неизвестная сборка — не считаем
+                + [proton_report("1", "official", works=False, ts=1)] * 50)  # старые — не считаем
+        data = self.summarize(reps)
+        pick = knowledge.proton_for("1", self.NV, data)
+        self.assertTrue(pick.same_vendor)
+        self.assertEqual((pick.best.variant, pick.best.works, pick.best.reports), ("ge", 8, 8))
+        self.assertEqual(pick.versions, ["GE-Proton10-34"])
+        # у AMD только официальный — для AMD он и лучший
+        self.assertEqual(knowledge.proton_for("1", Profile("amd", False, frozenset()), data).best.variant, "official")
+
+    def test_close_prefers_simplest(self):
+        reps = [proton_report("1", "official")] * 30 + [proton_report("1", "ge")] * 31
+        pick = knowledge.proton_for("1", self.NV, self.summarize(reps))
+        self.assertEqual(pick.best.variant, "official")  # почти поровну — официальный проще поставить
+        self.assertTrue(pick.close)
+
+    def test_broken_and_few(self):
+        reps = [proton_report("1", "official", works=False)] * 10 + [proton_report("1", "ge")]
+        reps += [proton_report("2", "official")] * 2 + [proton_report("2", "ge")]
+        data = self.summarize(reps)
+        pick = knowledge.proton_for("1", self.NV, data)
+        self.assertTrue(pick.broken)
+        self.assertIsNone(pick.best)
+        self.assertIsNone(knowledge.proton_for("2", self.NV, data).best)  # 2 отчёта на сборку — мало
+        self.assertIsNone(knowledge.proton_for("3", self.NV, data))
+
+    def test_variants_and_advice(self):
+        installed = knowledge.installed_variants(
+            ["Proton 9.0 (Beta)", "Proton 10.0", "Proton - Experimental"],
+            ["GE-Proton10-25", "GE-Proton11-9", "proton-cachyos-slr"])
+        self.assertEqual(installed["official"], ["Proton 10.0", "Proton 9.0 (Beta)"])
+        self.assertEqual(installed["ge"], ["GE-Proton11-9", "GE-Proton10-25"])
+        self.assertEqual(installed["cachyos"], ["proton-cachyos-slr"])
+        for tool, var in (("proton_10", "official"), ("proton_experimental", "experimental"),
+                          ("ge-proton11-9", "ge"), ("proton-cachyos-slr", "cachyos"), (None, "none")):
+            self.assertEqual(knowledge.variant_of(tool), var)
+        pick = knowledge.proton_for("1", self.NV, self.summarize([proton_report("1", "ge")] * 5))
+        adv = knowledge.advise(pick, "proton-cachyos-slr", installed)
+        self.assertEqual((adv.current, adv.use, adv.missing, adv.matches), ("cachyos", "GE-Proton11-9", False, False))
+        self.assertTrue(knowledge.advise(pick, "ge-proton10-25", installed).matches)
+        self.assertTrue(knowledge.advise(pick, None, {}).missing)
+        # Linux-версия без выбранной вручную сборки: текущий вариант — native, сборка по умолчанию не считается
+        native = knowledge.proton_for("1", self.NV, self.summarize([proton_report("1", "native")] * 5))
+        self.assertTrue(knowledge.advise(native, None, installed, native=True).matches)
+        self.assertEqual(knowledge.advise(pick, None, installed, native=True).current, "native")

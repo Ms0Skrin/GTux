@@ -80,6 +80,7 @@ class SteamSettings:
     config: Path | None     # localconfig.vdf, куда писать параметры
     options: str            # текущие параметры запуска
     tool: str | None        # сборка Proton, выбранная для игры (или по умолчанию)
+    native: bool = False    # Linux-версия без сборки, выбранной вручную: сборка по умолчанию к ней не применяется
 
 
 def steam_settings(roots: list[Path], libraries: list[Path]) -> list[SteamSettings]:
@@ -88,8 +89,13 @@ def steam_settings(roots: list[Path], libraries: list[Path]) -> list[SteamSettin
         mapping.update(compat_mapping(root))
         options.update(launch_options(root))
         config = config or steamcfg.localconfig_path(root)
-    return [SteamSettings(g, config, options.get(g.appid, ""), mapping.get(g.appid) or mapping.get("0"))
-            for g in installed_games([lib for lib in libraries if lib.exists()])]
+    result = []
+    for g in installed_games([lib for lib in libraries if lib.exists()]):
+        forced = mapping.get(g.appid)
+        native = not forced and is_native(g.appid)
+        tool = forced or (None if native else mapping.get("0"))
+        result.append(SteamSettings(g, config, options.get(g.appid, ""), tool, native))
+    return result
 
 
 @cache
@@ -104,6 +110,12 @@ def _anticheat_file() -> dict:
         return json.loads((DATA / "anticheat.json").read_text())
     except (OSError, ValueError):
         return {}
+
+
+def is_native(appid: str) -> bool:
+    """Есть Linux-версия (по заметкам games.toml или AreWeAntiCheatYet)."""
+    ac = anticheat_db().get(appid)
+    return bool(notes_db().get(appid, {}).get("native") or (ac and ac.get("native")))
 
 
 def anticheat_db() -> dict[str, dict]:
