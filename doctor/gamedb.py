@@ -81,8 +81,22 @@ def notes_db() -> dict[str, dict]:
 
 
 @cache
-def anticheat_db() -> dict[str, dict]:
+def _anticheat_file() -> dict:
     try:
-        return json.loads((DATA / "anticheat.json").read_text()).get("games", {})
+        return json.loads((DATA / "anticheat.json").read_text())
     except (OSError, ValueError):
         return {}
+
+
+def anticheat_db() -> dict[str, dict]:
+    """{steam appid: запись AreWeAntiCheatYet}."""
+    return _anticheat_file().get("games", {})
+
+
+def normalize_name(name: str) -> str:
+    """Как в scripts/update_anticheat.py: без регистра, ™®© и знаков препинания."""
+    return re.sub(r"[^\w]+", " ", re.sub(r"[™®©]", "", name.lower())).strip()
+
+
+def anticheat_by_name(name: str) -> dict | None:
+    return _anticheat_file().get("by_name", {}).get(normalize_name(name))

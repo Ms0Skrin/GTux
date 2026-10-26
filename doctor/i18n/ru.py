@@ -296,4 +296,11 @@ TEXTS = {
     "games.ac.online_broken": "Онлайн-режим не работает на Linux из-за античита.",
     "games.need_max_map_count": "Игре нужен vm.max_map_count ≥ {need}, сейчас {have}: возможны вылеты при загрузке (см. «Настройки системы»).",
     "games.protondb": "Отзывы игроков: https://www.protondb.com/app/{appid}",
+    "games.ext.title": "{name} — {source}",
+    "games.ext.runner": "Запуск: {runner}",
+    "games.ext.runner_default": "Wine/Proton по умолчанию лаунчера",
+    "games.ext.runner_missing": "Выбранный Wine/Proton «{runner}» не найден: игра не запустится. Выберите другой в настройках игры.",
+    "games.ext.no_install": "Папка игры не найдена ({path}): диск не подключён или игру удалили.",
+    "games.ext.prefix_fs": "Префикс Wine лежит на {fs}: возможны вылеты и потеря сохранений. Перенесите его на ext4/btrfs.",
+    "games.ext.env": "Переменные: {env}",
 }

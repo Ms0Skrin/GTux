@@ -6,7 +6,8 @@ import os
 import re
 import shlex
 
-from doctor import gamedb
+from doctor import gamedb, launchers
+from doctor.checks import disks
 from doctor.checks.proton import installed_tool_names
 from doctor.i18n import current_language, t
 from doctor.models import Context, Status
@@ -46,6 +47,12 @@ def analyze_launch_options(opts: str, cpu_count: int | None = None) -> list[tupl
         if not which(w):
             findings.append((Status.FAIL, t("games.launch.missing_tool", tool=w)))
 
+    return findings + env_findings(env, cpu_count)
+
+
+def env_findings(env: dict[str, str], cpu_count: int | None = None) -> list[tuple[Status, str]]:
+    """Проверки переменных окружения, общие для Steam и других лаунчеров."""
+    findings = []
     topo = env.get("WINE_CPU_TOPOLOGY")
     if topo is not None:
         m = re.fullmatch(r"(\d+):(\d+(?:,\d+)*)", topo)
@@ -100,14 +107,10 @@ def assess_game(game: gamedb.Game, *, mapping: dict[str, str], options: dict[str
     if note.get("online_broken"):
         findings.append((Status.WARN, note_text or t("games.ac.online_broken")))
         note_text = None  # уже показали как проблему
-    elif ac and ac.get("status") in ANTICHEAT:
-        status, key = ANTICHEAT[ac["status"]]
-        acs = ", ".join(ac.get("anticheats") or []) or "?"
-        text = t(key, anticheats=acs)
-        if status == Status.OK:
-            lines.append(text)
-        else:
-            findings.append((status, text))
+    else:
+        ac_problems, ac_lines = _ac_findings(ac)
+        findings += ac_problems
+        lines += ac_lines
 
     # --- требования к системе ---
     need = note.get("min_max_map_count")
@@ -148,4 +151,60 @@ def check_games(ctx: Context):
     return results
 
 
-CHECKS = [check_games]
+def _ac_findings(ac: dict | None) -> tuple[list[tuple[Status, str]], list[str]]:
+    """(проблемы, строки для показа) по записи AreWeAntiCheatYet."""
+    if not ac or ac.get("status") not in ANTICHEAT:
+        return [], []
+    status, key = ANTICHEAT[ac["status"]]
+    text = t(key, anticheats=", ".join(ac.get("anticheats") or []) or "?")
+    return ([], [text]) if status == Status.OK else ([(status, text)], [])
+
+
+def assess_external(game: launchers.ExternalGame, mounts: list[disks.Mount] | None) -> dict:
+    findings: list[tuple[Status, str]] = []
+    lines: list[str] = []
+
+    if game.install_path is not None and not game.install_path.exists():
+        findings.append((Status.FAIL, t("games.ext.no_install", path=game.install_path)))
+    if game.windows:
+        lines.append(t("games.ext.runner", runner=game.runner or t("games.ext.runner_default")))
+        if game.runner_found is False:
+            findings.append((Status.FAIL, t("games.ext.runner_missing", runner=game.runner)))
+    else:
+        lines.append(t("games.runs.native"))
+
+    # префикс Wine на NTFS/exFAT — та же беда, что и у Steam
+    if game.prefix and mounts:
+        target = game.prefix if game.prefix.exists() else game.prefix.parent
+        m = disks.find_mount(target.resolve(), mounts) if target.exists() else None
+        if m and disks.real_fstype(m) in disks.NTFS_TYPES | disks.FAT_TYPES:
+            findings.append((Status.WARN, t("games.ext.prefix_fs", fs=disks.real_fstype(m))))
+
+    for w in game.wrappers:
+        if w in WRAPPERS and not which(w):
+            findings.append((Status.FAIL, t("games.launch.missing_tool", tool=w)))
+    if game.env:
+        lines.append(t("games.ext.env", env=" ".join(f"{k}={v}" for k, v in game.env.items())))
+        findings += env_findings(game.env)
+
+    ac_problems, ac_lines = _ac_findings(gamedb.anticheat_by_name(game.name))
+    findings += ac_problems
+    lines += ac_lines
+
+    status = max((s for s, _ in findings), key=SEVERITY.index, default=Status.OK)
+    return {"status": status, "value": "\n".join(lines), "hint": "\n".join(h for _, h in findings)}
+
+
+@check("other")
+def check_other_launchers(ctx: Context):
+    games = launchers.all_games()
+    if not games:
+        return []
+    text = read_text("/proc/self/mounts")
+    mounts = disks.parse_mounts(text) if text else None
+    return [result(GROUP, f"ext.{i}", title=t("games.ext.title", name=g.name, source=g.source),
+                   **assess_external(g, mounts))
+            for i, g in enumerate(sorted(games, key=lambda g: (g.source, g.name.lower())))]
+
+
+CHECKS = [check_games, check_other_launchers]
