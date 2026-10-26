@@ -2,8 +2,8 @@
 # Сборка: scripts/build_arch_package.sh (делает архив исходников из git и запускает makepkg)
 
 pkgname=linux-gamer-doctor
-pkgver=0.2.0
-pkgrel=2
+pkgver=0.3.0
+pkgrel=1
 pkgdesc="Checks a Linux system and explains in plain words what is missing for gaming"
 arch=('any')
 license=('GPL-3.0-or-later')
@@ -14,7 +14,7 @@ optdepends=(
   'python-gobject: graphical window (--gui)'
   'vulkan-tools: check that Vulkan sees the GPU (vulkaninfo)'
   'pciutils: readable GPU names (lspci)'
-  'polkit: install missing packages from the window (pkexec)'
+  'polkit: fix problems from the window (pkexec)'
 )
 source=("$pkgname-$pkgver.tar.gz")
 sha256sums=('SKIP')  # архив собирается локально из git, а не скачивается
