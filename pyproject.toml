@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "linux-gamer-doctor"
+dynamic = ["version"]
+description = "Checks a Linux system and explains in plain words what is missing for gaming"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE", "doctor/data/ANTICHEAT_LICENSE.txt"]
+authors = [{ name = "Евгений" }]
+dependencies = ["rich"]
+classifiers = [
+    "Environment :: Console",
+    "Environment :: X11 Applications :: GTK",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: Games/Entertainment",
+    "Topic :: System :: Systems Administration",
+]
+
+[project.optional-dependencies]
+# Окно: PyGObject ставится вместе с системными GTK4 и libadwaita, лучше из пакетов дистрибутива
+gui = ["PyGObject"]
+
+[project.scripts]
+linux-gamer-doctor = "doctor.cli:main"
+
+[tool.setuptools.dynamic]
+version = { attr = "doctor.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["doctor*"]
+
+[tool.setuptools.package-data]
+doctor = ["data/*.json", "data/*.toml", "data/*.txt"]

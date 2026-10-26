@@ -7,7 +7,7 @@ import sys
 from rich.console import Console
 from rich.markup import escape
 
-from doctor import fixer
+from doctor import command_name, fixer
 from doctor.i18n import t
 from doctor.models import CheckResult, Context
 
@@ -67,7 +67,7 @@ def run(results: list[CheckResult], ctx: Context, console: Console | None = None
 
     ok, failed, code = fixer.execute(plan, echo)
     if ok:
-        console.print(f"\n[bold green]{escape(t('fix.done'))}[/]")
+        console.print(f"\n[bold green]{escape(t('fix.done', cmd=command_name()))}[/]")
         return 0
     console.print(f"\n[bold red]{escape(t('fix.failed', command=failed.command, code=code))}[/]")
     return 1

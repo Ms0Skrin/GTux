@@ -21,7 +21,7 @@ TEXTS = {
     "ui.all_good": "No serious problems found.",
     "ui.has_problems": "There are problems: see the red rows above.",
     "ui.note": "Commands are only shown. Without --fix and your confirmation nothing is changed.",
-    "ui.fix_hint": "Missing packages can be installed with: python main.py --fix",
+    "ui.fix_hint": "Missing packages can be installed with: {cmd} --fix",
     "cli.description": "Checks your Linux system and explains what is missing for gaming.",
     "cli.json": "print the result as JSON (for scripts, bots, GUI)",
     "cli.lang": "interface language",
@@ -268,7 +268,7 @@ TEXTS = {
     "fix.confirm_short": "Run it? [y] yes, [Enter] cancel: ",
     "fix.ask_package": "  Install {package}? [y / Enter = no]: ",
     "fix.cancelled": "Cancelled, nothing was changed.",
-    "fix.done": "Done. Run the check again: python main.py",
+    "fix.done": "Done. Run the check again: {cmd}",
     "fix.failed": "The command “{command}” exited with code {code}. The remaining steps were not run.",
 
     # --- games ---

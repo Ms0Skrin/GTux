@@ -9,6 +9,7 @@ from rich.markup import escape
 from rich.table import Table
 from rich.text import Text
 
+from doctor import command_name
 from doctor.i18n import t
 from doctor.models import CheckResult, Status
 from doctor.runner import summarize
@@ -82,4 +83,4 @@ def render(results: list[CheckResult], console: Console | None = None,
         console.print(t("ui.all_good"), style="bold green")
     console.print(t("ui.note"), style="dim")
     if show_fix_hint and any(r.packages and r.status != Status.OK for r in results):
-        console.print(t("ui.fix_hint"), style="bold cyan")
+        console.print(t("ui.fix_hint", cmd=command_name()), style="bold cyan")
