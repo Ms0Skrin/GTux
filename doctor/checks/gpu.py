@@ -51,7 +51,10 @@ def _pci_name(slot: str, vendor: str) -> str:
             out = run(["lspci", "-s", slot]).stdout.strip()
             # "03:00.0 VGA compatible controller: NVIDIA Corporation GA104 [GeForce RTX 3060 Ti] (rev a1)"
             if ": " in out:
-                return re.sub(r"\s*\(rev \w+\)$", "", out.split(": ", 1)[1])
+                name = re.sub(r"\s*\(rev \w+\)$", "", out.split(": ", 1)[1])
+                # «NVIDIA Corporation GA104 [GeForce RTX 3060 Ti]» -> «NVIDIA GeForce RTX 3060 Ti»
+                m = re.search(r"\[([^\]]+)\]", name)
+                return f"{VENDOR_NAMES[vendor]} {m[1]}" if m and vendor != "unknown" else name
         except CommandError:
             pass  # название — не критично, ниже есть запасной вариант
     return f"{VENDOR_NAMES[vendor]} ({slot})"

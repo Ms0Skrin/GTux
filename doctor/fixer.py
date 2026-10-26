@@ -69,6 +69,16 @@ def build_plan(results: list[CheckResult], ctx: Context, only: list[str] | None 
     return plan
 
 
+def gui_argv(step: Step, pm) -> list[str]:
+    """Команда для окна: pkexec вместо sudo (графический запрос пароля) и без вопросов в терминале."""
+    argv = list(step.argv)
+    if argv and argv[0] == "sudo":
+        argv[0] = "pkexec"
+    if step.kind == "install" and pm is not None and pm.assume_yes:
+        argv.insert(len(argv) - len(step.packages), pm.assume_yes)
+    return argv
+
+
 def execute(plan: Plan, echo) -> tuple[bool, Step | None, int]:
     """Выполняет шаги по очереди с выводом прямо в терминал. Останавливается на первой ошибке.
 

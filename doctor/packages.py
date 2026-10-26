@@ -15,6 +15,7 @@ from doctor.system import run, which
 
 class PackageManager:
     name = ""
+    assume_yes = ""  # флаг «не спрашивать»: в окне подтверждение уже получено
     family = ""  # ключ в doctor.pkgnames: arch | debian | ubuntu | fedora
 
     def installed_versions(self, packages: list[str]) -> dict[str, str | None]:
@@ -35,6 +36,7 @@ class PackageManager:
 
 class Pacman(PackageManager):
     name = "pacman"
+    assume_yes = "--noconfirm"
     family = "arch"
 
     def installed_versions(self, packages):
@@ -58,6 +60,7 @@ class Pacman(PackageManager):
 
 class Apt(PackageManager):
     name = "apt"
+    assume_yes = "-y"
 
     def __init__(self, ubuntu: bool = False):
         self.family = "ubuntu" if ubuntu else "debian"
@@ -92,6 +95,7 @@ class Apt(PackageManager):
 
 class Dnf(PackageManager):
     name = "dnf"
+    assume_yes = "-y"
     family = "fedora"
 
     def installed_versions(self, packages):

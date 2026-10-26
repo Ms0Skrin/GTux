@@ -19,10 +19,18 @@ def main() -> int:
     parser = argparse.ArgumentParser(prog="main.py", description=t("cli.description"))
     parser.add_argument("--json", action="store_true", help=t("cli.json"))
     parser.add_argument("--fix", action="store_true", help=t("cli.fix"))
-    parser.add_argument("--lang", choices=i18n.AVAILABLE, default=i18n.DEFAULT, help=t("cli.lang"))
+    parser.add_argument("--gui", action="store_true", help=t("cli.gui"))
+    parser.add_argument("--lang", choices=i18n.AVAILABLE, default=None, help=t("cli.lang"))
     parser.add_argument("--version", action="version", version=__version__)
     args = parser.parse_args()
-    i18n.set_language(args.lang)
+    if args.gui:
+        try:
+            from doctor.gui import app
+        except (ImportError, ValueError) as e:  # ValueError: gi.require_version не нашёл GTK4/Adw
+            print(t("gui.need_gtk", error=e), file=sys.stderr)
+            return 2
+        return app.run(args.lang)  # без --lang окно возьмёт сохранённый язык
+    i18n.set_language(args.lang or i18n.DEFAULT)
     if args.json and args.fix:
         parser.error(t("cli.json_fix_conflict"))
 
