@@ -28,8 +28,8 @@ package() {
   install -d "$pkgdir$site"
   cp -r doctor "$pkgdir$site/"
   find "$pkgdir$site/doctor" -name '__pycache__' -prune -exec rm -rf {} +
-  python -m compileall -q -d "$site" -s "$pkgdir" "$pkgdir$site/doctor"
-  python -O -m compileall -q -d "$site" -s "$pkgdir" "$pkgdir$site/doctor"
+  python -m compileall -q -s "$pkgdir" "$pkgdir$site/doctor"
+  python -O -m compileall -q -s "$pkgdir" "$pkgdir$site/doctor"
 
   # команда linux-gamer-doctor
   install -Dm755 /dev/stdin "$pkgdir/usr/bin/linux-gamer-doctor" <<'SH'
