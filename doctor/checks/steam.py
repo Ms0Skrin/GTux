@@ -119,4 +119,55 @@ def check_libraries(ctx: Context):
     return result(GROUP, "libraries", Status.OK, value=value)
 
 
-CHECKS = [check_install, check_libraries]
+def parse_flatpak_filesystems(text: str) -> list[str]:
+    """Строка filesystems= из `flatpak info --show-permissions` -> список разрешённых путей."""
+    for line in text.splitlines():
+        if line.startswith("filesystems="):
+            return [e for e in line.split("=", 1)[1].split(";") if e]
+    return []
+
+
+def path_allowed(path: Path, entries: list[str], home: Path = HOME) -> bool:
+    for entry in entries:
+        if entry.startswith("!"):
+            continue  # явный запрет, нам он ничего не даёт
+        base = entry.split(":", 1)[0]  # убираем :ro / :rw / :create
+        if base == "host":  # host-os и host-etc дают только системные папки, не /mnt и не /home
+            return True
+        if base == "home":
+            target = home
+        elif base.startswith("~/"):
+            target = home / base[2:]
+        elif base.startswith("/"):
+            target = Path(base)
+        else:
+            continue  # xdg-download и т.п. — к библиотекам игр отношения не имеют
+        if path == target or target in path.parents:
+            return True
+    return False
+
+
+@check("flatpak_access")
+def check_flatpak_access(ctx: Context):
+    """Steam из Flatpak видит только разрешённые папки: библиотека на другом диске без доступа = «нет места»."""
+    flatpak_roots = [root for kind, root in ctx.steam_roots if kind == "flatpak"]
+    if not flatpak_roots or not which("flatpak"):
+        return []
+    sandbox = HOME / ".var/app" / FLATPAK_ID
+    outside = [lib for lib in ctx.steam_libraries if sandbox not in lib.parents and lib != sandbox]
+    if not outside:
+        return result(GROUP, "flatpak_access", Status.OK, value=t("steam.flatpak_access.inside"))
+    out = run(["flatpak", "info", "--show-permissions", FLATPAK_ID])
+    if out.returncode != 0:
+        return result(GROUP, "flatpak_access", Status.UNKNOWN, error=out.stderr.strip() or None)
+    entries = parse_flatpak_filesystems(out.stdout)
+    blocked = [lib for lib in outside if not path_allowed(lib, entries)]
+    if blocked:
+        fix = " && ".join(f"flatpak override --user --filesystem={lib} {FLATPAK_ID}" for lib in blocked)
+        return result(GROUP, "flatpak_access", Status.FAIL,
+                      value=t("steam.flatpak_access.blocked", paths=", ".join(map(str, blocked))),
+                      hint=t("steam.flatpak_access.blocked_hint"), fix=fix)
+    return result(GROUP, "flatpak_access", Status.OK, value=t("steam.flatpak_access.ok"))
+
+
+CHECKS = [check_install, check_libraries, check_flatpak_access]

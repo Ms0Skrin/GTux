@@ -66,6 +66,20 @@ def real_fstype(mount: Mount) -> str:
     return mount.fstype
 
 
+def is_rotational(source: str) -> bool | None:
+    """True — жёсткий диск (HDD), False — SSD/NVMe, None — не понять (LVM, LUKS, сеть…)."""
+    if not source.startswith("/dev/"):
+        return None
+    block = Path("/sys/class/block") / Path(source).resolve().name
+    if not block.exists():
+        return None
+    disk = block.resolve()
+    if (disk / "partition").exists():
+        disk = disk.parent  # раздел -> весь диск
+    value = read_text(disk / "queue" / "rotational")
+    return value == "1" if value in ("0", "1") else None
+
+
 def kernel_dirty_messages() -> list[str] | None:
     """Строки журнала ядра о «грязных» NTFS-томах. None — журнал прочитать не удалось."""
     if not which("journalctl"):
@@ -129,6 +143,10 @@ def assess_library(lib: Path, mounts: list[Mount], dirty_log: list[str] | None) 
             findings.append((Status.UNKNOWN, t("disks.dirty_unknown")))
         elif any(dev in line for line in dirty_log):
             findings.append((Status.FAIL, t("disks.dirty_hint")))
+
+    # --- жёсткий диск ---
+    if is_rotational(mount.source):
+        findings.append((Status.WARN, t("disks.hdd_hint")))
 
     # --- свободное место ---
     try:

@@ -65,6 +65,10 @@ COMPONENTS: dict[str, dict[str, list[str]]] = {
     "gamemode": {f: ["gamemode"] for f in ("arch", "debian", "ubuntu", "fedora")},
     "mangohud": {f: ["mangohud"] for f in ("arch", "debian", "ubuntu", "fedora")},
     "gamescope": {f: ["gamescope"] for f in ("arch", "debian", "ubuntu", "fedora")},
+    "pipewire_pulse": {"arch": ["pipewire-pulse"], "debian": ["pipewire-pulse"],
+                       "ubuntu": ["pipewire-pulse"], "fedora": ["pipewire-pulseaudio"]},
+    # правила udev для геймпадов (сверено: packages.debian.org, mdapi.fedoraproject.org)
+    "steam_devices": {f: ["steam-devices"] for f in ("arch", "debian", "ubuntu", "fedora")},
     # 32-битные части утилит уверенно знаем только для Arch
     "lib32_gamemode": {"arch": ["lib32-gamemode"]},
     "lib32_mangohud": {"arch": ["lib32-mangohud"]},

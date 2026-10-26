@@ -70,4 +70,18 @@ def check_nofile(ctx: Context):
     return result(GROUP, "nofile", Status.OK, value=value)
 
 
-CHECKS = [check_governor, check_max_map_count, check_nofile]
+@check("split_lock")
+def check_split_lock(ctx: Context):
+    """С ядра 5.19 «split lock» замедляется намеренно — некоторые Windows-игры от этого подтормаживают."""
+    raw = read_text("/proc/sys/kernel/split_lock_mitigate")
+    if raw is None:
+        return []  # ядро или процессор этого не поддерживают — показывать нечего
+    if raw == "1":
+        return result(GROUP, "split_lock", Status.WARN, value=t("tuning.split_lock.on"),
+                      hint=t("tuning.split_lock.on_hint"),
+                      fix="echo 'kernel.split_lock_mitigate = 0' | sudo tee "
+                          "/etc/sysctl.d/99-splitlock.conf && sudo sysctl --system")
+    return result(GROUP, "split_lock", Status.OK, value=t("tuning.split_lock.off"))
+
+
+CHECKS = [check_governor, check_max_map_count, check_nofile, check_split_lock]

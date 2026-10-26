@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import re
 from pathlib import Path
 
@@ -199,4 +200,19 @@ def check_rebar(ctx: Context):
     return results
 
 
-CHECKS = [check_detect, check_driver, check_nvidia_version, check_mesa_version, check_rebar]
+@check("modeset")
+def check_modeset(ctx: Context):
+    """nvidia_drm.modeset=1 нужен для Wayland и нормальной работы композитора с NVIDIA."""
+    if not any(g.vendor == "nvidia" and g.driver == "nvidia" for g in ctx.gpus):
+        return []
+    value = read_text("/sys/module/nvidia_drm/parameters/modeset")
+    if value is None:
+        return result(GROUP, "modeset", Status.UNKNOWN, error=t("gpu.modeset.unreadable"))
+    if value.upper().startswith("Y"):
+        return result(GROUP, "modeset", Status.OK, value=t("gpu.modeset.on"))
+    wayland = os.environ.get("XDG_SESSION_TYPE") == "wayland"
+    return result(GROUP, "modeset", Status.FAIL if wayland else Status.WARN, value=t("gpu.modeset.off"),
+                  hint=t("gpu.modeset.off_hint", wiki=WIKI["nvidia"] + "#DRM_kernel_mode_setting"))
+
+
+CHECKS = [check_detect, check_driver, check_nvidia_version, check_modeset, check_mesa_version, check_rebar]
