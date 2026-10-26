@@ -7,9 +7,9 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from doctor import launchers
-from doctor.checks import disks, games
-from doctor.models import Status
+from gtux import launchers
+from gtux.checks import disks, games
+from gtux.models import Status
 
 
 class LauncherFixtures(unittest.TestCase):

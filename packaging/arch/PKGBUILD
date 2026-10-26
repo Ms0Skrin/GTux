@@ -1,8 +1,8 @@
 # Maintainer: Евгений <111508528+Ms0Skrin@users.noreply.github.com>
 # Сборка: scripts/build_arch_package.sh (делает архив исходников из git и запускает makepkg)
 
-pkgname=linux-gamer-doctor
-pkgver=0.4.0
+pkgname=gtux
+pkgver=0.5.0
 pkgrel=1
 pkgdesc="Checks a Linux system and explains in plain words what is missing for gaming"
 arch=('any')
@@ -16,6 +16,9 @@ optdepends=(
   'pciutils: readable GPU names (lspci)'
   'polkit: fix problems from the window (pkexec)'
 )
+# до 0.5.0 программа называлась linux-gamer-doctor: новый пакет заменяет старый
+conflicts=('linux-gamer-doctor')
+replaces=('linux-gamer-doctor')
 source=("$pkgname-$pkgver.tar.gz")
 sha256sums=('SKIP')  # архив собирается локально из git, а не скачивается
 
@@ -26,26 +29,26 @@ package() {
 
   # модули программы + данные (базы игр и античитов)
   install -d "$pkgdir$site"
-  cp -r doctor "$pkgdir$site/"
-  find "$pkgdir$site/doctor" -name '__pycache__' -prune -exec rm -rf {} +
-  python -m compileall -q -s "$pkgdir" "$pkgdir$site/doctor"
-  python -O -m compileall -q -s "$pkgdir" "$pkgdir$site/doctor"
+  cp -r gtux "$pkgdir$site/"
+  find "$pkgdir$site/gtux" -name '__pycache__' -prune -exec rm -rf {} +
+  python -m compileall -q -s "$pkgdir" "$pkgdir$site/gtux"
+  python -O -m compileall -q -s "$pkgdir" "$pkgdir$site/gtux"
 
-  # команда linux-gamer-doctor
-  install -Dm755 /dev/stdin "$pkgdir/usr/bin/linux-gamer-doctor" <<'SH'
+  # команда gtux
+  install -Dm755 /dev/stdin "$pkgdir/usr/bin/gtux" <<'SH'
 #!/bin/sh
-exec /usr/bin/python3 -m doctor "$@"
+exec /usr/bin/python3 -m gtux "$@"
 SH
 
   # ярлык в меню и иконка (имя совпадает с application id окна — так GNOME связывает окно с иконкой)
-  install -Dm644 data/io.github.lgdoctor.LinuxGamerDoctor.desktop \
-    "$pkgdir/usr/share/applications/io.github.lgdoctor.LinuxGamerDoctor.desktop"
-  install -Dm644 data/io.github.lgdoctor.LinuxGamerDoctor.svg \
-    "$pkgdir/usr/share/icons/hicolor/scalable/apps/io.github.lgdoctor.LinuxGamerDoctor.svg"
-  install -Dm644 data/io.github.lgdoctor.LinuxGamerDoctor-symbolic.svg \
-    "$pkgdir/usr/share/icons/hicolor/symbolic/apps/io.github.lgdoctor.LinuxGamerDoctor-symbolic.svg"
+  install -Dm644 data/io.github.gtux.GTux.desktop \
+    "$pkgdir/usr/share/applications/io.github.gtux.GTux.desktop"
+  install -Dm644 data/io.github.gtux.GTux.svg \
+    "$pkgdir/usr/share/icons/hicolor/scalable/apps/io.github.gtux.GTux.svg"
+  install -Dm644 data/io.github.gtux.GTux-symbolic.svg \
+    "$pkgdir/usr/share/icons/hicolor/symbolic/apps/io.github.gtux.GTux-symbolic.svg"
 
   install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
   install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-  install -Dm644 doctor/data/ANTICHEAT_LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/ANTICHEAT_LICENSE.txt"
+  install -Dm644 gtux/data/ANTICHEAT_LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/ANTICHEAT_LICENSE.txt"
 }

@@ -2,8 +2,8 @@ import io
 import json
 import unittest
 
-from doctor import knowledge
-from doctor.knowledge import Profile
+from gtux import knowledge
+from gtux.knowledge import Profile
 
 
 def report(appid, opts, gpu="NVIDIA GeForce RTX 3060 Ti", ts=10**10):

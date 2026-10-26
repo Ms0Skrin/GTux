@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=GTux
+GenericName=Gaming System Checker
+GenericName[ru]=Проверка системы для игр
+Comment=Checks your system and explains what is missing for gaming
+Comment[ru]=Проверяет систему и объясняет, чего не хватает для игр
+Exec=gtux --gui
+Icon=io.github.gtux.GTux
+Terminal=false
+Categories=Game;
+Keywords=steam;proton;vulkan;wine;gaming;driver;nvidia;amd;
+Keywords[ru]=steam;proton;vulkan;wine;игры;драйвер;видеокарта;
+StartupNotify=true

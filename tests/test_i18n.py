@@ -1,8 +1,8 @@
 import re
 import unittest
 
-from doctor import gamedb
-from doctor.i18n import en, ru
+from gtux import gamedb
+from gtux.i18n import en, ru
 
 PLACEHOLDER = re.compile(r"\{(\w+)\}")
 

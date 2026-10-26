@@ -3,9 +3,9 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from doctor import gamedb
-from doctor.checks import games
-from doctor.models import Status
+from gtux import gamedb
+from gtux.checks import games
+from gtux.models import Status
 
 
 def statuses(opts, **kw):

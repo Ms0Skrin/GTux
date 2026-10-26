@@ -5,8 +5,8 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from doctor.checks import disks
-from doctor.models import Status
+from gtux.checks import disks
+from gtux.models import Status
 
 
 class DiskScenarios(unittest.TestCase):

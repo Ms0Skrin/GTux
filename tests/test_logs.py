@@ -4,8 +4,8 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from doctor.checks import logs
-from doctor.models import Context, Status
+from gtux.checks import logs
+from gtux.models import Context, Status
 
 SAMPLE = """\
 0024:err:module:import_dll Library MSVCP140.dll (which is needed by L"Z:\\\\games\\\\game.exe") not found

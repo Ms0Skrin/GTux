@@ -3,10 +3,10 @@
 import unittest
 from unittest import mock
 
-from doctor import packages, pkgnames
-from doctor.checks import multilib
-from doctor.models import GPU, Context, Status
-from doctor.system import CmdResult
+from gtux import packages, pkgnames
+from gtux.checks import multilib
+from gtux.models import GPU, Context, Status
+from gtux.system import CmdResult
 
 
 def fake_run(installed: dict[str, str], foreign=""):

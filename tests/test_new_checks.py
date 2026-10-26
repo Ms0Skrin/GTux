@@ -2,9 +2,9 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from doctor.checks import gpu, hardware, steam, tuning
-from doctor.models import GPU, Context, Status
-from doctor.system import CmdResult
+from gtux.checks import gpu, hardware, steam, tuning
+from gtux.models import GPU, Context, Status
+from gtux.system import CmdResult
 
 
 class MemoryTest(unittest.TestCase):

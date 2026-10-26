@@ -1,8 +1,8 @@
 import unittest
 from pathlib import Path
 
-from doctor import packages, vdf
-from doctor.checks import disks, multilib, vulkan
+from gtux import packages, vdf
+from gtux.checks import disks, multilib, vulkan
 
 
 class VDFTest(unittest.TestCase):

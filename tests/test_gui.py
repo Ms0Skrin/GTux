@@ -3,7 +3,7 @@
 import unittest
 
 try:
-    from doctor.gui import app, style
+    from gtux.gui import app, style
 except (ImportError, ValueError):
     app = None
 
@@ -16,7 +16,7 @@ class GuiHelpersTest(unittest.TestCase):
         self.assertIn('<a href="https://www.protondb.com/app/1">', out)
 
     def test_worst(self):
-        from doctor.models import CheckResult, Status
+        from gtux.models import CheckResult, Status
         rs = [CheckResult("a", "g", "t", Status.OK), CheckResult("b", "g", "t", Status.WARN)]
         self.assertEqual(app.worst(rs), Status.WARN)
 

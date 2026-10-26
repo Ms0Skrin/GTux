@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from doctor import steamcfg
+from gtux import steamcfg
 
 CONFIG = '''"UserLocalConfigStore"
 {

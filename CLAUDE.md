@@ -17,19 +17,19 @@
   Новые зависимости — только после объяснения и согласия.
 - Проверки **только читают** систему. Изменения в системе — только `--fix` / кнопка «Исправить»
   и только после явного подтверждения пользователя. Никакого sudo без разрешения.
-- Все тексты интерфейса в `doctor/i18n/ru.py` и `en.py`. Ключи и плейсхолдеры должны совпадать,
-  это проверяет `tests/test_i18n.py`. Заметки об играх в `doctor/data/games.toml` пишутся
+- Все тексты интерфейса в `gtux/i18n/ru.py` и `en.py`. Ключи и плейсхолдеры должны совпадать,
+  это проверяет `tests/test_i18n.py`. Заметки об играх в `gtux/data/games.toml` пишутся
   с `sources` и на двух языках.
-- Новая проверка: функция с `@check("id")` в `doctor/checks/<группа>.py`, возвращает
+- Новая проверка: функция с `@check("id")` в `gtux/checks/<группа>.py`, возвращает
   `result(GROUP, "id", Status…, value=, hint=, fix=, packages=)`, добавляется в `CHECKS`.
-  Имена пакетов для разных дистрибутивов берутся через компоненты в `doctor/pkgnames.py`.
+  Имена пакетов для разных дистрибутивов берутся через компоненты в `gtux/pkgnames.py`.
 - Тесты: `python -m unittest discover -s tests -t .` (должны проходить перед коммитом).
 - Коммиты на русском, в конце строка `Co-Authored-By`.
 
 ## Окружение Евгения
 - CachyOS (Arch), GNOME на Wayland, NVIDIA RTX 3060 Ti (драйвер nvidia-open), Xeon E5-2696 v3
   на китайской плате X99, 32 ГБ ОЗУ + zram.
-- Проект лежит на NTFS-диске: `/mnt/crucial/linux-gamer-doctor`.
+- Проект лежит на NTFS-диске: `/mnt/crucial/gtux`.
 - Steam (пакет), библиотеки игр: `~/.local/share/Steam` и `/mnt/crucial/SteamLibrary` (NTFS,
   `compatdata` вынесен симлинком на `~/.steam-compatdata`). Ставит Heroic, Lutris, Faugus.
 - Окно не открывай на его экране, когда он играет. Снимки окна делай на невидимом дисплее:
@@ -37,7 +37,7 @@
 
 ## Полезные команды
 - `python main.py [--gui|--fix|--json|--report] [--lang en] [--debug] [--no-history]`
-- Демо окна со всеми статусами: `DOCTOR_GUI_DEMO=1 python main.py --gui`
+- Демо окна со всеми статусами: `GTUX_GUI_DEMO=1 python main.py --gui`
 - Пакет pacman: `scripts/build_arch_package.sh` → `dist/` (установка `sudo pacman -U …` — только с согласия)
 - Обновить снимок базы античитов: `python scripts/update_anticheat.py`
-- Журнал отладки: `~/.local/state/linux-gamer-doctor/doctor.log`
+- Журнал отладки: `~/.local/state/gtux/gtux.log`

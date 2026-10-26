@@ -4,9 +4,9 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from doctor import history, log as doctor_log
-from doctor.models import CheckResult, Status
-from doctor.output import report
+from gtux import history, log as gtux_log
+from gtux.models import CheckResult, Status
+from gtux.output import report
 
 
 def r(rid, status=Status.OK, value=""):
@@ -55,13 +55,13 @@ class ReportTest(unittest.TestCase):
 class LogTest(unittest.TestCase):
     def test_writes_file(self):
         d = tempfile.mkdtemp()
-        logger = logging.getLogger("doctor")
+        logger = logging.getLogger("gtux")
         saved = logger.handlers[:]
         logger.handlers.clear()
         try:
             with mock.patch.dict("os.environ", {"XDG_STATE_HOME": d}):
-                path = doctor_log.setup()
-                logging.getLogger("doctor.test").warning("проверка журнала")
+                path = gtux_log.setup()
+                logging.getLogger("gtux.test").warning("проверка журнала")
                 for h in logger.handlers:
                     h.flush()
                 self.assertIn("проверка журнала", path.read_text())

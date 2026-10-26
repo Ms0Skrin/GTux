@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Обновляет снимок базы AreWeAntiCheatYet (MIT) в doctor/data/anticheat.json.
+"""Обновляет снимок базы AreWeAntiCheatYet (MIT) в gtux/data/anticheat.json.
 
 Запускают разработчики перед релизом; самой программе интернет не нужен.
     python scripts/update_anticheat.py
@@ -13,11 +13,11 @@ from datetime import date
 from pathlib import Path
 
 URL = "https://raw.githubusercontent.com/AreWeAntiCheatYet/AreWeAntiCheatYet/HEAD/games.json"
-OUT = Path(__file__).resolve().parent.parent / "doctor" / "data" / "anticheat.json"
+OUT = Path(__file__).resolve().parent.parent / "gtux" / "data" / "anticheat.json"
 
 
 def normalize(name: str) -> str:
-    """Название для сравнения: без регистра, ™®© и знаков препинания. Дублируется в doctor/gamedb.py."""
+    """Название для сравнения: без регистра, ™®© и знаков препинания. Дублируется в gtux/gamedb.py."""
     return re.sub(r"[^\w]+", " ", re.sub(r"[™®©]", "", name.lower())).strip()
 
 

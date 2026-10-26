@@ -15,7 +15,7 @@
 | **Конструктор параметров запуска** | |
 | ![Параметры запуска](docs/screenshots/launch-options.png) | |
 
-На скриншотах с проблемами добавлены демо-данные (`DOCTOR_GUI_DEMO=1`), чтобы были видны все статусы.
+На скриншотах с проблемами добавлены демо-данные (`GTUX_GUI_DEMO=1`), чтобы были видны все статусы.
 
 **По умолчанию программа ничего не меняет в системе.** Она только читает. Если что-то нужно исправить,
 она показывает команду. С флагом `--fix` (или кнопкой «Исправить…» в окне) программа сама предложит
@@ -35,13 +35,15 @@
 **Arch / CachyOS / Manjaro**: собрать пакет pacman из исходников (sudo нужен только для установки):
 
 ```bash
-git clone <адрес репозитория> linux-gamer-doctor && cd linux-gamer-doctor
-scripts/build_arch_package.sh                      # -> dist/linux-gamer-doctor-<версия>-1-any.pkg.tar.zst
-sudo pacman -U dist/linux-gamer-doctor-*.pkg.tar.zst
-linux-gamer-doctor --gui
+git clone <адрес репозитория> gtux && cd gtux
+scripts/build_arch_package.sh                      # -> dist/gtux-<версия>-1-any.pkg.tar.zst
+sudo pacman -U dist/gtux-*.pkg.tar.zst
+gtux --gui
 ```
 
-Удаление: `sudo pacman -R linux-gamer-doctor`. История и журнал остаются в `~/.local/state/linux-gamer-doctor/`.
+Удаление: `sudo pacman -R gtux`. История и журнал остаются в `~/.local/state/gtux/`.
+До версии 0.5.0 программа называлась `linux-gamer-doctor`: пакет `gtux` заменяет старый, а папки с историей
+и базой знаний при первом запуске переезжают на новое место сами.
 
 **Другие дистрибутивы**: через [pipx](https://pipx.pypa.io/):
 
@@ -59,8 +61,8 @@ pipx install --system-site-packages .   # system-site-packages — чтобы о
 # Arch / CachyOS / Manjaro: rich обычно уже стоит, если нет:
 sudo pacman -S python-rich
 
-git clone <адрес репозитория> linux-gamer-doctor
-cd linux-gamer-doctor
+git clone <адрес репозитория> gtux
+cd gtux
 python main.py           # таблица в терминале
 python main.py --gui     # графическое окно
 python main.py --fix     # то же + предложить исправить автоматически
@@ -92,12 +94,12 @@ sudo dnf install libadwaita python3-gobject            # Fedora
 
 ### История, отчёт и журнал
 
-- **История.** Каждая проверка сохраняется в `~/.local/state/linux-gamer-doctor/history/`
+- **История.** Каждая проверка сохраняется в `~/.local/state/gtux/history/`
   (хранятся последние 30). В следующий раз программа покажет, **что изменилось**: новое ядро,
   драйвер, исправленные или новые проблемы. Флаг `--no-history` отключает сохранение.
 - **Отчёт для форума**: `--report` или кнопка с иконкой копирования в окне. Получается Markdown
   со сводкой системы и проблемами, домашняя папка в нём заменена на `~`.
-- **Отладочный журнал**: `~/.local/state/linux-gamer-doctor/doctor.log` (до 1 МБ, плюс 3 старые копии).
+- **Отладочный журнал**: `~/.local/state/gtux/gtux.log` (до 1 МБ, плюс 3 старые копии).
   В нём запуски, длительность каждой проверки, вызванные команды с кодами возврата и полные
   трассировки ошибок, в том числе из окна. **Если нашли баг, приложите этот файл.** Он есть только
   у вас на компьютере. В окне его можно открыть через меню ☰ → «Открыть журнал».
@@ -119,7 +121,7 @@ sudo dnf install libadwaita python3-gobject            # Fedora
 - кнопка **«Записать в Steam»** меняет параметры игры в `userdata/<id>/config/localconfig.vdf`.
   Steam при этом должен быть закрыт: он держит настройки в памяти и при выходе перезаписал бы файл.
   Меняется только строка `LaunchOptions` этой игры. Копия файла сохраняется в
-  `~/.local/state/linux-gamer-doctor/backups/`, а **«Вернуть как было»** возвращает прежние параметры.
+  `~/.local/state/gtux/backups/`, а **«Вернуть как было»** возвращает прежние параметры.
 - Строки с командами оболочки (`bash -c`, `;`, `|`, `$(...)`) и неизвестными программами программа
   не меняет: их нужно править вручную.
 
@@ -145,7 +147,7 @@ sudo dnf install libadwaita python3-gobject            # Fedora
 из почти равных выбирается самая простая (Linux-версия, затем официальный Proton). proton-cachyos
 в ProtonDB отдельно не учитывается — программа так и пишет. Это статистика, а не гарантия.
 
-Результат лежит в `~/.cache/linux-gamer-doctor/knowledge.json`, проверки читают только его.
+Результат лежит в `~/.cache/gtux/knowledge.json`, проверки читают только его.
 Данные отчётов: ProtonDB, лицензия [ODbL](https://opendatacommons.org/licenses/odbl/).
 
 ### Исправление одной кнопкой (`--fix` или «Исправить…» в окне)
@@ -209,7 +211,7 @@ Proton создаёт для каждой игры «префикс» (`steamapp
 
 На Arch программа проверена на живой системе. На Debian, Ubuntu и Fedora проверены тесты
 с имитацией `dpkg-query` и `rpm`, а имена пакетов сверены с документацией
-(источники перечислены в `doctor/pkgnames.py`). Если что-то не совпадает с вашей системой, присылайте issue.
+(источники перечислены в `gtux/pkgnames.py`). Если что-то не совпадает с вашей системой, присылайте issue.
 Где мы не уверены в имени пакета, мы молчим и не советуем: например, 32-битные части gamemode
 и MangoHud проверяем только на Arch.
 
@@ -237,7 +239,7 @@ Proton создаёт для каждой игры «префикс» (`steamapp
 
 ```
 main.py                 точка входа, флаги
-doctor/
+gtux/
   models.py             CheckResult, Status, Context (общие факты между группами)
   runner.py             запуск проверок; упавшая проверка становится «НЕ ПРОВЕРЕНО»
   system.py             запуск команд с таймаутом, чтение файлов
@@ -257,6 +259,7 @@ doctor/
   launchopts.py         конструктор параметров запуска, разбор и слияние строк
   history.py            история проверок и «что изменилось»
   log.py                отладочный журнал
+  paths.py              папки программы (XDG), переезд со старого имени linux-gamer-doctor
   gui/                  окно: app.py (libadwaita), style.py (пастельная тема), demo.py
   i18n/en.py            английские тексты (тест следит, что ключи совпадают с ru.py)
 tests/                  unittest
@@ -276,7 +279,7 @@ scripts/gui_screenshots.sh
 python scripts/update_anticheat.py
 ```
 
-**Добавить заметку об игре.** Допишите в `doctor/data/games.toml` раздел `[games.<appid>]`.
+**Добавить заметку об игре.** Допишите в `gtux/data/games.toml` раздел `[games.<appid>]`.
 Без ссылки на источник в `sources` тест не пройдёт: в базу попадает только то, что подтверждено.
 
 Тесты:
@@ -286,11 +289,11 @@ python -m unittest discover -s tests -t .
 ```
 
 **Добавить проверку.** Напишите функцию с декоратором `@check("id")` в нужном
-`doctor/checks/<группа>.py`, верните `result(GROUP, "id", Status.…, value=…, hint=…, fix=…)`
-и добавьте её в `CHECKS`. Тексты кладите в `doctor/i18n/ru.py` с ключом `<группа>.<id>.title` и т.п.
+`gtux/checks/<группа>.py`, верните `result(GROUP, "id", Status.…, value=…, hint=…, fix=…)`
+и добавьте её в `CHECKS`. Тексты кладите в `gtux/i18n/ru.py` с ключом `<группа>.<id>.title` и т.п.
 
-**Добавить язык.** Скопируйте `doctor/i18n/ru.py` в `en.py`, переведите значения и добавьте `"en"`
-в `AVAILABLE` в `doctor/i18n/__init__.py`. Язык выбирается флагом `--lang`.
+**Добавить язык.** Скопируйте `gtux/i18n/ru.py` в `en.py`, переведите значения и добавьте `"en"`
+в `AVAILABLE` в `gtux/i18n/__init__.py`. Язык выбирается флагом `--lang`.
 
 Правила проекта: только стандартная библиотека и `rich`; проверки только читают систему;
 ошибки не прячем, а показываем.
@@ -306,9 +309,9 @@ python -m unittest discover -s tests -t .
 [GNU GPL v3.0 или более поздняя](LICENSE) (GPL-3.0-or-later): программой можно пользоваться,
 изменять и распространять её, но изменённые версии тоже должны выходить под GPL с исходным кодом.
 
-Снимок базы `doctor/data/anticheat.json` взят из проекта
+Снимок базы `gtux/data/anticheat.json` взят из проекта
 [AreWeAntiCheatYet](https://github.com/AreWeAntiCheatYet/AreWeAntiCheatYet) и распространяется
-по лицензии MIT (см. `doctor/data/ANTICHEAT_LICENSE.txt`). Она совместима с GPL.
+по лицензии MIT (см. `gtux/data/ANTICHEAT_LICENSE.txt`). Она совместима с GPL.
 
-База знаний (`~/.cache/linux-gamer-doctor/knowledge.json`) строится на вашем компьютере из отчётов
+База знаний (`~/.cache/gtux/knowledge.json`) строится на вашем компьютере из отчётов
 ProtonDB, которые распространяются по лицензии Open Database License (ODbL); программа её не распространяет.

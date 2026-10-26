@@ -3,13 +3,13 @@ requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "linux-gamer-doctor"
+name = "gtux"
 dynamic = ["version"]
 description = "Checks a Linux system and explains in plain words what is missing for gaming"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "GPL-3.0-or-later"
-license-files = ["LICENSE", "doctor/data/ANTICHEAT_LICENSE.txt"]
+license-files = ["LICENSE", "gtux/data/ANTICHEAT_LICENSE.txt"]
 authors = [{ name = "Евгений" }]
 dependencies = ["rich"]
 classifiers = [
@@ -26,13 +26,13 @@ classifiers = [
 gui = ["PyGObject"]
 
 [project.scripts]
-linux-gamer-doctor = "doctor.cli:main"
+gtux = "gtux.cli:main"
 
 [tool.setuptools.dynamic]
-version = { attr = "doctor.__version__" }
+version = { attr = "gtux.__version__" }
 
 [tool.setuptools.packages.find]
-include = ["doctor*"]
+include = ["gtux*"]
 
 [tool.setuptools.package-data]
-doctor = ["data/*.json", "data/*.toml", "data/*.txt"]
+gtux = ["data/*.json", "data/*.toml", "data/*.txt"]

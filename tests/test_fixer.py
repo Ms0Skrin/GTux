@@ -1,7 +1,7 @@
 import unittest
 
-from doctor import fixer, packages
-from doctor.models import Action, CheckResult, Context, Status
+from gtux import fixer, packages
+from gtux.models import Action, CheckResult, Context, Status
 
 
 def r(status, pkgs):
