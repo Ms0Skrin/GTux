@@ -206,3 +206,13 @@ python -m unittest discover -s tests -t .
 - Telegram-бот на домашнем сервере
 - расширение базы игр
 - ярлык в меню приложений (.desktop) и пакет для AUR
+
+## Лицензия
+
+[GNU GPL v3.0 или более поздняя](LICENSE) (GPL-3.0-or-later): программой можно пользоваться,
+изменять и распространять её, но изменённые версии тоже должны выходить под GPL с исходным кодом.
+
+Снимок базы `doctor/data/anticheat.json` взят из проекта
+[AreWeAntiCheatYet](https://github.com/AreWeAntiCheatYet/AreWeAntiCheatYet) и распространяется
+по лицензии MIT (см. `doctor/data/ANTICHEAT_LICENSE.txt`). Она совместима с GPL.
+
