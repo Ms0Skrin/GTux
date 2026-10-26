@@ -7,7 +7,7 @@ import os
 
 from gi.repository import Adw, Gdk, Gtk
 
-from gtux import knowledge, steamcfg
+from gtux import gamedb, knowledge, steamcfg
 from gtux.checks.games import analyze_launch_options
 from gtux.gamedb import SteamSettings
 from gtux.i18n import t
@@ -20,6 +20,14 @@ PROTON = ["dxvk_hud", "proton_log", "no_fsync", "no_esync", "wined3d"]
 PRESELECT_SHARE = 0.25  # советы, которые встречаются хотя бы в четверти отчётов, включаем сразу
 # Обе включают режим производительности: сразу включаем только одну, ту, что популярнее у игроков.
 PERF_WRAPPERS = {"gamemoderun", "game-performance"}
+
+
+def tool_title(name: str) -> str:
+    """proton_11 → Proton 11, proton_experimental → Proton Experimental; сторонние сборки — как есть."""
+    if name.startswith("proton_"):
+        rest = name.removeprefix("proton_")
+        return "Proton " + (rest.capitalize() if not rest.isdigit() else rest)
+    return name
 
 
 def monitor_size() -> tuple[int, int]:
@@ -36,7 +44,8 @@ def monitor_size() -> tuple[int, int]:
 class LaunchOptionsPage(Adw.PreferencesPage):
     def __init__(self, copy_func, toast_func=None, games: list[SteamSettings] | None = None,
                  profile: knowledge.Profile | None = None, update_kb=None,
-                 protons: dict[str, list[str]] | None = None):
+                 protons: dict[str, list[str]] | None = None, internal: dict[str, str] | None = None,
+                 latest_official: str | None = None):
         super().__init__()
         self.copy_func = copy_func
         self.toast = toast_func or (lambda text: None)
@@ -44,6 +53,8 @@ class LaunchOptionsPage(Adw.PreferencesPage):
         self.profile = profile
         self.update_kb = update_kb
         self.protons = protons or {}   # установленные сборки: knowledge.installed_variants
+        self.internal = internal or {}  # их внутренние имена для config.vdf
+        self.latest_official = latest_official  # самый новый официальный Proton, который знает Steam
         self.cfg = LaunchConfig()
         self.switches: dict[str, Adw.SwitchRow] = {}
         self.kept: list[tuple[Adw.SwitchRow, Parsed]] = []   # что оставить из текущих параметров
@@ -305,32 +316,80 @@ class LaunchOptionsPage(Adw.PreferencesPage):
             self._rec_row(t("rec.few"), t("rec.few.sub", min=knowledge.MIN_REPORTS), "dialog-information-symbolic")
         else:
             adv = knowledge.advise(pick, s.tool, self.protons, s.native)
+            name = knowledge.steam_tool_name(pick, adv, self.internal, self.latest_official)
+            can_write = not adv.matches and name is not False and s.compat_config is not None
             sub = [t("rec.stat", works=best.works, total=best.reports, who=who)]
             if pick.close:
                 sub.append(t("rec.close"))
             if adv.matches:
                 sub.append(t("rec.current_ok"))
-            elif best.variant == "native":
-                sub.append(t("rec.how_native"))
             else:
-                if adv.use:
-                    sub.append(t("rec.use", name=adv.use))
-                if adv.missing:
-                    sub.append(t("rec.missing.ge") if best.variant == "ge" else t("rec.missing.valve"))
                 now = t("rec.variant.native") if adv.current == "native" else (s.tool or "—")
                 sub.append(t("rec.current", tool=now))
                 if adv.current == "cachyos":
                     sub.append(t("rec.cachyos"))
-                sub.append(t("rec.how"))
+                if can_write:
+                    sub.append(t("rec.will_write", name=tool_title(name)) if name else t("rec.will_write_native"))
+                    if adv.missing and best.variant != "ge":
+                        sub.append(t("rec.missing.valve"))
+                elif best.variant == "native":
+                    sub.append(t("rec.how_native"))
+                else:
+                    if adv.use:
+                        sub.append(t("rec.use", name=adv.use))
+                    if adv.missing:
+                        sub.append(t("rec.missing.ge") if best.variant == "ge" else t("rec.missing.valve"))
+                    sub.append(t("rec.how"))
             if pick.versions:
                 sub.append(t("rec.versions", versions=", ".join(pick.versions)))
             icon_name = "object-select-symbolic" if adv.matches else "software-update-available-symbolic"
-            self._rec_row(t("rec.proton", name=t(f"rec.variant.{best.variant}")), "\n".join(sub), icon_name)
+            row = self._rec_row(t("rec.proton", name=t(f"rec.variant.{best.variant}")), "\n".join(sub), icon_name)
+            if can_write:
+                self._suffix(row, t("rec.write"), lambda: self._write_tool(s, name), suggested=True)
+            last = steamcfg.last_change(s.game.appid, kind="compat")
+            if last and not last.get("undo") and last.get("new") == self._forced(s):
+                self._suffix(row, t("gui.launch.undo"), lambda: self._write_tool(s, last.get("old"), undo=True))
         others = [st for st in pick.stats if st is not best]
         if others:
             self._rec_row(t("rec.others"), " · ".join(
                 t("rec.others.item", name=t(f"rec.variant.{st.variant}"), works=st.works, total=st.reports)
                 for st in others), "view-list-symbolic")
+
+    @staticmethod
+    def _suffix(row: Adw.ActionRow, text: str, callback, suggested: bool = False):
+        btn = Gtk.Button(label=text, valign=Gtk.Align.CENTER)
+        btn.add_css_class("pill")
+        if suggested:
+            btn.add_css_class("suggested-action")
+        btn.connect("clicked", lambda *_: callback())
+        row.add_suffix(btn)
+
+    @staticmethod
+    def _forced(s: SteamSettings) -> str | None:
+        """Сборка, выбранная для игры вручную (как записано в config.vdf), без учёта «по умолчанию»."""
+        if s.compat_config is None:
+            return None
+        try:
+            return steamcfg.read_compat_tool(s.compat_config.read_text(), s.game.appid)
+        except (OSError, ValueError):
+            return None
+
+    def _write_tool(self, s: SteamSettings, name: str | None, undo: bool = False):
+        try:
+            steamcfg.write_compat(s.compat_config, s.game.appid, name, undo=undo)
+        except steamcfg.SteamConfigError as e:
+            msg = t("gui.launch.steam_running") if str(e) == "steam_running" else t("gui.launch.write_failed", error=e)
+            self.warnings.set_text(msg)
+            self.warnings.set_visible(True)
+            self.toast(msg)
+            return
+        mapping = gamedb.compat_mapping(s.compat_config.parent.parent)
+        s.tool, s.native = gamedb.tool_for(mapping, s.game.appid)
+        if undo:
+            self.toast(t("gui.launch.undone"))
+        else:
+            self.toast(t("rec.written", game=s.game.name, name=name) if name else t("rec.written_native", game=s.game.name))
+        self._on_game()
 
     def _update_rec_opts(self):
         if self.rec_opts is None:

@@ -73,3 +73,57 @@ class EditTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+COMPAT = '''"InstallConfigStore"
+{
+\t"Software"
+\t{
+\t\t"Valve"
+\t\t{
+\t\t\t"Steam"
+\t\t\t{
+\t\t\t\t"CompatToolMapping"
+\t\t\t\t{
+\t\t\t\t\t"0"
+\t\t\t\t\t{
+\t\t\t\t\t\t"name"\t\t"proton-cachyos-slr"
+\t\t\t\t\t\t"config"\t\t""
+\t\t\t\t\t\t"priority"\t\t"75"
+\t\t\t\t\t}
+\t\t\t\t}
+\t\t\t\t"Tools"
+\t\t\t\t{
+\t\t\t\t}
+\t\t\t}
+\t\t}
+\t}
+}
+'''
+
+
+class CompatTest(unittest.TestCase):
+    def test_add_replace_remove_byte_exact(self):
+        t1 = steamcfg.set_compat_tool(COMPAT, "1771300", "proton_11")
+        self.assertEqual(steamcfg.read_compat_tool(t1, "1771300"), "proton_11")
+        self.assertIn('\t\t\t\t\t\t"priority"\t\t"250"\n', t1)
+        self.assertEqual(steamcfg.read_compat_tool(t1, "0"), "proton-cachyos-slr")  # «по умолчанию» не тронут
+        t2 = steamcfg.set_compat_tool(t1, "1771300", "GE-Proton11-11")
+        self.assertEqual(steamcfg.read_compat_tool(t2, "1771300"), "GE-Proton11-11")
+        self.assertEqual(steamcfg.set_compat_tool(t2, "1771300", None), COMPAT)
+        self.assertEqual(steamcfg.set_compat_tool(COMPAT, "5", None), COMPAT)
+
+    def test_write_with_backup_journal_and_undo(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            config = Path(tmp) / "config.vdf"
+            config.write_text(COMPAT)
+            backups = Path(tmp) / "backups"
+            old = steamcfg.write_compat(config, "1771300", "proton_11", directory=backups, check_running=False)
+            self.assertIsNone(old)
+            self.assertEqual(steamcfg.read_compat_tool(config.read_text(), "1771300"), "proton_11")
+            last = steamcfg.last_change("1771300", backups, kind="compat")
+            self.assertEqual((last["old"], last["new"]), (None, "proton_11"))
+            self.assertIsNone(steamcfg.last_change("1771300", backups))  # параметры запуска не путаются со сборкой
+            self.assertEqual(Path(last["backup"]).read_text(), COMPAT)
+            steamcfg.write_compat(config, "1771300", last["old"], directory=backups, check_running=False, undo=True)
+            self.assertEqual(config.read_text(), COMPAT)

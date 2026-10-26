@@ -586,3 +586,44 @@ def advise(pick: ProtonPick, tool: str | None, installed: dict[str, list[str]], 
         adv.missing = True
         adv.use = pick.versions[0] if pick.versions else None
     return adv
+
+
+# ---------------- имя сборки для Steam (config.vdf → CompatToolMapping) ----------------
+
+def official_internal(version: str) -> str | None:
+    """«Proton 10.0» / «10.0-4» → proton_10, «6.3» → proton_63, «Experimental» → proton_experimental.
+    Так Steam называет свои сборки (сверено по appcache/appinfo.vdf: proton_9, proton_10, proton_63, proton_513)."""
+    low = version.lower()
+    for word in ("experimental", "hotfix"):
+        if word in low:
+            return f"proton_{word}"
+    m = re.search(r"(\d+)\.(\d+)", version)
+    if not m:
+        return None
+    return f"proton_{m[1]}" if m[2] == "0" else f"proton_{m[1]}{m[2]}"
+
+
+def latest_official(appinfo: bytes) -> str | None:
+    """Самый новый официальный Proton, который знает Steam (из appcache/appinfo.vdf).
+    Новые сборки называются proton_<мажор> начиная с 7; двузначные proton_37/42/63 — старые 3.7/4.2/6.3."""
+    majors = {int(m) for m in re.findall(rb"proton_(\d{1,2})\x00", appinfo) if 7 <= int(m) < 30}
+    return f"proton_{max(majors)}" if majors else None
+
+
+def steam_tool_name(pick: ProtonPick, adv: Advice, internal: dict[str, str], latest: str | None):
+    """Что записать в Steam для рекомендации: внутреннее имя сборки, None — убрать выбор (Linux-версия),
+    False — записать нельзя (нет данных или сборка не установлена и Steam сам её не скачает)."""
+    best = pick.best
+    if best is None:
+        return False
+    if best.variant == "native":
+        return None
+    if best.variant == "experimental":
+        return "proton_experimental"
+    if best.variant == "official":
+        return latest or (official_internal(adv.use) if adv.use else False)
+    if best.variant == "older":
+        return official_internal(adv.use) if adv.use else False
+    if adv.use and adv.use in internal:  # GE-Proton: только установленная, её имя из compatibilitytool.vdf
+        return internal[adv.use]
+    return False

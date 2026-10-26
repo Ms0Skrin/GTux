@@ -81,20 +81,28 @@ class SteamSettings:
     options: str            # текущие параметры запуска
     tool: str | None        # сборка Proton, выбранная для игры (или по умолчанию)
     native: bool = False    # Linux-версия без сборки, выбранной вручную: сборка по умолчанию к ней не применяется
+    compat_config: Path | None = None  # config/config.vdf, куда писать выбранную сборку Proton
+
+
+def tool_for(mapping: dict[str, str], appid: str) -> tuple[str | None, bool]:
+    """(сборка, Linux-версия): выбранная для игры, иначе по умолчанию — кроме Linux-версий."""
+    forced = mapping.get(appid)
+    native = not forced and is_native(appid)
+    return forced or (None if native else mapping.get("0")), native
 
 
 def steam_settings(roots: list[Path], libraries: list[Path]) -> list[SteamSettings]:
-    mapping, options, config = {}, {}, None
+    mapping, options, config, compat = {}, {}, None, None
     for root in roots:
         mapping.update(compat_mapping(root))
         options.update(launch_options(root))
         config = config or steamcfg.localconfig_path(root)
+        if compat is None and (root / "config" / "config.vdf").is_file():
+            compat = root / "config" / "config.vdf"
     result = []
     for g in installed_games([lib for lib in libraries if lib.exists()]):
-        forced = mapping.get(g.appid)
-        native = not forced and is_native(g.appid)
-        tool = forced or (None if native else mapping.get("0"))
-        result.append(SteamSettings(g, config, options.get(g.appid, ""), tool, native))
+        tool, native = tool_for(mapping, g.appid)
+        result.append(SteamSettings(g, config, options.get(g.appid, ""), tool, native, compat))
     return result
 
 

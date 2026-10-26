@@ -74,6 +74,24 @@ def installed_variants(ctx: Context) -> dict[str, list[str]]:
     return split(names, [tool.name for tool in custom_tools(_compat_dirs(ctx))])
 
 
+def internal_names(ctx: Context) -> dict[str, str]:
+    """{отображаемое имя сборки: внутреннее имя для config.vdf}."""
+    return {tool.name: tool.internal[0] for tool in custom_tools(_compat_dirs(ctx)) if tool.internal}
+
+
+def latest_official(ctx: Context) -> str | None:
+    """Самый новый официальный Proton, который знает Steam (Steam скачивает его сам при запуске игры)."""
+    from gtux.knowledge import latest_official as from_appinfo
+    for _, root in ctx.steam_roots:
+        try:
+            found = from_appinfo((root / "appcache" / "appinfo.vdf").read_bytes())
+        except OSError:
+            continue
+        if found:
+            return found
+    return None
+
+
 def _compat_dirs(ctx: Context) -> list[Path]:
     dirs = [root / "compatibilitytools.d" for _, root in ctx.steam_roots]
     return dirs + SYSTEM_COMPAT_DIRS

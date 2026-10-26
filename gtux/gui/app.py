@@ -225,6 +225,8 @@ class DoctorWindow(Adw.ApplicationWindow):
             self.steam_games = gamedb.steam_settings([root for _, root in ctx.steam_roots], ctx.steam_libraries)
             self.profile = knowledge.profile_from(ctx)
             self.protons = proton_checks.installed_variants(ctx)
+            self.internal_tools = proton_checks.internal_names(ctx)
+            self.latest_official = proton_checks.latest_official(ctx)
             # в демо и при снимках экрана сравнивать с настоящей историей бессмысленно
             fake = os.environ.get("GTUX_GUI_DEMO") or os.environ.get("GTUX_GUI_SNAPSHOT")
             previous = None if fake else history.load_latest()
@@ -268,7 +270,8 @@ class DoctorWindow(Adw.ApplicationWindow):
         for g in self.groups:
             self.stack.add_named(self._group_page(g), f"group:{g}")
         self.launch_page = LaunchOptionsPage(self._copy, lambda text: self.toasts.add_toast(Adw.Toast.new(text)),
-                                             self.steam_games, self.profile, self.open_kb_dialog, self.protons)
+                                             self.steam_games, self.profile, self.open_kb_dialog, self.protons,
+                                             self.internal_tools, self.latest_official)
         self.stack.add_named(self.launch_page, "tool:launch")
         self._fill_sidebar()
         self.fix_btn.set_visible(bool(plan.steps or plan.offers))

@@ -1,6 +1,6 @@
 # План и состояние проекта
 
-Обновляется в конце каждой рабочей сессии. Последнее обновление: **2026-10-26**, версия **0.6.0**. Название приложения — **GTux**.
+Обновляется в конце каждой рабочей сессии. Последнее обновление: **2026-10-26**, версия **0.7.0**. Название приложения — **GTux**.
 
 ## Сделано
 
@@ -44,6 +44,11 @@
 затем `pacman -Syu` и пропущенные lib32-пакеты), `pacman -Syu` при рассинхроне NVIDIA 64/32,
 `protontricks <appid> -q <пакеты>` для недостающих DLL из логов. Параметры ядра (modeset) — только вручную.
 
+**«Выбрать в Steam»** (0.7.0): рекомендованная сборка пишется в `config/config.vdf` → `CompatToolMapping` (блок игры,
+`priority` 250, как пишет сам Steam; сверено по config.vdf Евгения), только при закрытом Steam, копия + журнал (`kind: compat`),
+«Вернуть как было». Имена: официальный — самый новый `proton_<N>` из `appcache/appinfo.vdf` (Steam скачает сам),
+Experimental — `proton_experimental`, GE — внутреннее имя установленной сборки, Linux-версия — ручной выбор убирается.
+
 **Переименование в GTux** (0.5.0): Python-пакет `gtux`, команда `gtux`, application id `io.github.Ms0Skrin.GTux` (по аккаунту GitHub),
 пакет pacman `gtux` (заменяет `linux-gamer-doctor`: conflicts/replaces), папки `~/.cache|.local/state|.config/gtux`
 (`gtux/paths.py` один раз переносит старые `linux-gamer-doctor`), журнал `gtux.log`, переменные `GTUX_GUI_*`.
@@ -59,13 +64,11 @@ GTK4/libadwaita/PyGObject — обязательные зависимости п
 
 **Прочее**: история проверок и diff, отладочный журнал
 с ротацией, английский перевод, лицензия GPL-3.0-or-later, пакет pacman (`scripts/build_arch_package.sh`),
-`pyproject.toml` для pipx, ярлык в меню, иконки GTux (цветная и symbolic), пакет 0.6.0-1 собран, GitHub Actions с тестами (`.github/workflows/tests.yml`, Python 3.11–3.14), строка статуса Claude Code в `~/.claude/statusline.py`
+`pyproject.toml` для pipx, ярлык в меню, иконки GTux (цветная и symbolic), пакет 0.7.0-1 собран, GitHub Actions с тестами (`.github/workflows/tests.yml`, Python 3.11–3.14), строка статуса Claude Code в `~/.claude/statusline.py`
 (лимиты 5ч/неделя Claude Code присылает устаревшими — помечаем «лимиты от …»).
 
 ## Дальше (по приоритету)
 
-1. **Записывать выбранную сборку Proton в Steam** (CompatToolMapping в config.vdf, как с параметрами:
-   только при закрытом Steam, копия и откат).
 3. **Проверить на настоящих Debian/Ubuntu/Fedora** (например, distrobox — сначала спросить про установку).
 4. **AUR**: пакет `gtux` (GitHub готов: https://github.com/Ms0Skrin/GTux, Actions зелёные на Python 3.11–3.14).
 5. Кнопка «Обновить базу античитов» в окне (по желанию пользователя, с интернетом).
@@ -73,6 +76,7 @@ GTK4/libadwaita/PyGObject — обязательные зависимости п
 7. Telegram-бот на домашнем сервере поверх `--json` (решить: проверяет сервер или принимает отчёты).
 
 ## Известные ограничения
+- «Выбрать в Steam» проверена тестами и на копии настоящего config.vdf; вживую при закрытом Steam ещё не нажималась.
 - Запись в Steam проверена тестами и на копии настоящего localconfig.vdf; при закрытом Steam вживую
   ещё не запускалась (Steam был открыт). Используется только первый найденный Steam (обычный или Flatpak).
 - Разбор выгрузки ProtonDB занимает 1–2 минуты процессора (390 тыс. отчётов, потоково, ~50 МБ памяти).

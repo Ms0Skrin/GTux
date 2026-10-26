@@ -2,7 +2,7 @@
 # Сборка: scripts/build_arch_package.sh (делает архив исходников из git и запускает makepkg)
 
 pkgname=gtux
-pkgver=0.6.0
+pkgver=0.7.0
 pkgrel=1
 pkgdesc="Checks a Linux system and explains in plain words what is missing for gaming"
 url='https://github.com/Ms0Skrin/GTux'

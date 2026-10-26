@@ -177,3 +177,28 @@ class ProtonPickTest(unittest.TestCase):
         native = knowledge.proton_for("1", self.NV, self.summarize([proton_report("1", "native")] * 5))
         self.assertTrue(knowledge.advise(native, None, installed, native=True).matches)
         self.assertEqual(knowledge.advise(pick, None, installed, native=True).current, "native")
+
+
+class SteamToolNameTest(unittest.TestCase):
+    def test_names(self):
+        self.assertEqual(knowledge.official_internal("Proton 10.0"), "proton_10")
+        self.assertEqual(knowledge.official_internal("6.3-8"), "proton_63")
+        self.assertEqual(knowledge.official_internal("Proton - Experimental"), "proton_experimental")
+        blob = b"\x00proton_63\x00x\x00proton_9\x00proton_11\x00proton_10\x00proton_513\x00"
+        self.assertEqual(knowledge.latest_official(blob), "proton_11")  # 63 и 513 — старые 6.3 и 5.13
+        self.assertIsNone(knowledge.latest_official(b"nothing"))
+
+    def test_what_to_write(self):
+        def pick(variant):
+            st = knowledge.ProtonStat(variant, 10, 10)
+            return knowledge.ProtonPick(st, [st], True, [])
+        installed = {"ge": ["GE-Proton11-9"]}
+        internal = {"GE-Proton11-9": "GE-Proton11-9-x86_64"}
+        ge = pick("ge")
+        self.assertEqual(knowledge.steam_tool_name(ge, knowledge.advise(ge, None, installed), internal, None),
+                         "GE-Proton11-9-x86_64")
+        self.assertIs(knowledge.steam_tool_name(ge, knowledge.advise(ge, None, {}), internal, None), False)
+        off = pick("official")
+        self.assertEqual(knowledge.steam_tool_name(off, knowledge.advise(off, None, {}), {}, "proton_11"), "proton_11")
+        nat = pick("native")
+        self.assertIsNone(knowledge.steam_tool_name(nat, knowledge.advise(nat, "proton_10", {}), {}, None))

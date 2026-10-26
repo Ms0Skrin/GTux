@@ -1,9 +1,11 @@
-"""Запись параметров запуска в Steam (userdata/<id>/config/localconfig.vdf).
+"""Запись в Steam: параметры запуска (userdata/<id>/config/localconfig.vdf) и сборка Proton для игры
+(config/config.vdf, раздел CompatToolMapping).
 
 Это единственное место, где программа меняет файлы Steam, и только по кнопке пользователя.
 Правила:
   - Steam должен быть закрыт: он держит настройки в памяти и при выходе перезапишет файл;
-  - файл правится «точечно»: меняется одна строка LaunchOptions, остальное остаётся байт в байт;
+  - файл правится «точечно»: меняется одна строка LaunchOptions или один блок игры в CompatToolMapping,
+    остальное остаётся байт в байт;
   - перед записью сохраняется копия файла, а в журнал — старое значение, чтобы можно было откатить.
 """
 
@@ -24,6 +26,9 @@ from gtux import paths, vdf
 log = logging.getLogger("gtux.steamcfg")
 
 APPS_PATH = ("userlocalconfigstore", "software", "valve", "steam", "apps")
+COMPAT_PATH = ("installconfigstore", "software", "valve", "steam", "compattoolmapping")
+# Так Steam записывает сборку, выбранную в свойствах игры (у сборки «для всех игр», ключ "0", — 75).
+GAME_PRIORITY = "250"
 MAX_BACKUPS = 20
 
 
@@ -127,6 +132,50 @@ def set_launch_options(text: str, appid: str, value: str | None) -> str:
     return text[:pos] + block + text[pos:]
 
 
+def set_compat_tool(text: str, appid: str, name: str | None) -> str:
+    """Новый текст config.vdf: у игры appid сборка name (None — убрать выбор, игра пойдёт как по умолчанию)."""
+    lay = _layout(text)
+    app = (*COMPAT_PATH, appid)
+    if app in lay.blocks:
+        open_, close = lay.blocks[app]
+        if name is None:  # убираем весь блок игры: строку ключа, «{», содержимое, «}»
+            key = text.rfind(f'"{appid}"', 0, open_)
+            if key == -1:
+                raise SteamConfigError("не найден ключ игры в CompatToolMapping")
+            key_start = _line_start(text, key)
+            nl = text.find("\n", close)
+            return text[:key_start] + text[nl + 1 if nl != -1 else len(text):]
+        for key, value in (("name", name), ("priority", GAME_PRIORITY)):
+            if (*app, key) in lay.values:
+                start, end = lay.values[(*app, key)]
+                text = text[:start] + _quote(value) + text[end:]
+                lay = _layout(text)
+            else:
+                close = lay.blocks[app][1]
+                pos = _line_start(text, close)
+                text = text[:pos] + f'{_indent(text, close)}\t"{key}"\t\t{_quote(value)}\n' + text[pos:]
+                lay = _layout(text)
+        return text
+    if name is None:
+        return text
+    if COMPAT_PATH not in lay.blocks:
+        raise SteamConfigError("в config.vdf нет раздела CompatToolMapping")
+    close = lay.blocks[COMPAT_PATH][1]
+    ind = _indent(text, close) + "\t"
+    pos = _line_start(text, close)
+    block = (f'{ind}"{appid}"\n{ind}{{\n{ind}\t"name"\t\t{_quote(name)}\n{ind}\t"config"\t\t""\n'
+             f'{ind}\t"priority"\t\t"{GAME_PRIORITY}"\n{ind}}}\n')
+    return text[:pos] + block + text[pos:]
+
+
+def read_compat_tool(text: str, appid: str) -> str | None:
+    node = vdf.loads(text)
+    for k in COMPAT_PATH:
+        node = node.get(k, {})
+    app = node.get(appid)
+    return app.get("name") if isinstance(app, dict) else None
+
+
 def read_launch_options(text: str, appid: str) -> str | None:
     apps = vdf.loads(text)
     for k in APPS_PATH:
@@ -157,12 +206,56 @@ def _save_journal(entries: list[dict], directory: Path) -> None:
     _journal_path(directory).write_text(json.dumps(entries[-200:], ensure_ascii=False, indent=1))
 
 
-def last_change(appid: str, directory: Path | None = None) -> dict | None:
-    """Последняя запись журнала по игре — для кнопки «Вернуть как было»."""
+def last_change(appid: str, directory: Path | None = None, kind: str = "launch") -> dict | None:
+    """Последняя запись журнала по игре — для кнопки «Вернуть как было».
+    kind: launch — параметры запуска, compat — сборка Proton (старые записи без kind — параметры)."""
     for entry in reversed(load_journal(directory)):
-        if entry.get("appid") == appid:
+        if entry.get("appid") == appid and entry.get("kind", "launch") == kind:
             return entry
     return None
+
+
+def _commit(config: Path, new_text: str, prefix: str, entry: dict, directory: Path) -> Path:
+    """Копия файла, атомарная запись нового текста, запись в журнал."""
+    try:
+        directory.mkdir(parents=True, exist_ok=True)
+        backup = directory / f"{prefix}-{time.strftime('%Y%m%d-%H%M%S')}.vdf"
+        shutil.copy2(config, backup)
+        for extra in sorted(directory.glob(f"{prefix.split('-')[0]}-*.vdf"))[:-MAX_BACKUPS]:
+            extra.unlink()
+        fd, tmp = tempfile.mkstemp(dir=config.parent, prefix=f".{config.stem}-", suffix=".tmp")
+        with os.fdopen(fd, "w") as f:
+            f.write(new_text)
+        shutil.copymode(config, tmp)
+        os.replace(tmp, config)
+    except OSError as e:
+        raise SteamConfigError(str(e)) from None
+    journal = load_journal(directory)
+    journal.append({"time": time.time(), "file": str(config), **entry, "backup": str(backup)})
+    _save_journal(journal, directory)
+    return backup
+
+
+def write_compat(config: Path, appid: str, name: str | None, *, directory: Path | None = None,
+                 check_running: bool = True, undo: bool = False) -> str | None:
+    """Записывает сборку Proton для игры в config.vdf. Возвращает прежнюю (None — не была выбрана)."""
+    if check_running and steam_running():
+        raise SteamConfigError("steam_running")
+    directory = directory or backups_dir()
+    try:
+        text = config.read_text()
+        old = read_compat_tool(text, appid)
+        new_text = set_compat_tool(text, appid, name)
+        if read_compat_tool(new_text, appid) != name:  # проверяем себя, прежде чем писать
+            raise SteamConfigError("после правки значение не совпало")
+    except vdf.VDFError as e:
+        raise SteamConfigError(f"config.vdf не разобрать: {e}") from None
+    except OSError as e:
+        raise SteamConfigError(str(e)) from None
+    backup = _commit(config, new_text, "config", {"kind": "compat", "appid": appid, "old": old, "new": name,
+                                                  "undo": undo}, directory)
+    log.info("compat tool %s: %r -> %r (backup %s)", appid, old, name, backup)
+    return old
 
 
 def write(config: Path, appid: str, value: str | None, *, directory: Path | None = None,
@@ -185,23 +278,7 @@ def write(config: Path, appid: str, value: str | None, *, directory: Path | None
     except OSError as e:
         raise SteamConfigError(str(e)) from None
 
-    try:
-        directory.mkdir(parents=True, exist_ok=True)
-        backup = directory / f"localconfig-{config.parent.parent.name}-{time.strftime('%Y%m%d-%H%M%S')}.vdf"
-        shutil.copy2(config, backup)
-        for extra in sorted(directory.glob("localconfig-*.vdf"))[:-MAX_BACKUPS]:
-            extra.unlink()
-        fd, tmp = tempfile.mkstemp(dir=config.parent, prefix=".localconfig-", suffix=".tmp")
-        with os.fdopen(fd, "w") as f:
-            f.write(new_text)
-        shutil.copymode(config, tmp)
-        os.replace(tmp, config)
-    except OSError as e:
-        raise SteamConfigError(str(e)) from None
-
-    journal = load_journal(directory)
-    journal.append({"time": time.time(), "file": str(config), "appid": appid, "old": old, "new": value,
-                    "backup": str(backup), "undo": undo})
-    _save_journal(journal, directory)
+    backup = _commit(config, new_text, f"localconfig-{config.parent.parent.name}",
+                     {"kind": "launch", "appid": appid, "old": old, "new": value, "undo": undo}, directory)
     log.info("launch options %s: %r -> %r (backup %s)", appid, old, value, backup)
     return old
